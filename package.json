@@ -1,19 +1,16 @@
 {
   "name": "footware-management-software",
-  "version": "1.0.0",
-  "description": "Fullstack Shoe Ecommerce DBMS project",
+  "version": "2.0.0",
+  "description": "Fullstack Shoe Ecommerce DBMS project using MS SQL Server",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.3",
-    "mysql2": "^3.9.1",
+    "mssql": "^10.0.1",
     "short-unique-id": "^5.0.3"
   },
   "devDependencies": {

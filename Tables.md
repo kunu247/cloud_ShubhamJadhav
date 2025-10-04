@@ -1,3 +1,8 @@
+// File name: Tables
+// File name with extension: Tables.md
+// Full path: E:\cloud_ShubhamJadhav\Tables.md
+// Directory: E:\cloud_ShubhamJadhav
+
     CREATE TABLE Cart
     (
         cart_id VARCHAR(7) NOT NULL,

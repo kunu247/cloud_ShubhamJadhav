@@ -1,12 +1,17 @@
-const mysql = require('mysql2');
+// File name: sql
+// File name with extension: sql.js
+// Full path: E:\cloud_ShubhamJadhav\sql.js
+// Directory: E:\cloud_ShubhamJadhav
+
+const mysql = require("mysql2");
 
 // Create connection
 const connection = mysql.createConnection({
-    host : "junction.proxy.rlwy.net",
-    user : "root",
-    password : "BgXIoEPDfEIjjSHgTEuHIkIPDJbqDOho",
-    database : "railway",
-    port : "38945"
+  host: "junction.proxy.rlwy.net",
+  user: "root",
+  password: "BgXIoEPDfEIjjSHgTEuHIkIPDJbqDOho",
+  database: "railway",
+  port: "38945"
 });
 // mysql://root:BgXIoEPDfEIjjSHgTEuHIkIPDJbqDOho@junction.proxy.rlwy.net:38945/railway
 // Fetch all tables
@@ -19,21 +24,19 @@ const connection = mysql.createConnection({
 
 // "CREATE TABLE Cart_item (cart_quantity INTEGER NOT NULL, date_added DATE NOT NULL, cart_id VARCHAR(7) NOT NULL, product_id VARCHAR(10) NOT NULL, FOREIGN KEY (cart_id) REFERENCES Cart(cart_id), FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE CASCADE, PRIMARY KEY(cart_id, product_id), purchased VARCHAR(3) DEFAULT 'NO');"
 
-
-
-connection.connect(err => {
+connection.connect((err) => {
   if (err) throw err;
   console.log("Connected to MySQL");
 
-
-  const addTable = "CREATE TABLE Cart_item (cart_quantity INTEGER NOT NULL, date_added DATE NOT NULL, cart_id VARCHAR(7) NOT NULL, product_id VARCHAR(10) NOT NULL, FOREIGN KEY (cart_id) REFERENCES Cart(cart_id), FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE CASCADE, PRIMARY KEY(cart_id, product_id), purchased VARCHAR(3) DEFAULT 'NO');";
+  const addTable =
+    "CREATE TABLE Cart_item (cart_quantity INTEGER NOT NULL, date_added DATE NOT NULL, cart_id VARCHAR(7) NOT NULL, product_id VARCHAR(10) NOT NULL, FOREIGN KEY (cart_id) REFERENCES Cart(cart_id), FOREIGN KEY (product_id) REFERENCES Product(product_id) ON DELETE CASCADE, PRIMARY KEY(cart_id, product_id), purchased VARCHAR(3) DEFAULT 'NO');";
   connection.query(addTable, (err, result) => {
     if (err) throw err;
     console.log("Table added successfully!");
     connection.end();
   });
 
-    connection.query("SHOW TABLES", (err, result) => {
+  connection.query("SHOW TABLES", (err, result) => {
     if (err) throw err;
     console.log("Tables in Database:");
     console.log(result);

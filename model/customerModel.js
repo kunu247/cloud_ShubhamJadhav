@@ -1,6 +1,10 @@
-const db = require("../db/connect");
-const ShortUniqueId = require('short-unique-id');
+// File name: customerModel
+// File name with extension: customerModel.js
+// Full path: E:\cloud_ShubhamJadhav\model\customerModel.js
+// Directory: E:\cloud_ShubhamJadhav\model
 
+const db = require("../db/connect");
+const ShortUniqueId = require("short-unique-id");
 
 const getCustomer = async () => {
   let sql = "select * from customer";
@@ -14,54 +18,61 @@ const emailAlreadyExists = async (email) => {
   return execute;
 };
 
-const registerUserFunc = async (name,email,password,address,pincode,phone_number,role) => {
+const registerUserFunc = async (
+  name,
+  email,
+  password,
+  address,
+  pincode,
+  phone_number,
+  role
+) => {
+  const uid = new ShortUniqueId({ length: 5 });
+  const cart_id = uid.rnd();
 
-    const uid = new ShortUniqueId({ length: 5});
-    const cart_id = uid.rnd();
+  const cid = new ShortUniqueId({ length: 6 });
+  const customer_id = cid.rnd();
 
-    const cid = new ShortUniqueId({ length : 6 })
-    const customer_id = cid.rnd();
-
-    try {
-        let addCartId = `insert into cart values('${cart_id}')`;
-        const [addCart,_] = await db.execute(addCartId);
-    } catch (error) {
-        console.log(error);
+  try {
+    let addCartId = `insert into cart values('${cart_id}')`;
+    const [addCart, _] = await db.execute(addCartId);
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    if (
+      name === "" ||
+      email === "" ||
+      password === "" ||
+      address === "" ||
+      phone_number === ""
+    ) {
+      const error = {
+        status: 400,
+        msg: "Field Value Cannot be Empty"
+      };
+      return error;
     }
-    try {
-      if(name === "" || email === "" || password === "" || address === ""||phone_number === ""){
-        const error = {
-          status : 400,
-          msg : "Field Value Cannot be Empty"
-      }
-        return error
-      }
-      let sql = `insert into Customer values('${customer_id}','${name}','${email}','${password}','${address}',${pincode},'${phone_number}','${cart_id}','${role}');`
-      const [registerUser,_]  = await db.query(sql);
-      return {registerUser,cart_id,customer_id }; 
-      
-    } catch (error) {
+    let sql = `insert into Customer values('${customer_id}','${name}','${email}','${password}','${address}',${pincode},'${phone_number}','${cart_id}','${role}');`;
+    const [registerUser, _] = await db.query(sql);
+    return { registerUser, cart_id, customer_id };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
-      console.log(error);
-      return error
-    }
-
-
-}
-
-
-const loginUserFunc = async (email,password) => {
+const loginUserFunc = async (email, password) => {
   try {
     let sql = `select *
     from customer
-    where password = "${password}" and email = "${email}"`
-    const [loginUser,_]  = await db.query(sql);
-    return loginUser; 
+    where password = "${password}" and email = "${email}"`;
+    const [loginUser, _] = await db.query(sql);
+    return loginUser;
   } catch (error) {
-    return []
+    return [];
   }
-
-}
+};
 
 const adminSql = async () => {
   try {
@@ -82,14 +93,18 @@ const adminSql = async () => {
       SELECT sum(total_amount)
       FROM   payment
       ) AS total
-  FROM    dual`
-    const [admin,_]  = await db.query(sql);
-    return admin; 
+  FROM    dual`;
+    const [admin, _] = await db.query(sql);
+    return admin;
   } catch (error) {
-    return []
+    return [];
   }
+};
 
-}
-
-
-module.exports = { getCustomer, emailAlreadyExists, registerUserFunc, loginUserFunc, adminSql };
+module.exports = {
+  getCustomer,
+  emailAlreadyExists,
+  registerUserFunc,
+  loginUserFunc,
+  adminSql
+};
