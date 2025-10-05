@@ -81,7 +81,7 @@ async function createPaymentSql(
     .input("payment_id", sql.VarChar(10), payment_id)
     .query("UPDATE Cart_item SET purchased=@payment_id WHERE cart_id=@cart_id");
 
-  return { payment_id, payment_date: date, total_amount };
+  return { payment_id, payment_date: date, total_amount, product_ids: product_ids.split(",")};
 }
 
 async function getSinglePaymentSql(cart_id) {
