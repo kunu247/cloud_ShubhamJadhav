@@ -4,7 +4,7 @@
 // Directory: E:\cloud_ShubhamJadhav\routes
 
 const express = require("express");
-const { uploadProductImage } = require("../controllers/uploadsController");
+const router = express.Router();
 const {
   createProduct,
   getAllProducts,
@@ -12,15 +12,14 @@ const {
   deleteProduct,
   updateProduct
 } = require("../controllers/productsController");
-const router = express.Router();
+const { uploadProductImage } = require("../controllers/uploadsController");
 
-router.route("/").post(createProduct).get(getAllProducts);
+router.route("/").get(getAllProducts).post(createProduct);
 router
   .route("/:id")
   .get(getSingleProduct)
-  .delete(deleteProduct)
-  .patch(updateProduct);
-
+  .patch(updateProduct)
+  .delete(deleteProduct);
 router.route("/uploads").post(uploadProductImage);
 
 module.exports = router;

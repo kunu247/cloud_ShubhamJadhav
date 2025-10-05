@@ -3,129 +3,94 @@
 // Full path: E:\cloud_ShubhamJadhav\model\paymentModel.js
 // Directory: E:\cloud_ShubhamJadhav\model
 
-const db = require("../db/connect");
+const { sql, poolPromise } = require("../db/connect");
 const ShortUniqueId = require("short-unique-id");
 
-const getAllpaymentsSql = async () => {
-  const sql = `select * from payment `;
-  const [payment, _] = await db.execute(sql);
+async function getAllpaymentsSql() {
+  const pool = await poolPromise;
+  const payments = (await pool.request().query("SELECT * FROM Payment"))
+    .recordset;
+  const enriched = [];
 
-  let newArray = [];
-  const paymentsArray = payment.map(async (singlePayment) => {
-    const sql1 = `(select group_concat(product_name) as names
-        from product  
-        where product_id 
-        in(
-             select product_id
-             from cart_item c, payment p
-             where c.cart_id = "${singlePayment.cart_id}" 
-             and p.payment_id =  "${singlePayment.payment_id}"
-             and c.purchased =  "${singlePayment.payment_id}" ))`;
+  for (const p of payments) {
+    const [{ names } = {}] = (
+      await pool
+        .request()
+        .input("cart_id", sql.VarChar(7), p.cart_id)
+        .input("payment_id", sql.VarChar(10), p.payment_id)
+        .query(`SELECT STRING_AGG(product_name, ', ') AS names
+              FROM Product WHERE product_id IN (
+                SELECT product_id FROM Cart_item
+                WHERE cart_id=@cart_id AND purchased=@payment_id)`)
+    ).recordset;
 
-    const [[xyz]] = await db.execute(sql1);
+    const [{ num } = {}] = (
+      await pool
+        .request()
+        .input("cart_id", sql.VarChar(7), p.cart_id)
+        .input("payment_id", sql.VarChar(10), p.payment_id)
+        .query(`SELECT SUM(cart_quantity) AS num
+              FROM Cart_item WHERE cart_id=@cart_id AND purchased=@payment_id`)
+    ).recordset;
 
-    const sql2 = `select sum(cart_quantity) as num from cart_item where cart_id = "${singlePayment.cart_id}" and purchased = "${singlePayment.payment_id}"; `;
-    const [[{ num }]] = await db.execute(sql2);
-    const sql3 = `select name,address from customer where customer_id = "${singlePayment.customer_id}"`;
-    const [[cust]] = await db.execute(sql3);
-    singlePayment.names = xyz.names;
-    singlePayment.num = num;
-    singlePayment.name = cust.name;
-    singlePayment.address = cust.address;
-    newArray.push(singlePayment);
+    const [{ name, address } = {}] = (
+      await pool
+        .request()
+        .input("customer_id", sql.VarChar(7), p.customer_id)
+        .query(
+          "SELECT name,address FROM Customer WHERE customer_id=@customer_id"
+        )
+    ).recordset;
 
-    return singlePayment;
-  });
-  try {
-    const results = await Promise.all(paymentsArray);
-    console.log("Result", results);
-  } catch (error) {
-    console.log(error);
+    enriched.push({
+      ...p,
+      product_names: names || "",
+      total_items: num || 0,
+      customer_name: name || "",
+      address: address || ""
+    });
   }
-  return newArray;
-};
+  return enriched;
+}
 
-const createPaymentSql = async (
+async function createPaymentSql(
   payment_type,
   customer_id,
   cart_id,
-  product_id,
+  product_ids,
   total_amount
-) => {
-  let d = new Date();
-  let yyyy = d.getFullYear();
-  let mm = d.getMonth() + 1;
-  let dd = d.getDate();
+) {
+  const pool = await poolPromise;
+  const payment_id = new ShortUniqueId({ length: 7 }).rnd();
+  const date = new Date().toISOString().split("T")[0];
 
-  const uid = new ShortUniqueId({ length: 7 });
-  const payment_id = uid.rnd();
+  await pool
+    .request()
+    .input("payment_id", sql.VarChar(10), payment_id)
+    .input("payment_date", sql.Date, date)
+    .input("payment_type", sql.VarChar(20), payment_type)
+    .input("customer_id", sql.VarChar(7), customer_id)
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .input("total_amount", sql.Int, total_amount)
+    .query(`INSERT INTO Payment (payment_id,payment_date,payment_type,customer_id,cart_id,total_amount)
+            VALUES (@payment_id,@payment_date,@payment_type,@customer_id,@cart_id,@total_amount)`);
 
-  let createdAtDate = `${yyyy}-${mm}-${dd}`;
-  // Total Amount
-  // const amountSql = `select  sum(cost) as total from product where product_id in
-  // ( select product_id from cart_item
-  // where cart_id = "${cart_id}" and purchased = "no" );`
-  // const [[{total}]] = await db.execute(amountSql);
-  // if(!total){
-  //      return {error : {status : 404, msg : "No Item In cart"}};
-  // }
+  await pool
+    .request()
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .input("payment_id", sql.VarChar(10), payment_id)
+    .query("UPDATE Cart_item SET purchased=@payment_id WHERE cart_id=@cart_id");
 
-  const sql = `insert into payment values('${payment_id}','${createdAtDate}','${payment_type}','${customer_id}','${cart_id}','${total_amount}')`;
-  const [payment, _] = await db.execute(sql);
+  return { payment_id, payment_date: date, total_amount };
+}
 
-  let purchasedSql = `UPDATE cart_item
-    SET purchased = "${payment_id}"
-    WHERE  cart_id ='${cart_id}' and product_id in (${product_id});`;
-  const updatePurchased = await db.execute(purchasedSql);
+async function getSinglePaymentSql(cart_id) {
+  const pool = await poolPromise;
+  const { recordset } = await pool
+    .request()
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .query("SELECT * FROM Payment WHERE cart_id=@cart_id");
+  return recordset;
+}
 
-  return {
-    payment,
-    obj: {
-      payment_id,
-      payment_date: createdAtDate,
-      payment_type,
-      customer_id,
-      cart_id,
-      total_amount
-    },
-    updatePurchased
-  };
-};
-
-const getSinglePaymentSql = async (cart_id) => {
-  const sql = `select * from payment where cart_id = "${cart_id}"`;
-  const [payment, _] = await db.execute(sql);
-
-  let newArray = [];
-  const paymentsArray = payment.map(async (singlePayment) => {
-    const sql1 = `(select group_concat(product_name) as names
-        from product  
-        where product_id 
-        in(
-             select product_id
-             from cart_item c, payment p
-             where c.cart_id = "${cart_id}" 
-             and p.payment_id =  "${singlePayment.payment_id}"
-             and c.purchased =  "${singlePayment.payment_id}" ))`;
-
-    const [[xyz]] = await db.execute(sql1);
-    const sql2 = `select sum(cart_quantity) as num from cart_item where cart_id = "${cart_id}" and purchased = "${singlePayment.payment_id}"; `;
-    const [[{ num }]] = await db.execute(sql2);
-    singlePayment.names = xyz.names;
-    singlePayment.num = num;
-    newArray.push(singlePayment);
-
-    return singlePayment;
-  });
-  try {
-    const results = await Promise.all(paymentsArray);
-    // console.log("Result",results);
-  } catch (error) {}
-  return newArray;
-};
-
-module.exports = {
-  getAllpaymentsSql,
-  createPaymentSql,
-  getSinglePaymentSql
-};
+module.exports = { getAllpaymentsSql, createPaymentSql, getSinglePaymentSql };

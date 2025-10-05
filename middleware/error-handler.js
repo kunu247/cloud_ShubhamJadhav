@@ -4,30 +4,33 @@
 // Directory: E:\cloud_ShubhamJadhav\middleware
 
 const { StatusCodes } = require("http-status-codes");
-const errorHandlerMiddleware = (err, req, res, next) => {
-  let customError = {
-    // set default
-    statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-    msg: err.message || "Something went wrong try again later"
-  };
+
+module.exports = (err, req, res, next) => {
+  const status = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+  const msg = err.message || "Something went wrong, please try again.";
+
+  console.error("[ERROR]", err);
+
   if (err.name === "ValidationError") {
-    customError.msg = Object.values(err.errors)
-      .map((item) => item.message)
-      .join(",");
-    customError.statusCode = 400;
-  }
-  if (err.code && err.code === 11000) {
-    customError.msg = `Duplicate value entered for ${Object.keys(
-      err.keyValue
-    )} field, please choose another value`;
-    customError.statusCode = 400;
-  }
-  if (err.name === "CastError") {
-    customError.msg = `No item found with id : ${err.value}`;
-    customError.statusCode = 404;
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      success: false,
+      msg: Object.values(err.errors).map((e) => e.message).join(", ")
+    });
   }
 
-  return res.status(customError.statusCode).json({ msg: customError.msg });
+  if (err.code === "EREQUEST" || err.number === 2627) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      success: false,
+      msg: "SQL constraint violation."
+    });
+  }
+
+  if (["JsonWebTokenError", "TokenExpiredError"].includes(err.name)) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      success: false,
+      msg: "Invalid or expired token."
+    });
+  }
+
+  return res.status(status).json({ success: false, msg });
 };
-
-module.exports = errorHandlerMiddleware;

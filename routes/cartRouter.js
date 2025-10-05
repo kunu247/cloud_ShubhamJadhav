@@ -4,16 +4,25 @@
 // Directory: E:\cloud_ShubhamJadhav\routes
 
 const express = require("express");
+const router = express.Router();
 const {
   getAllCartItems,
-  createCartItems,
+  createCartItem,
   getSingleCart,
   updateCart,
   deleteCartItem
+  /* createCart,
+  getCartById */
 } = require("../controllers/cartController");
-const router = express.Router();
 
-router.route("/").get(getAllCartItems).post(createCartItems);
+// create a cart (returns cart_id)
+// router.post("/", createCart);
+
+// optional: get cart record (metadata)
+// router.get("/:id/meta", getCartById);
+
+// cart item routes
+router.route("/").get(getAllCartItems).post(createCartItem);
 router.route("/:id").get(getSingleCart).patch(updateCart);
 router.route("/delete/:id").patch(deleteCartItem);
 

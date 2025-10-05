@@ -3,97 +3,80 @@
 // Full path: E:\cloud_ShubhamJadhav\controllers\customerController.js
 // Directory: E:\cloud_ShubhamJadhav\controllers
 
+const asyncHandler = require("express-async-handler");
+const bcrypt = require("bcryptjs");
+const { createJWT, attachCookiesToResponse } = require("../utils/jwt");
 const {
   getCustomer,
   emailAlreadyExists,
   registerUserFunc,
-  loginUserFunc,
-  adminSql
+  loginUserFunc
 } = require("../model/customerModel");
 
-const getAllCustomers = async (req, res) => {
-  try {
-    const customers = await getCustomer();
-    res.send(customers);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ msg: error });
-  }
-};
+exports.getAllCustomers = asyncHandler(async (req, res) => {
+  const customers = await getCustomer();
+  res
+    .status(200)
+    .json({ success: true, count: customers.length, data: customers });
+});
 
-const register = async (req, res) => {
-  try {
-    const { name, email, password, address, pincode, phone_number, role } =
-      req.body;
-    const emailExists = await emailAlreadyExists(email);
-    if (emailExists.length !== 0) {
-      return res.status(400).send({
-        status: 400,
-        msg: "Email Already Exists"
-      });
-    }
-    const response = await registerUserFunc(
-      name,
-      email,
-      password,
-      address,
-      pincode,
-      phone_number,
-      role
-    );
-    if (response.status === 400) {
-      return res.status(400).send(response);
-    }
-    res.status(201).send({
-      status: 201,
-      customer: {
-        customer_id: response.customer_id,
-        name,
-        email,
-        password,
-        address,
-        pincode,
-        phone_number,
-        cart_id: response.cart_id,
-        role
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    res.send(error);
-  }
-};
+exports.register = asyncHandler(async (req, res) => {
+  const { name, email, password, address, pincode, phone_number, role } =
+    req.body;
 
-const login = async (req, res) => {
-  try {
-    const { password, email } = req.body;
-    const loginUser = await loginUserFunc(email, password);
-    if (loginUser.length === 0) {
-      return res.status(401).send({
-        status: 401,
-        msg: "Email or Password Not Correct"
-      });
-    }
-    res.send({ customer: loginUser });
-  } catch (error) {
-    console.log(error);
-    res.send(error);
-  }
-};
+  if (!name || !email || !password)
+    return res
+      .status(400)
+      .json({ success: false, msg: "Required fields missing" });
 
-const admin = async (req, res) => {
-  try {
-    const admin = await adminSql();
-    res.send(admin);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ msg: error });
-  }
-};
+  const exists = await emailAlreadyExists(email);
+  if (exists)
+    return res
+      .status(400)
+      .json({ success: false, msg: "Email already registered" });
 
-module.exports = {
-  getAllCustomers,
-  register,
-  login,
-  admin
-};
+  const user = await registerUserFunc({
+    name,
+    email,
+    password,
+    address,
+    pincode,
+    phone_number,
+    role
+  });
+
+  const tokenPayload = { userId: user.customer_id, role: role || "user" };
+  const token = createJWT(tokenPayload);
+
+  res.status(201).json({
+    success: true,
+    msg: "User registered successfully",
+    token,
+    data: { ...user, name, email, role }
+  });
+});
+
+exports.login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res
+      .status(400)
+      .json({ success: false, msg: "Email and password required" });
+
+  const user = await loginUserFunc(email);
+  if (!user)
+    return res.status(401).json({ success: false, msg: "Invalid credentials" });
+
+  const validPwd = await bcrypt.compare(password, user.password);
+  if (!validPwd)
+    return res.status(401).json({ success: false, msg: "Invalid credentials" });
+
+  const tokenPayload = { userId: user.customer_id, role: user.role };
+  attachCookiesToResponse(res, tokenPayload);
+
+  res.status(200).json({
+    success: true,
+    msg: "Login successful",
+    user: { id: user.customer_id, name: user.name, role: user.role }
+  });
+});

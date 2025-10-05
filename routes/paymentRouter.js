@@ -4,12 +4,12 @@
 // Directory: E:\cloud_ShubhamJadhav\routes
 
 const express = require("express");
+const router = express.Router();
 const {
   getAllPayments,
   createPayment,
   getSinglePayment
 } = require("../controllers/paymentController");
-const router = express.Router();
 
 router.route("/").get(getAllPayments).post(createPayment);
 router.route("/:id").get(getSinglePayment);

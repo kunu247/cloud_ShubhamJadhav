@@ -3,6 +3,7 @@
 // Full path: E:\cloud_ShubhamJadhav\middleware\not-found.js
 // Directory: E:\cloud_ShubhamJadhav\middleware
 
-const notFound = (req, res) => res.status(404).send("Route does not exist");
+const notFound = (req, res) =>
+  res.status(404).json({ msg: "Route does not exist." });
 
 module.exports = notFound;

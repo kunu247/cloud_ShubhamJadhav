@@ -2,37 +2,46 @@
 // File name with extension: connect.js
 // Full path: E:\cloud_ShubhamJadhav\db\connect.js
 // Directory: E:\cloud_ShubhamJadhav\db
-// db/connect.js
+
+require("dotenv").config();
 const sql = require("mssql");
 
-// ✅ MS SQL Server Configuration
 const config = {
-  user: "DeveloperKunal", // or your DB username
-  password: "tech@123",
-  database: "FootwareApp_Dev",
-  server: "GOD\\SQLSERVEREXP22", // or your remote server
-  port: 1433,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  server: process.env.DB_SERVER,
+  port: parseInt(process.env.DB_PORT, 10),
   options: {
-    encrypt: false, // set true if using Azure SQL
-    trustServerCertificate: true
+    encrypt: false,
+    trustServerCertificate: true,
+    enableArithAbort: true
   },
   pool: {
     max: 10,
     min: 0,
     idleTimeoutMillis: 30000
-  }
+  },
+  instanceName: process.env.DB_INSTANCE
 };
 
-// ✅ Create global connection pool
-const poolPromise = new sql.ConnectionPool(config)
-  .connect()
-  .then((pool) => {
-    console.log("\n\t[ ✅ ] Connected to SQL Server successfully.\n");
-    return pool;
-  })
-  .catch((err) => {
-    console.error("\n\t[ ❌ ] Database Connection Failed! \n", err);
-    process.exit(1);
-  });
+let poolPromise;
 
-module.exports = { sql, poolPromise };
+async function connectDB() {
+  try {
+    if (!poolPromise) {
+      const pool = new sql.ConnectionPool(config);
+      poolPromise = pool.connect();
+      await poolPromise;
+      console.log("[✅] SQL Server connected successfully.");
+    }
+    return poolPromise;
+  } catch (err) {
+    console.error("[❌] Database connection failed:", err.message);
+    process.exit(1);
+  }
+}
+
+connectDB();
+
+module.exports = { sql, poolPromise: connectDB() };

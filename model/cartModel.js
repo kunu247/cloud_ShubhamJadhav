@@ -3,57 +3,140 @@
 // Full path: E:\cloud_ShubhamJadhav\model\cartModel.js
 // Directory: E:\cloud_ShubhamJadhav\model
 
-const db = require("../db/connect");
-const ShortUniqueId = require("short-unique-id");
+const { sql, poolPromise } = require("../db/connect");
 
-const getAllCartItemsSql = async () => {
-  const sql = `select * from cart_item`;
-  const [cart, _] = await db.execute(sql);
-  return cart;
-};
+async function getAllCartItemsSql() {
+  const pool = await poolPromise;
+  const { recordset } = await pool.request().query("SELECT * FROM Cart_item");
+  return recordset;
+}
 
-const createCartItemsSql = async (
+async function createCartItemsSql(
   cart_quantity,
   cart_id,
   product_id,
-  purchased
-) => {
-  let d = new Date();
-  let yyyy = d.getFullYear();
-  let mm = d.getMonth() + 1;
-  let dd = d.getDate();
+  purchased = "NO"
+) {
+  const pool = await poolPromise;
+  const date = new Date().toISOString().split("T")[0];
 
-  let createdAtDate = `${yyyy}-${mm}-${dd}`;
-  const sql = `insert into cart_item values(${cart_quantity},'${createdAtDate}','${cart_id}','${product_id}','${purchased}')`;
-  const [cart, _] = await db.execute(sql);
-  return cart;
-};
+  await pool
+    .request()
+    .input("cart_quantity", sql.Int, cart_quantity)
+    .input("date_added", sql.Date, date)
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .input("product_id", sql.VarChar(10), product_id)
+    .input("purchased", sql.VarChar(10), purchased).query(`
+      INSERT INTO Cart_item (cart_quantity, date_added, cart_id, product_id, purchased)
+      VALUES (@cart_quantity, @date_added, @cart_id, @product_id, @purchased)
+    `);
 
-const getSingleCartItemSql = async (cart_id) => {
-  const sql = `select  p.product_name,p.product_company,c.cart_quantity,p.cost,p.image,p.color,c.product_id,cart_id 
-    from product p,cart_item c 
-    where p.product_id = c.product_id and c.cart_id = "${cart_id}" and c.purchased= "no"`;
-  const [cart, _] = await db.execute(sql);
-  return cart;
-};
-// const getSingleCartItemSql = async (cart_id) => {
-//     const sql = `select * from cart_item where cart_id ='${cart_id}'`
-//     const [cart,_] = await db.execute(sql);
-//     return cart;
-// }
+  return { cart_quantity, cart_id, product_id, purchased };
+}
 
-const updateCartSql = async (id, cart_quantity, product_id) => {
-  let sql = `UPDATE cart_item
-    SET cart_quantity = ${cart_quantity} WHERE product_id = '${product_id}' and cart_id ='${id}'`;
-  const result = await db.execute(sql);
-  return result;
-};
+async function getSingleCartItemSql(cart_id) {
+  const pool = await poolPromise;
+  const query = `
+    SELECT p.product_name, p.product_company, c.cart_quantity, p.cost, p.image, p.color,
+           c.product_id, c.cart_id
+    FROM Product p
+    JOIN Cart_item c ON p.product_id = c.product_id
+    WHERE c.cart_id = @cart_id AND c.purchased = 'NO'
+  `;
+  const { recordset } = await pool
+    .request()
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .query(query);
+  return recordset;
+}
 
-const deleteCartItemSql = async (id, product_id) => {
-  let sql = `delete  from cart_item where product_id = '${product_id}' and cart_id = '${id}'`;
-  const [Product, _] = await db.execute(sql);
-  return Product;
-};
+async function updateCartSql(cart_id, cart_quantity, product_id) {
+  const pool = await poolPromise;
+  const { rowsAffected } = await pool
+    .request()
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .input("cart_quantity", sql.Int, cart_quantity)
+    .input("product_id", sql.VarChar(10), product_id)
+    .query(
+      "UPDATE Cart_item SET cart_quantity = @cart_quantity WHERE cart_id = @cart_id AND product_id = @product_id"
+    );
+  return rowsAffected;
+}
+
+async function deleteCartItemSql(cart_id, product_id) {
+  const pool = await poolPromise;
+  const { rowsAffected } = await pool
+    .request()
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .input("product_id", sql.VarChar(10), product_id)
+    .query(
+      "DELETE FROM Cart_item WHERE cart_id = @cart_id AND product_id = @product_id"
+    );
+  return rowsAffected;
+}
+
+/*
+ * createCartSql(cartIdOverride?)
+ * Creates a new cart row and returns the cart_id.
+ * If cartIdOverride is provided it will try to insert it; otherwise a unique id is generated.
+ * Retries a few times on collision.
+ /
+async function createCartSql(cartIdOverride) {
+  const pool = await poolPromise;
+  const uid = new ShortUniqueId({ length: 7 });
+  const maxAttempts = 6;
+  let attempt = 0;
+
+  while (attempt < maxAttempts) {
+    const cart_id = cartIdOverride || uid.rnd(); // either override or generate
+    try {
+      // Parameterized insert with existence check to avoid constraint exceptions
+      await pool.request().input("cart_id", sql.VarChar(7), cart_id).query(`
+          IF NOT EXISTS (SELECT 1 FROM Cart WHERE cart_id = @cart_id)
+            INSERT INTO Cart (cart_id) VALUES (@cart_id);
+        `);
+
+      // Confirm insertion
+      const { recordset } = await pool
+        .request()
+        .input("cart_id", sql.VarChar(7), cart_id)
+        .query("SELECT cart_id FROM Cart WHERE cart_id = @cart_id");
+
+      if (recordset && recordset.length) {
+        return cart_id;
+      }
+
+      // If not inserted, loop to try again
+      attempt++;
+      cartIdOverride = null; // force generation next try
+    } catch (err) {
+      // If unique constraint / primary key error, retry with a new id
+      if (/unique|primary|violation/i.test(err.message)) {
+        attempt++;
+        cartIdOverride = null;
+        continue;
+      }
+      // Unhandled error -> rethrow
+      throw err;
+    }
+  }
+
+  throw new Error("Unable to generate unique cart_id after multiple attempts.");
+}
+
+/
+ * getCartByIdSql(cart_id)
+ * Returns cart row if exists.
+ /
+async function getCartByIdSql(cart_id) {
+  const pool = await poolPromise;
+  const { recordset } = await pool
+    .request()
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .query("SELECT * FROM Cart WHERE cart_id = @cart_id");
+  return recordset;
+}
+*/
 
 module.exports = {
   getAllCartItemsSql,
@@ -61,4 +144,6 @@ module.exports = {
   getSingleCartItemSql,
   updateCartSql,
   deleteCartItemSql
+  /*createCartSql,
+  getCartByIdSql, */
 };

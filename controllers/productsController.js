@@ -3,6 +3,7 @@
 // Full path: E:\cloud_ShubhamJadhav\controllers\productsController.js
 // Directory: E:\cloud_ShubhamJadhav\controllers
 
+const asyncHandler = require("express-async-handler");
 const {
   getAllProductsSql,
   createProductSql,
@@ -11,190 +12,61 @@ const {
   updateProductSql
 } = require("../model/productsModel");
 
-const getAllProducts = async (req, res) => {
-  try {
-    let filterArray = [];
-    const { name, company, color, size, gender, cost } = req.query;
-    if (name) {
-      filterArray.push(`product_name = "${name}"`);
-    }
-    if (company) {
-      filterArray.push(`product_company = "${company}"`);
-    }
-    if (color) {
-      filterArray.push(`color = "${color}"`);
-    }
-    if (size) {
-      filterArray.push(`size = ${size}`);
-    }
-    if (gender) {
-      filterArray.push(`gender = "${gender}"`);
-    }
-    if (cost) {
-      filterArray.push(`cost < "${cost}"`);
-    }
+exports.getAllProducts = asyncHandler(async (req, res) => {
+  const filters = [];
+  const { name, company, color, size, gender, cost } = req.query;
 
-    let filterString = "";
-    if (filterArray.length > 0) {
-      filterString = filterString + "where ";
-      filterString = filterString + filterArray.join(" and ");
-    }
+  if (name) filters.push(`product_name = '${name}'`);
+  if (company) filters.push(`product_company = '${company}'`);
+  if (color) filters.push(`color = '${color}'`);
+  if (size) filters.push(`size = ${size}`);
+  if (gender) filters.push(`gender = '${gender}'`);
+  if (cost) filters.push(`cost <= ${cost}`);
 
-    const allProducts = await getAllProductsSql(filterString);
-    res.status(200).send({ products: allProducts });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({
-      status: 400,
-      msg: error
-    });
-  }
-};
+  const filterString = filters.length ? "WHERE " + filters.join(" AND ") : "";
+  const products = await getAllProductsSql(filterString);
 
-const createProduct = async (req, res) => {
-  try {
-    const {
-      product_name,
-      product_company,
-      color,
-      size,
-      gender,
-      cost,
-      quantity,
-      image
-    } = req.body;
-    const { product, product_id } = await createProductSql(
-      product_name,
-      product_company,
-      color,
-      size,
-      gender,
-      cost,
-      quantity,
-      image
-    );
-    res.status(201).send({
-      status: 201,
-      user: {
-        product_id,
-        product_name,
-        product_company,
-        color,
-        size,
-        gender,
-        cost,
-        quantity,
-        image
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    res.send(error);
-  }
-};
+  res
+    .status(200)
+    .json({ success: true, count: products.length, data: products });
+});
 
-const getSingleProduct = async (req, res) => {
+exports.createProduct = asyncHandler(async (req, res) => {
+  const data = await createProductSql(req.body);
+  res.status(201).json({ success: true, msg: "Product created", data });
+});
+
+exports.getSingleProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  try {
-    const product = await getSingleProductsSql(id);
-    if (product.length === 0) {
-      return res.status(404).send({
-        status: 404,
-        msg: `product with id ${id} not found`
-      });
-    }
-    res.status(200).send(product);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send(error);
-  }
-};
+  const product = await getSingleProductsSql(id);
+  if (product.length === 0)
+    return res.status(404).json({ success: false, msg: "Product not found" });
+  res.status(200).json({ success: true, data: product });
+});
 
-const deleteProduct = async (req, res) => {
+exports.updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  try {
-    const productExists = await getSingleProductsSql(id);
-    if (productExists.length === 0) {
-      return res.status(404).send({
-        status: 404,
-        msg: `product with id ${id} not found`
-      });
-    }
-    const product = await deleteProductSql(id);
-    res.status(200).send(product);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send(error);
-  }
-};
+  const productExists = await getSingleProductsSql(id);
+  if (productExists.length === 0)
+    return res.status(404).json({ success: false, msg: "Product not found" });
 
-const updateProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const updates = Object.entries(req.body)
+    .map(([k, v]) => `${k}='${v}'`)
+    .join(", ");
 
-    const productExists = await getSingleProductsSql(id);
-    if (productExists.length === 0) {
-      return res.status(404).send({
-        status: 404,
-        msg: `product with id ${id} not found`
-      });
-    }
+  await updateProductSql(id, updates);
+  const updated = await getSingleProductsSql(id);
+  res
+    .status(200)
+    .json({ success: true, msg: "Product updated", data: updated });
+});
 
-    let filterArray = [];
-    const {
-      product_name,
-      product_company,
-      color,
-      size,
-      gender,
-      cost,
-      quantity,
-      image
-    } = req.body;
-    if (product_name) {
-      filterArray.push(`product_name = "${product_name}"`);
-    }
-    if (product_company) {
-      filterArray.push(`product_company = "${product_company}"`);
-    }
-    if (color) {
-      filterArray.push(`color = "${color}"`);
-    }
-    if (size) {
-      filterArray.push(`size = ${size}`);
-    }
-    if (gender) {
-      filterArray.push(`gender = "${gender}"`);
-    }
-    if (cost) {
-      filterArray.push(`cost = ${cost}`);
-    }
-    if (quantity) {
-      filterArray.push(`quantity = ${quantity}`);
-    }
-    if (image) {
-      filterArray.push(`image = "${image}"`);
-    }
+exports.deleteProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const existing = await getSingleProductsSql(id);
+  if (existing.length === 0)
+    return res.status(404).json({ success: false, msg: "Product not found" });
 
-    let filterString = "";
-    if (filterArray.length > 0) {
-      // filterString =  filterString + "where "
-      filterString = filterString + filterArray.join(" , ");
-    }
-
-    const product = await updateProductSql(id, filterString);
-    const updatedProduct = await getSingleProductsSql(id);
-    res.status(200).send({ products: updatedProduct });
-  } catch (error) {
-    console.log(error);
-    res.status(404).send(error);
-  }
-};
-
-module.exports = {
-  getAllProducts,
-  createProduct,
-  getSingleProduct,
-  deleteProduct,
-  updateProduct
-};
+  await deleteProductSql(id);
+  res.status(200).json({ success: true, msg: "Product deleted" });
+});

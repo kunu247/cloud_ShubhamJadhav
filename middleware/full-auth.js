@@ -8,39 +8,35 @@ const { isTokenValid } = require("../utils/jwt");
 
 const authenticateUser = async (req, res, next) => {
   let token;
-  // check header
+
+  // Try getting token from Bearer header first
   const authHeader = req.headers.authorization;
-  if (authHeader && authHeader.startsWith("Bearer")) {
+  if (authHeader?.startsWith("Bearer ")) {
     token = authHeader.split(" ")[1];
-  }
-  // check cookies
-  else if (req.cookies.token) {
+  } else if (req.cookies?.token) {
     token = req.cookies.token;
   }
 
-  if (!token) {
-    throw new CustomError.UnauthenticatedError("Authentication invalid");
-  }
+  if (!token)
+    throw new CustomError.UnauthenticatedError("Authentication token missing.");
+
   try {
     const payload = isTokenValid(token);
-
-    // Attach the user and his permissions to the req object
     req.user = {
-      userId: payload.user.userId,
-      role: payload.user.role
+      userId: payload.userId,
+      role: payload.role
     };
-
     next();
-  } catch (error) {
-    throw new CustomError.UnauthenticatedError("Authentication invalid");
+  } catch (err) {
+    throw new CustomError.UnauthenticatedError("Invalid or expired token.");
   }
 };
 
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      throw new CustomError.UnauthorizedError(
-        "Unauthorized to access this route"
+    if (!roles.includes(req.user?.role)) {
+      throw new CustomError.BadRequestError(
+        "Unauthorized access to this resource."
       );
     }
     next();

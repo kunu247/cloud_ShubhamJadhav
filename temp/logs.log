@@ -1,0 +1,32 @@
+{
+    "success": true,
+    "msg": "User registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkbEVjdloiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1OTY0MDQ2MSwiZXhwIjoxNzU5NjQ0MDYxfQ.mW9hwhohzOmny-DCWwYIn8wIbaz33psNMtIkVei76_4",
+    "data": {
+        "customer_id": "dlEcvZ",
+        "cart_id": "9RWbmA",
+        "name": "Shubham Jadhav",
+        "email": "shubham.dev@devcorner.com",
+        "role": "user"
+    }
+}
+
+{
+  "name": "Kali D'souza",
+  "email": "kali.dev@devcorner.com",
+  "password": "secret@123",
+  "address": "New WestSide Avenue, Bandra(W), Mumbai",
+  "pincode": 411001,
+  "phone_number": "7876113210",
+  "role": "admin"
+}
+
+{
+  "name": "Bhushan Gupta",
+  "email": "gupta33.user@devcorner.com",
+  "password": "admin@123",
+  "address": "WestPark Residency, Seawoods Darave(E), Navi Mumbai",
+  "pincode": 410632,
+  "phone_number": "7876114545",
+  "role": "guest"
+}

@@ -1,19 +1,42 @@
 {
   "name": "footware-management-software",
   "version": "2.0.0",
-  "description": "Fullstack Shoe Ecommerce DBMS project using MS SQL Server",
+  "description": "A production-ready full-stack Footwear E-Commerce and Inventory Management System built with Node.js, Express, and Microsoft SQL Server. Includes JWT authentication, modular APIs, secure database integration, and built-in debugging and maintenance utilities for developers.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "clean": "del /f /q logs\\*.* temp\\*.* 2>nul || true",
+    "reset:env": "copy .env.example .env /Y",
+    "debug": "set DEBUG_MODE=true && nodemon app.js",
+    "debug:routes": "node -e \"require('./utils/routeDebugger')()\"",
+    "db:test": "node -e \"require('./db/testConnection.js')\"",
+    "test:api": "node scripts/test-api.js",
+    "log:env": "node -e \"console.log(require('dotenv').config())\"",
+    "check:deps": "npm ls --depth=0",
+    "predeploy": "npm run clean",
+    "release": "npm version patch && git push && git push --tags"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
-    "express-fileupload": "^1.4.3",
+    "express-async-handler": "^1.2.0",
+    "express-fileupload": "^1.5.2",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
     "mssql": "^10.0.1",
     "short-unique-id": "^5.0.3"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "nodemon": "^3.0.3"
-  }
+  },
+  "author": "Developer Kali",
+  "license": "MIT"
 }

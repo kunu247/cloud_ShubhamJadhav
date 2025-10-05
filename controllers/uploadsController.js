@@ -3,42 +3,37 @@
 // Full path: E:\cloud_ShubhamJadhav\controllers\uploadsController.js
 // Directory: E:\cloud_ShubhamJadhav\controllers
 
+const asyncHandler = require("express-async-handler");
 const path = require("path");
 
-const uploadProductImage = async (req, res) => {
-  if (!req.files) {
+exports.uploadProductImage = asyncHandler(async (req, res) => {
+  if (!req.files || !req.files.image)
     return res
       .status(400)
-      .send({ image: { msg: "Please Upload Image", src: "" } });
-    // throw new Error("Upload File");
-  }
-  let productImage = req.files.image;
-  if (!productImage.mimetype.startsWith("image")) {
-    // throw new Error('Please Upload Image');
+      .json({ success: false, msg: "Please upload an image" });
+
+  const productImage = req.files.image;
+
+  if (!productImage.mimetype.startsWith("image"))
     return res
       .status(400)
-      .send({ image: { msg: "Please Upload Image", src: "" } });
-  }
-  const maxSize = 1024 * 1024;
-  if (productImage.size > maxSize) {
+      .json({ success: false, msg: "File must be an image" });
+
+  if (productImage.size > 1024 * 1024)
     return res
       .status(400)
-      .send({
-        image: { msg: "Please Upload Image Smaller Than 1MB", src: "" }
-      });
-    // throw new Error('Please Upload Image Smaller than 1MB');
-  }
+      .json({ success: false, msg: "Image must be under 1MB" });
 
   const imagePath = path.join(
     __dirname,
-    "../public/uploads/" + `${productImage.name}`
+    "../public/uploads/",
+    productImage.name
   );
   await productImage.mv(imagePath);
-  return res
-    .status(201)
-    .json({
-      image: { src: `http://localhost:3000/uploads/${productImage.name}` }
-    });
-};
 
-module.exports = { uploadProductImage };
+  res.status(201).json({
+    success: true,
+    msg: "Image uploaded",
+    image: `${process.env.BASE_URL}/uploads/${productImage.name}`
+  });
+});
