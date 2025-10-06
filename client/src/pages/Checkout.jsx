@@ -1,4 +1,9 @@
-import React from 'react';
+// File name: Checkout
+// File name with extension: Checkout.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\pages\Checkout.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src\pages
+
+import React from "react";
 
 const AdminPanel = () => {
   return (
@@ -12,10 +17,30 @@ const AdminPanel = () => {
           </div>
           {/* Navigation */}
           <nav className="mt-6">
-            <a href="#" className="block px-4 py-2 text-white hover:bg-gray-700">Dashboard</a>
-            <a href="#" className="block px-4 py-2 text-white hover:bg-gray-700">Products</a>
-            <a href="#" className="block px-4 py-2 text-white hover:bg-gray-700">Orders</a>
-            <a href="#" className="block px-4 py-2 text-white hover:bg-gray-700">Customers</a>
+            <a
+              href="#"
+              className="block px-4 py-2 text-white hover:bg-gray-700"
+            >
+              Dashboard
+            </a>
+            <a
+              href="#"
+              className="block px-4 py-2 text-white hover:bg-gray-700"
+            >
+              Products
+            </a>
+            <a
+              href="#"
+              className="block px-4 py-2 text-white hover:bg-gray-700"
+            >
+              Orders
+            </a>
+            <a
+              href="#"
+              className="block px-4 py-2 text-white hover:bg-gray-700"
+            >
+              Customers
+            </a>
           </nav>
         </div>
       </div>

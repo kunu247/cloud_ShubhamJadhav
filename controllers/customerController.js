@@ -71,12 +71,54 @@ exports.login = asyncHandler(async (req, res) => {
   if (!validPwd)
     return res.status(401).json({ success: false, msg: "Invalid credentials" });
 
-  const tokenPayload = { userId: user.customer_id, role: user.role };
+  // ✅ Include cart_id in JWT payload
+  const tokenPayload = {
+    userId: user.customer_id,
+    cartId: user.cart_id,
+    role: user.role
+  };
   attachCookiesToResponse(res, tokenPayload);
 
+  // ✅ Send a consistent customer structure
   res.status(200).json({
     success: true,
     msg: "Login successful",
-    user: { id: user.customer_id, name: user.name, role: user.role }
+    customer: {
+      id: user.customer_id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      cart_id: user.cart_id,
+      address: user.address,
+      phone_number: user.phone_number
+    }
   });
 });
+
+exports.getAdminStats = async (req, res) => {
+  try {
+    const pool = await poolPromise;
+
+    // ✅ Query totals from DB
+    const { recordset } = await pool.request().query(`
+      SELECT
+        (SELECT COUNT(*) FROM Customer WHERE isactive = 1) AS customer,
+        (SELECT COUNT(*) FROM Product WHERE isactive = 1) AS product,
+        (SELECT COUNT(*) FROM Payment WHERE isactive = 1) AS payment,
+        (SELECT ISNULL(SUM(total), 0) FROM Payment WHERE isactive = 1) AS total
+    `);
+
+    res.status(200).json({
+      success: true,
+      msg: "Admin summary fetched successfully",
+      data: recordset
+    });
+  } catch (error) {
+    console.error("Admin Stats Error:", error);
+    res.status(500).json({
+      success: false,
+      msg: "Failed to load admin dashboard data",
+      error: error.message
+    });
+  }
+};

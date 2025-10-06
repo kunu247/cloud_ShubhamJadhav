@@ -57,13 +57,18 @@ async function createPaymentSql(
   payment_type,
   customer_id,
   cart_id,
-  product_ids,
-  total_amount
+  total_amount,
+  product_ids = ""
 ) {
   const pool = await poolPromise;
   const payment_id = new ShortUniqueId({ length: 7 }).rnd();
   const date = new Date().toISOString().split("T")[0];
 
+  if (isNaN(total_amount)) {
+    throw new Error(`Invalid total_amount provided: ${total_amount}`);
+  }
+
+  // Insert Payment record
   await pool
     .request()
     .input("payment_id", sql.VarChar(10), payment_id)
@@ -71,17 +76,24 @@ async function createPaymentSql(
     .input("payment_type", sql.VarChar(20), payment_type)
     .input("customer_id", sql.VarChar(7), customer_id)
     .input("cart_id", sql.VarChar(7), cart_id)
-    .input("total_amount", sql.Int, total_amount)
-    .query(`INSERT INTO Payment (payment_id,payment_date,payment_type,customer_id,cart_id,total_amount)
-            VALUES (@payment_id,@payment_date,@payment_type,@customer_id,@cart_id,@total_amount)`);
+    .input("total_amount", sql.Int, total_amount).query(`
+      INSERT INTO Payment 
+      (payment_id, payment_date, payment_type, customer_id, cart_id, total_amount)
+      VALUES (@payment_id, @payment_date, @payment_type, @customer_id, @cart_id, @total_amount)
+    `);
 
+  // Update Cart_item as purchased
   await pool
     .request()
     .input("cart_id", sql.VarChar(7), cart_id)
     .input("payment_id", sql.VarChar(10), payment_id)
     .query("UPDATE Cart_item SET purchased=@payment_id WHERE cart_id=@cart_id");
 
-  return { payment_id, payment_date: date, total_amount, product_ids: product_ids.split(",")};
+  return {
+    payment_id,
+    payment_date: date,
+    total_amount
+  };
 }
 
 async function getSinglePaymentSql(cart_id) {

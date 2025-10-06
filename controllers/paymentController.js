@@ -19,7 +19,7 @@ exports.getAllPayments = asyncHandler(async (req, res) => {
 
 exports.createPayment = asyncHandler(async (req, res) => {
   const { payment_type, customer_id, cart_id, total_amount } = req.body;
-  if (!payment_type || !customer_id || !cart_id)
+  if (!payment_type || !customer_id || !cart_id || !total_amount)
     return res
       .status(400)
       .json({ success: false, msg: "Missing payment data" });

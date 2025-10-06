@@ -1,0 +1,739 @@
+Client(React App) Project Directory Structure:
+/client/
+|   .env
+|   .eslintrc.cjs
+|   .gitignore
+|   index.html
+|   package-lock.json
+|   package.json
+|   postcss.config.js
+|   README.md
+|   tailwind.config.js
+|   vite.config.js
+|---public
+|   |   favicon.ico
+|   |   favicon.svg
+|   |   logo.svg
+|   |   vite.svg
+|   |---images
+|           adidas.jpg
+|           air-max-97.png
+|           air-max-furyosa.png
+|           campus-black.jpg
+|           campus-first.jpg
+|           campus-hood.jpg
+|           campus.jpg
+|           collection-1.jpg
+|           collection-2.jpg
+|           collection-3.jpg
+|           cta-1.jpg
+|           cta-2.jpg
+|           demon.avif
+|           footcap.png
+|           hero-banner.png
+|           insta-1.jpg
+|           insta-2.jpg
+|           insta-3.jpg
+|           insta-4.jpg
+|           insta-5.jpg
+|           insta-6.jpg
+|           insta-7.jpg
+|           insta-8.jpg
+|           itachi.jpg
+|           itachi.webp
+|           logo.svg
+|           product-1.jpg
+|           product-2.jpg
+|           product-3.jpg
+|           product-4.jpg
+|           product-5.jpg
+|           product-6.jpg
+|           product-7.jpg
+|           product-8.jpg
+|           service-1.png
+|           service-2.png
+|           service-3.png
+|           service-4.png
+|           special-banner.jpg
+|           sponsor-1.png
+|           sponsor-2.png
+|           sponsor-3.png
+|           sponsor-4.png
+|           sponsor-5.png
+|---src
+    |   App.jsx
+    |   context.jsx
+    |   index.css
+    |   main.jsx
+    |---assets
+    |       logo.png
+    |       react.svg
+    |---components
+    |   |   ErrorElement.jsx
+    |   |   index.js
+    |   |---admin
+    |   |       AddProducts.jsx
+    |   |       AdminCustomers.jsx
+    |   |       AdminOrders.jsx
+    |   |       AdminProducts.jsx
+    |   |       AdminSingleProduct.jsx
+    |   |       Dashboard.jsx
+    |   |       DetailsCard.jsx
+    |   |---cart
+    |   |       CartItem.jsx
+    |   |       CartItemsList.jsx
+    |   |       CartTotals.jsx
+    |   |       SectionTitle.jsx
+    |   |---form
+    |   |       FormInput.jsx
+    |   |       SubmitBtn.jsx
+    |   |---landing
+    |   |       Cra.jsx
+    |   |       cta-1.jpg
+    |   |       cta-2.jpg
+    |   |       Featured.jsx
+    |   |       Footer.jsx
+    |   |       hero-banner.png
+    |   |       Hero.jsx
+    |   |       LandingImages.jsx
+    |   |       Service.jsx
+    |   |       style.css
+    |   |---navbar
+    |   |       footcap-high-resolution-logo-white-transparent.png
+    |   |       Header.jsx
+    |   |       Navbar.jsx
+    |   |       NavLinks.jsx
+    |   |---order
+    |   |       OrderList.jsx
+    |   |---product
+    |           ProductsContainer.jsx
+    |           ProductsGrid.jsx
+    |---pages
+    |       Admin.jsx
+    |       Cart.jsx
+    |       Checkout.jsx
+    |       Error.jsx
+    |       HomeLayout.jsx
+    |       index.js
+    |       Landing.jsx
+    |       Login.jsx
+    |       Orders.jsx
+    |       Products.jsx
+    |       Register.jsx
+    |       SingleProduct.jsx
+    |---utils
+            index.jsx
+
+vite config:
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      "/api/v1": {
+        target: "http://localhost:8065",
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  }
+});
+package.json:
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
+    "react-router-dom": "^6.22.1",
+    "react-toastify": "^10.0.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "daisyui": "^4.7.2",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.1.4"
+  }
+}
+main.jsx:
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+import { AppProvider } from './context';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <AppProvider>
+      <App />
+    </AppProvider>
+  </React.StrictMode>
+)
+App.jsx:
+import { useState, useEffect } from 'react'
+import { createBrowserRouter ,RouterProvider } from 'react-router-dom';
+import { Cart,Checkout,Error,HomeLayout,Landing,Login,Orders,Products,Register,SingleProduct, Admin } from './pages';
+import { AdminCustomers, AdminOrders, AdminProducts, AdminSingleProduct, Dashboard, ErrorElement } from './components';
+import { useGlobalContext } from './context';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import { loader as productLoader } from './pages/Products';
+
+
+
+function App() {
+  const [count, setCount] = useState(0);
+  const { cocktails,loading } = useGlobalContext();
+
+  const router = createBrowserRouter([
+    {
+      path : '/',
+      element : <HomeLayout />,
+      errorElement : <Error />,
+      children : [
+        {
+          index : true,
+          element : <Landing />,
+          errorElement : <ErrorElement />,
+        },
+        {
+          path : '/products',
+          element : <Products />,
+          errorElement : <ErrorElement />,
+          loader : productLoader
+          
+        },
+        {
+          path : '/products/:id',
+          element : <SingleProduct />,
+          errorElement : <ErrorElement />,
+        },
+        {
+          path : '/cart',
+          element : <Cart />
+        },
+        {
+          path : '/checkout',
+          element : <Checkout />,
+        },
+        {
+          path : '/orders',
+          element : <Orders />,
+        },
+        {
+          path : '/admin',
+          element : <Admin />,
+          children : [
+            {
+              index : true,
+              element : <Dashboard />
+            },
+            {
+              path : '/admin/customer',
+              element : <AdminCustomers />
+            },
+            {
+              path : '/admin/product',
+              element : <AdminProducts />,
+              loader : productLoader
+            },
+            {
+              path : '/admin/product/:id',
+              element : <AdminSingleProduct />,
+            },
+            {
+              path : '/admin/order',
+              element : <AdminOrders />
+            },
+          ]
+        },
+      ]
+    },
+    {
+      path : '/login',
+      element : <Login />,
+      errorElement : <Error />,
+    },
+    {
+      path : '/register',
+      element : <Register />,
+      errorElement : <Error />,
+    },
+  ])
+
+  return (
+    <>
+    <ToastContainer className='self-center' position='top-center' />
+      <RouterProvider router={router} />
+    </>
+  )
+}
+
+export default App
+Context.jsx:
+// File name: context
+// File name with extension: context.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\context.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src
+
+import React, { useState, useContext, useEffect } from "react";
+import { customFetch } from "./utils";
+
+const url = import.meta.env.VITE_API_BASE_URL || "/api/v1/";
+const AppContext = React.createContext();
+
+const AppProvider = ({ children }) => {
+  const [loading, setLoading] = useState(true);
+  const [customer, setCustomer] = useState(null);
+
+  useEffect(() => {
+    const custLocal = JSON.parse(localStorage.getItem("customer")) || null;
+    setCustomer(custLocal);
+  }, []);
+
+  const [changeAmount, setChangeAmount] = useState(0);
+  const [cart, setCart] = useState([]);
+  const [price, setPrice] = useState({
+    base: 0,
+    shipping: 0,
+    tax: 0,
+    total: 0
+  });
+  const fetchCart = async () => {
+    if (customer) {
+      const response = await customFetch.get(`cart/${customer.cart_id}`);
+      const data = await response.data;
+      setCart(data);
+    }
+  };
+  useEffect(() => {
+    fetchCart();
+  }, [customer]);
+
+  const calculateTotal = async () => {
+    if (customer) {
+      const response = await customFetch.get(`cart/${customer.cart_id}`);
+      const data = await response.data;
+
+      let value = 0;
+      const map1 = data.map((x) => {
+        value = value + x.cart_quantity * x.cost;
+        return value;
+      });
+      const shipping = 500;
+      const tax = ((value / 100 + shipping) * 5) / 100;
+      const totalAmount = value / 100 + shipping + tax;
+      setPrice({
+        base: value / 100,
+        shipping: shipping,
+        tax: tax,
+        total: totalAmount
+      });
+    }
+  };
+  // useEffect(()=>{
+  //   calculateTotal();
+  // },[changeAmount])
+
+  return (
+    <AppContext.Provider
+      value={{
+        loading,
+        customer,
+        setCustomer,
+        cart,
+        fetchCart,
+        price,
+        changeAmount,
+        setChangeAmount,
+        calculateTotal
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+// make sure use
+export const useGlobalContext = () => useContext(AppContext);
+
+export { AppContext, AppProvider };
+utils/index.jsx:
+// File name: index
+// File name with extension: index.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\utils\index.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src\utils
+
+import axios from "axios";
+
+// const productionUrl = 'https://strapi-store-server.onrender.com/api';
+const baseURL = import.meta.env.VITE_API_BASE_URL || "/api/v1";
+
+export const customFetch = axios.create({
+  baseURL,
+  headers: { "Content-Type": "application/json" }
+});
+
+export const formatPrice = (price) => {
+  const dollarsAmount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "INR"
+  }).format((price / 100).toFixed(2));
+  return dollarsAmount;
+};
+
+export const generateAmountOptions = (number) => {
+  return Array.from({ length: number }, (_, index) => {
+    const amount = index + 1;
+
+    return (
+      <option key={amount} value={amount}>
+        {amount}
+      </option>
+    );
+  });
+};
+Components Code:
+// File name: AddProducts
+// File name with extension: AddProducts.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\components\admin\AddProducts.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src\components\admin
+
+import React, { useState } from "react";
+import { customFetch } from "../../utils";
+import SubmitBtn from "../form/SubmitBtn";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+const AddProducts = () => {
+  const navigate = useNavigate();
+  const defaultValue = {
+    product_name: "",
+    product_company: "",
+    color: "",
+    size: null,
+    gender: "",
+    cost: null,
+    quantity: null,
+    image: ""
+  };
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [newProduct, setNewProduct] = useState(defaultValue);
+
+  const addImage = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+    try {
+      const resp = await customFetch.post(`/products/uploads`, formData, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      });
+      const data = await resp.data;
+      setNewProduct({
+        ...newProduct,
+        image: data.image.src
+      });
+      setImageSrc(data.image.src);
+      toast.success("Image Uploaded Successfully");
+    } catch (error) {
+      console.log(error);
+      toast.warn(error.response.data.image.msg);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "gender" && value === "default") {
+      return toast.error("Please Select Gender");
+    }
+    if (name === "size" && value === "default") {
+      return toast.error("Please Select Size");
+    }
+    setNewProduct({
+      ...newProduct,
+      [name]: value
+    });
+  };
+
+  const postProduct = async () => {
+    try {
+      const response = await customFetch.post("/products", newProduct);
+      const data = await response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const submitProduct = () => {
+    event.preventDefault();
+    const values = Object.values(newProduct);
+    if (values[7] === "") {
+      return toast.error("Image Not Uploaded");
+    }
+    for (let index = 0; index < values.length; index++) {
+      const element = values[index];
+      if (element === "" || element === null) {
+        index = values.length;
+        return toast.error("All Input Fields Not Filled");
+      }
+    }
+    postProduct();
+    toast.success("Product Successfully Added");
+    navigate("/admin/product");
+  };
+  return (
+    <div className="flex w-full pt-4 justify-around">
+      <section className="h-screen grid place-items-center">
+        <form
+          className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
+          onSubmit={submitProduct}
+        >
+          <h4 className="text-center text-3xl font-bold">Product Details</h4>
+          <input
+            type="text"
+            name="product_name"
+            placeholder="Product Name"
+            className="input input-bordered"
+            onChange={handleInputChange}
+          />
+          <input
+            type="text"
+            name="product_company"
+            placeholder="Company Name"
+            className="input input-bordered"
+            onChange={handleInputChange}
+          />
+          <input
+            type="text"
+            name="color"
+            placeholder="Color"
+            className="input input-bordered"
+            onChange={handleInputChange}
+          />
+          <input
+            type="number"
+            name="quantity"
+            placeholder="Quantity"
+            className="input input-bordered"
+            onChange={handleInputChange}
+          />
+          <input
+            type="number"
+            name="cost"
+            placeholder="Price"
+            className="input input-bordered"
+            onChange={handleInputChange}
+          />
+          <select
+            id="Gender"
+            placeholder="Gender"
+            name="gender"
+            onChange={handleInputChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="default">Gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+          <select
+            id="Size"
+            name="size"
+            onChange={handleInputChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="default">Size In UK Standard</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+          </select>
+          <div className="mt-4">
+            {/* <SubmitBtn text='Add Product'  disabled={selectedImage===null?true:false}/> */}
+            <button
+              text="Add Product"
+              className="btn btn-primary btn-block"
+              disabled={imageSrc === null ? true : false}
+            >
+              {imageSrc ? "Add product" : "Upload Image First"}
+            </button>
+          </div>
+        </form>
+      </section>
+      <div className="w-[30rem] bg-base-100  p-8 card">
+        <div className="flex justify-center flex-col w-full">
+          <label
+            className="block font-bold mx-auto  text-3xl  mb-5 text-gray-900 dark:text-white"
+            htmlFor="myImage"
+          >
+            Upload Image
+          </label>
+          <input
+            type="file"
+            name="myImage"
+            className="block w-9/10 text-xl mb-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            //  onChange={addImage}
+            onChange={(e) => setSelectedImage(e.target.files[0])}
+          />
+          <p
+            className="mt-1 text-lg mb-5  text-gray-500 dark:text-gray-300"
+            id="file_input_help"
+          >
+            SVG, PNG, JPG or GIF (MAX. 1MB).
+          </p>
+          <button
+            className="btn btn-secondary mx-auto mb-4 btn-sm w-56"
+            onClick={() => setSelectedImage(null)}
+          >
+            Remove Image
+          </button>
+        </div>
+        <div>
+          {selectedImage && (
+            <div>
+              <img
+                alt="not found"
+                width={"450px"}
+                src={URL.createObjectURL(selectedImage)}
+              />
+            </div>
+          )}
+          <div className="flex">
+            <button
+              className="btn mt-5 btn-primary btn-block"
+              onClick={addImage}
+            >
+              Upload Image
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AddProducts;
+// File name: AdminCustomers
+// File name with extension: AdminCustomers.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\components\admin\AdminCustomers.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src\components\admin
+
+import { useEffect, useState } from "react";
+import { customFetch } from "../../utils";
+import { toast } from "react-toastify";
+
+const AdminCustomers = () => {
+  const [customers, setCustomers] = useState([]);
+  const [limit, setLimit] = useState({
+    lower: 0,
+    upper: 10
+  });
+  const [loading, setLoading] = useState(false);
+  const allCustomers = async () => {
+    try {
+      const reponse = await customFetch.get("/customer");
+      const data = await reponse.data;
+      setCustomers(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    setLoading(true);
+    allCustomers();
+    setLoading(false);
+  }, []);
+  if (loading) {
+    return <h1>Loading</h1>;
+  }
+  return (
+    <div className="mt-8">
+      <h4 className="capitalize mb-4">total customers : {customers.length}</h4>
+      <div className="overflow-x-auto">
+        <table className="table table-zebra">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Phone Number</th>
+              <th className="hidden sm:block">Pincode</th>
+            </tr>
+          </thead>
+          <tbody>
+            {customers.slice(limit.lower, limit.upper)?.map((cust) => {
+              const id = cust.customer_id;
+              const { name, address, phone_number, email, pincode } = cust;
+              return (
+                <tr key={id}>
+                  <td>{name}</td>
+                  <td>{email}</td>
+                  <td>{address.substring(0, 30)}</td>
+                  <td>{phone_number}</td>
+                  <td className="hidden sm:block">{pincode}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <button
+          className="btn-sm rounded outline mt-4 disabled:opacity-25 mr-3"
+          disabled={limit.lower === 0 ? true : false}
+          onClick={() => {
+            setLimit({
+              lower: limit.lower - 10,
+              upper: limit.upper - 10
+            });
+          }}
+        >
+          Back
+        </button>
+        <button
+          className="btn-sm rounded outline mt-4 disabled:opacity-25"
+          disabled={limit.upper >= customers.length ? true : false}
+          onClick={() => {
+            if (limit.upper >= customers.length) {
+              return toast.warn("No More Customers");
+            }
+            setLimit({
+              lower: limit.lower + 10,
+              upper: limit.upper + 10
+            });
+          }}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default AdminCustomers;

@@ -257,7 +257,7 @@ END CATCH
 GO
 
 -- =====================================================
--- SECTION 2: DATABASE REBUILDER
+-- SECTION 2: DATABASE REBUILDER (REFINED WITH AUDIT FIELDS)
 -- =====================================================
 PRINT '';
 PRINT '🔨 INITIALIZING DATABASE REBUILDER...';
@@ -274,7 +274,9 @@ BEGIN TRY
     IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Cart' AND xtype='U')
     BEGIN
         CREATE TABLE Cart (
-            cart_id VARCHAR(7) PRIMARY KEY
+            cart_id VARCHAR(7) PRIMARY KEY,
+            created_on DATETIME NULL DEFAULT(GETDATE()),
+            isactive BIT NULL DEFAULT(1)
         );
         PRINT '✓ Cart table created successfully.';
     END
@@ -296,6 +298,8 @@ BEGIN TRY
             phone_number NVARCHAR(15) NOT NULL,
             cart_id VARCHAR(7) NOT NULL,
             role NVARCHAR(10) DEFAULT 'user',
+            created_on DATETIME NULL DEFAULT(GETDATE()),
+            isactive BIT NULL DEFAULT(1),
             FOREIGN KEY (cart_id) REFERENCES Cart(cart_id)
         );
         PRINT '✓ Customer table created successfully.';
@@ -317,7 +321,9 @@ BEGIN TRY
             gender CHAR(1),
             cost INT,
             quantity INT,
-            image NVARCHAR(MAX)
+            image NVARCHAR(MAX),
+            created_on DATETIME NULL DEFAULT(GETDATE()),
+            isactive BIT NULL DEFAULT(1)
         );
         PRINT '✓ Product table created successfully.';
     END
@@ -335,6 +341,8 @@ BEGIN TRY
             cart_quantity INT NOT NULL,
             date_added DATE NOT NULL,
             purchased NVARCHAR(10) DEFAULT 'NO',
+            created_on DATETIME NULL DEFAULT(GETDATE()),
+            isactive BIT NULL DEFAULT(1),
             PRIMARY KEY (cart_id, product_id),
             FOREIGN KEY (cart_id) REFERENCES Cart(cart_id),
             FOREIGN KEY (product_id) REFERENCES Product(product_id)
@@ -356,6 +364,8 @@ BEGIN TRY
             customer_id VARCHAR(7),
             cart_id VARCHAR(7),
             total_amount INT,
+            created_on DATETIME NULL DEFAULT(GETDATE()),
+            isactive BIT NULL DEFAULT(1),
             FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
             FOREIGN KEY (cart_id) REFERENCES Cart(cart_id)
         );

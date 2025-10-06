@@ -1,13 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { AppProvider } from './context';
+// File name: main
+// File name with extension: main.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\main.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { AppProvider } from "./context";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AppProvider>
       <App />
     </AppProvider>
   </React.StrictMode>
-)
+);

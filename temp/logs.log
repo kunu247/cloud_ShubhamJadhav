@@ -30,3 +30,43 @@
   "phone_number": "7876114545",
   "role": "guest"
 }
+
+{
+    "success": true,
+    "msg": "User registered successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJDYlBtNmciLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTk2ODAzMTgsImV4cCI6MTc1OTY4MzkxOH0.3-5lX1XcpmoLPRw7pcoiM6AatbXMhaJks4JS-Fw6MW4",
+    "data": {
+        "customer_id": "CbPm6g",
+        "cart_id": "y605p4",
+        "email": "arya776.dev@devcorner.co.in",
+        "name": "Arya Mhatre",
+        "role": "admin",
+        "password_debug": "secret@0099",
+        "password_hash_preview": "$2b$10$ktC/Vp/O..."
+    }
+}
+
+
+# Comprehensive route analysis
+npm run routes
+
+# Minimal route listing
+npm run routes:list
+
+# Tree view of routes
+npm run routes:tree
+
+# Route statistics
+npm run routes:stats
+
+# Generate API documentation
+npm run routes:doc
+
+# Export routes to JSON
+npm run routes:export
+
+# Health check routes
+npm run routes:health
+
+# Test all API endpoints
+npm run test:routes

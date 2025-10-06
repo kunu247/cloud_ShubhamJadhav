@@ -36,9 +36,11 @@ exports.createCartItem = asyncHandler(async (req, res) => {
 exports.getSingleCart = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const data = await getSingleCartItemSql(id);
-  if (data.length === 0)
-    return res.status(404).json({ success: false, msg: "Cart not found" });
-  res.status(200).json({ success: true, data });
+  if (!data || data.length === 0)
+    return res
+      .status(200)
+      .json({ success: true, msg: "Your cart is empty.", data: [] });
+  // res.status(200).json({ success: true, data });
 });
 
 exports.updateCart = asyncHandler(async (req, res) => {

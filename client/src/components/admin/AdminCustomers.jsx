@@ -3,7 +3,7 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\admin\AdminCustomers.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\admin
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { customFetch } from "../../utils";
 import { toast } from "react-toastify";
 

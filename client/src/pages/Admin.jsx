@@ -1,55 +1,111 @@
-import React, { useEffect } from 'react'
-import { useGlobalContext } from '../context';
-import { toast } from 'react-toastify';
-import {  Link, NavLink, Outlet, useNavigate} from 'react-router-dom';
+import { useEffect } from "react";
+import { useGlobalContext } from "../context";
+import { toast } from "react-toastify";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { BiSolidDashboard } from "react-icons/bi";
 import { LuUsers } from "react-icons/lu";
 import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
 
-
-
-
-
 const Admin = () => {
-  const {customer} = useGlobalContext();
-    const custLocal = JSON.parse(localStorage.getItem('customer')) || null ;
+  const { customer } = useGlobalContext();
   const navigate = useNavigate();
-  useEffect(()=>{
-    if(!custLocal){
-      navigate('/');
-      toast.error("Login to Site")
-    }
-    if(custLocal.role === "user"){
-      navigate('/');
-      toast.error("Not Authorized to access Admin Panel")
-    }
-  },[])
 
+  useEffect(() => {
+    try {
+      const custLocal = JSON.parse(localStorage.getItem("customer")) || null;
+
+      if (!custLocal) {
+        toast.error("Please login to access Admin Panel");
+        navigate("/");
+        return;
+      }
+
+      if (custLocal.role !== "admin") {
+        toast.error("Not authorized to access Admin Panel");
+        navigate("/");
+        return;
+      }
+    } catch (err) {
+      console.error("Admin Auth Error:", err);
+      toast.error("Session error. Please log in again.");
+      localStorage.removeItem("customer");
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
-    <div className="flex  bg-gray-100">
-      <div className="flex-shrink-0 w-64 bg-base-300 ">
-        {/* Sidebar */}
-        <div className="h-full py-4 flex flex-col ">
-          {/* Logo */}
-          <div className="px-4">
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+      <aside className="flex-shrink-0 w-64 bg-base-300 shadow-lg">
+        <div className="h-full py-6 flex flex-col">
+          <div className="px-4 mb-4">
             <h1 className="text-white text-2xl font-bold">Admin Panel</h1>
           </div>
+
           {/* Navigation */}
-          <nav className="mt-0">
-            <NavLink to='/admin' className=" px-4 py-2 text-white focus:bg-gray-700 flex items-center gap-x-3"><BiSolidDashboard />Dashboard</NavLink>
-            <NavLink to='/admin/customer' className=" px-4 py-2 text-white focus:bg-gray-700 flex items-center gap-x-3 "  ><LuUsers />Customers</NavLink>
-            <NavLink to='/admin/product' className=" px-4 py-2 text-white focus:bg-gray-700 flex items-center gap-x-3 " ><FaShoppingCart /> Products</NavLink>
-            <NavLink to='/admin/order' className=" px-4 py-2 text-white focus:bg-gray-700 flex items-center gap-x-3 "  ><FaShoppingBag /> Orders</NavLink>
+          <nav className="flex flex-col space-y-2">
+            <NavLink
+              to="/admin"
+              end
+              className={({ isActive }) =>
+                `px-4 py-2 flex items-center gap-3 rounded-md ${
+                  isActive
+                    ? "bg-primary text-white"
+                    : "text-white hover:bg-gray-700"
+                }`
+              }
+            >
+              <BiSolidDashboard /> Dashboard
+            </NavLink>
+
+            <NavLink
+              to="/admin/customer"
+              className={({ isActive }) =>
+                `px-4 py-2 flex items-center gap-3 rounded-md ${
+                  isActive
+                    ? "bg-primary text-white"
+                    : "text-white hover:bg-gray-700"
+                }`
+              }
+            >
+              <LuUsers /> Customers
+            </NavLink>
+
+            <NavLink
+              to="/admin/product"
+              className={({ isActive }) =>
+                `px-4 py-2 flex items-center gap-3 rounded-md ${
+                  isActive
+                    ? "bg-primary text-white"
+                    : "text-white hover:bg-gray-700"
+                }`
+              }
+            >
+              <FaShoppingCart /> Products
+            </NavLink>
+
+            <NavLink
+              to="/admin/order"
+              className={({ isActive }) =>
+                `px-4 py-2 flex items-center gap-3 rounded-md ${
+                  isActive
+                    ? "bg-primary text-white"
+                    : "text-white hover:bg-gray-700"
+                }`
+              }
+            >
+              <FaShoppingBag /> Orders
+            </NavLink>
           </nav>
         </div>
-      </div>
-      <div className="flex-1 p-6 overflow-y-auto  bg-neutral  text-neutral-content">
-        {/* Content */}
-        <Outlet />
-      </div>
-    </div>
-  )
-}
+      </aside>
 
-export default Admin
+      {/* Main Content */}
+      <main className="flex-1 p-6 overflow-y-auto bg-neutral text-neutral-content">
+        <Outlet />
+      </main>
+    </div>
+  );
+};
+
+export default Admin;
