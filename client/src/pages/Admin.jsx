@@ -1,3 +1,8 @@
+// File name: Admin
+// File name with extension: Admin.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\pages\Admin.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src\pages
+
 import { useEffect } from "react";
 import { useGlobalContext } from "../context";
 import { toast } from "react-toastify";

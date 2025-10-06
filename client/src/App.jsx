@@ -73,27 +73,15 @@ function App() {
           path: "/admin",
           element: <Admin />,
           children: [
+            { index: true, element: <Dashboard /> },
+            { path: "customer", element: <AdminCustomers /> },
             {
-              index: true,
-              element: <Dashboard />
-            },
-            {
-              path: "/admin/customer",
-              element: <AdminCustomers />
-            },
-            {
-              path: "/admin/product",
+              path: "product",
               element: <AdminProducts />,
               loader: productLoader
             },
-            {
-              path: "/admin/product/:id",
-              element: <AdminSingleProduct />
-            },
-            {
-              path: "/admin/order",
-              element: <AdminOrders />
-            }
+            { path: "product/:id", element: <AdminSingleProduct /> },
+            { path: "order", element: <AdminOrders /> }
           ]
         }
       ]

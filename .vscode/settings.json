@@ -1,4 +1,11 @@
 {
     "postman.settings.dotenv-detection-notification-visibility": false,
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "files.exclude": {
+        "node_modules": true,
+        "dist": true
+    },
+    "debug.allowBreakpointsEverywhere": true,
+    "editor.formatOnSave": true,
+    "terminal.integrated.defaultProfile.windows": "Windows PowerShell"
 }
