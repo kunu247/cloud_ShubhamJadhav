@@ -1,0 +1,490 @@
+{
+  "title": "API Route Documentation",
+  "version": "1.0.0",
+  "generated": "2025-10-07T10:07:51.637Z",
+  "baseURL": "http://localhost:8065",
+  "description": "Auto-generated API documentation from route definitions",
+  "endpoints": [
+    {
+      "method": "ACL",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "ACL operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "BIND",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "BIND operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "CHECKOUT",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "CHECKOUT operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "CONNECT",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "CONNECT operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "COPY",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "COPY operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "DELETE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "Remove *",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "Retrieve * data",
+      "parameters": []
+    },
+    {
+      "method": "HEAD",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "HEAD operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "LINK",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "LINK operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "LOCK",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "LOCK operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "M-SEARCH",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "M-SEARCH operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "MERGE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "MERGE operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "MKACTIVITY",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "MKACTIVITY operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "MKCALENDAR",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "MKCALENDAR operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "MKCOL",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "MKCOL operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "MOVE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "MOVE operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "NOTIFY",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "NOTIFY operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "OPTIONS operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "PATCH",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "Partially update *",
+      "parameters": []
+    },
+    {
+      "method": "POST",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "Create new *",
+      "parameters": []
+    },
+    {
+      "method": "PROPFIND",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "PROPFIND operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "PROPPATCH",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "PROPPATCH operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "PURGE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "PURGE operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "PUT",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "Update entire *",
+      "parameters": []
+    },
+    {
+      "method": "QUERY",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "QUERY operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "REBIND",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "REBIND operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "REPORT",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "REPORT operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "SEARCH",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "SEARCH operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "SOURCE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "SOURCE operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "SUBSCRIBE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "SUBSCRIBE operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "TRACE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "TRACE operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "UNBIND",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "UNBIND operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "UNLINK",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "UNLINK operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "UNLOCK",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "UNLOCK operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "UNSUBSCRIBE",
+      "path": "/*",
+      "fullPath": "http://localhost:8065/*",
+      "prefix": "/",
+      "description": "UNSUBSCRIBE operation on /*",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "fullPath": "http://localhost:8065/api/health",
+      "prefix": "/",
+      "description": "Retrieve health data",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "fullPath": "http://localhost:8065/api/v1/cart",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": []
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/cart",
+      "fullPath": "http://localhost:8065/api/v1/cart",
+      "prefix": "/api/v1",
+      "description": "Create new v1",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart/:id",
+      "fullPath": "http://localhost:8065/api/v1/cart/:id",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "URL parameter: id"
+        }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/cart/:id",
+      "fullPath": "http://localhost:8065/api/v1/cart/:id",
+      "prefix": "/api/v1",
+      "description": "Partially update v1",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "URL parameter: id"
+        }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/cart/delete/:id",
+      "fullPath": "http://localhost:8065/api/v1/cart/delete/:id",
+      "prefix": "/api/v1",
+      "description": "Partially update v1",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "URL parameter: id"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/customer",
+      "fullPath": "http://localhost:8065/api/v1/customer",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/customer/admin",
+      "fullPath": "http://localhost:8065/api/v1/customer/admin",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": []
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/customer/login",
+      "fullPath": "http://localhost:8065/api/v1/customer/login",
+      "prefix": "/api/v1",
+      "description": "Create new v1",
+      "parameters": []
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/customer/register",
+      "fullPath": "http://localhost:8065/api/v1/customer/register",
+      "prefix": "/api/v1",
+      "description": "Create new v1",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/payment",
+      "fullPath": "http://localhost:8065/api/v1/payment",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": []
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/payment",
+      "fullPath": "http://localhost:8065/api/v1/payment",
+      "prefix": "/api/v1",
+      "description": "Create new v1",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/payment/:id",
+      "fullPath": "http://localhost:8065/api/v1/payment/:id",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "URL parameter: id"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/products",
+      "fullPath": "http://localhost:8065/api/v1/products",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": []
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/products",
+      "fullPath": "http://localhost:8065/api/v1/products",
+      "prefix": "/api/v1",
+      "description": "Create new v1",
+      "parameters": []
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/products/:id",
+      "fullPath": "http://localhost:8065/api/v1/products/:id",
+      "prefix": "/api/v1",
+      "description": "Retrieve v1 data",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "URL parameter: id"
+        }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/products/:id",
+      "fullPath": "http://localhost:8065/api/v1/products/:id",
+      "prefix": "/api/v1",
+      "description": "Partially update v1",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "URL parameter: id"
+        }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/products/:id",
+      "fullPath": "http://localhost:8065/api/v1/products/:id",
+      "prefix": "/api/v1",
+      "description": "Remove v1",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "URL parameter: id"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/products/uploads",
+      "fullPath": "http://localhost:8065/api/v1/products/uploads",
+      "prefix": "/api/v1",
+      "description": "Create new v1",
+      "parameters": []
+    }
+  ]
+}

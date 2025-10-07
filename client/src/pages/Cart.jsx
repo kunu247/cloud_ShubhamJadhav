@@ -14,8 +14,16 @@ const Cart = () => {
   const { cart, customer, fetchCart, price } = useGlobalContext();
   const [type, setType] = useState("");
 
+  /*  Fetch cart on mount
   useEffect(() => {
     fetchCart();
+  }, []);
+  */
+
+  useEffect(() => {
+    fetchCart().then((data) => {
+      console.log("🧾 Cart after fetch:", data);
+    });
   }, []);
 
   const handleType = (e) => {

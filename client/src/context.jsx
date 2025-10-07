@@ -14,7 +14,9 @@ const AppContext = React.createContext();
 const safeExec = async (
   label,
   fn,
-  { showToast = true, fallback = null } = {}
+  {
+    showToast = true,
+    fallback = null } = {}
 ) => {
   try {
     const result = await fn();
@@ -90,32 +92,57 @@ const AppProvider = ({ children }) => {
     }
   }, []);
 
-  /* ✅ Fetch Cart with defensive logic */
+  /* ✅ Fetch Cart with full inspection + smart normalization */
   const fetchCart = async (showToast = true) => {
     if (!customer?.cart_id) {
       if (showToast) toast.info("Please log in to view your cart.");
       setCart([]);
-      return;
+      return [];
     }
 
     const result = await safeExec(
       "Cart Fetch",
       async () => {
         const res = await customFetch.get(`cart/${customer.cart_id}`);
-        const data = res?.data;
-        if (!data?.success || !Array.isArray(data.data)) {
-          if (showToast) toast.warn(data?.msg || "Unable to load cart");
+        const raw = res?.data;
+
+        // 🔍 Debug raw response once (prints in dev console)
+        console.groupCollapsed("🧩 Cart API Raw Response");
+        console.log(raw);
+        console.groupEnd();
+
+        // ✅ Try to interpret any common response shape
+        const cartItems =
+          (Array.isArray(raw) && raw) ||
+          (Array.isArray(raw?.data) && raw.data) ||
+          (Array.isArray(raw?.recordset) && raw.recordset) ||
+          (Array.isArray(raw?.data?.data) && raw.data.data) ||
+          [];
+
+        if (!Array.isArray(cartItems) || cartItems.length === 0) {
+          if (showToast) toast.info("Your cart is empty.");
           setCart([]);
           return [];
         }
 
-        if (data.data.length === 0) {
-          if (showToast) toast.info(data?.msg || "Your cart is empty.");
-          setCart([]);
-          return [];
-        }
-        setCart(data.data);
-        return data.data;
+        // ✅ Normalize for consistent frontend rendering
+        const normalized = cartItems.map((item) => ({
+          product_name: item.product_name ?? "Unknown Product",
+          product_company: item.product_company ?? "Unknown Brand",
+          product_id: item.product_id ?? "N/A",
+          cart_quantity: Number(item.cart_quantity) || 0,
+          cost: Number(item.cost) || 0,
+          color: item.color || "N/A",
+          image: item.image?.startsWith("http")
+            ? item.image
+            : `${
+                import.meta.env.VITE_API_URL || "http://localhost:8065"
+              }/uploads/${item.image || "placeholder.jpg"}`,
+          cart_id: item.cart_id ?? customer.cart_id
+        }));
+
+        setCart(normalized);
+        return normalized;
       },
       { showToast, fallback: [] }
     );
