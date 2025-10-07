@@ -414,3 +414,356 @@ PRINT '✨ SCRIPT EXECUTION COMPLETED ✨';
 PRINT 'FootwareApp_Dev database is now clean and rebuilt.';
 PRINT 'Ready for development use.';
 GO
+
+USE FootwareApp_Dev;
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='AuditLog' AND xtype='U')
+BEGIN
+    CREATE TABLE AuditLog (
+        audit_guid UNIQUEIDENTIFIER NOT NULL 
+            DEFAULT NEWSEQUENTIALID() PRIMARY KEY,  -- Globally unique, faster than NEWID()
+
+        flag CHAR(3) NOT NULL CHECK (flag IN ('INS', 'UPD', 'DEL', 'SI', 'SO', 'ERR')), 
+            -- INS = Insert, UPD = Update, DEL = Delete, 
+            -- SI = Sign In (Login), SO = Sign Out (Logout), ERR = Error
+
+        event_type NVARCHAR(50) NOT NULL,           -- optional human-readable label like 'USER_REGISTER'
+        table_name NVARCHAR(100) NULL,              -- which table or module was affected
+        record_key NVARCHAR(100) NULL,              -- e.g., product_id, customer_id
+        action_by NVARCHAR(100) NULL,               -- user or system actor
+        action_details NVARCHAR(MAX) NULL,          -- JSON or description of what happened
+        status_ NVARCHAR(20) NULL DEFAULT('SUCCESS'),-- SUCCESS / FAILED
+        created_on DATETIME DEFAULT(GETDATE()),     -- time of logging
+        isactive BIT DEFAULT(1),
+
+        -- ✅ Computed column: gives a readable one-liner summary for quick viewing
+        summary AS 
+            CONCAT(flag, ' | ', ISNULL(table_name, ''), ' | ', ISNULL(record_key, ''), ' | ', ISNULL(status_, ''))
+    );
+
+    PRINT '✓ Table [AuditLog] created successfully with GUID key, computed column, and flag.';
+END
+ELSE
+BEGIN
+    PRINT '✓ Table [AuditLog] already exists.';
+END
+GO
+
+IF OBJECT_ID('dbo.usp_AddLog2Audit', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.usp_AddLog2Audit;
+GO
+
+CREATE PROCEDURE dbo.usp_AddLog2Audit
+    @flag CHAR(3),
+    @event_type NVARCHAR(50),
+    @table_name NVARCHAR(100) = NULL,
+    @record_key NVARCHAR(100) = NULL,
+    @action_by NVARCHAR(100) = NULL,
+    @action_details NVARCHAR(MAX) = NULL,
+    @status NVARCHAR(20) = 'SUCCESS'
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        -- Validation: ensure flag is valid
+        IF (@flag NOT IN ('INS', 'UPD', 'DEL', 'SI', 'SO', 'ERR'))
+        BEGIN
+            RAISERROR('Invalid flag provided. Use INS, UPD, DEL, SI, SO, or ERR.', 16, 1);
+            RETURN;
+        END
+
+        INSERT INTO AuditLog (
+            flag,
+            event_type,
+            table_name,
+            record_key,
+            action_by,
+            action_details,
+            status_
+        )
+        VALUES (
+            @flag,
+            @event_type,
+            @table_name,
+            @record_key,
+            @action_by,
+            @action_details,
+            @status
+        );
+
+        PRINT '✓ Log entry successfully inserted into AuditLog.';
+    END TRY
+
+    BEGIN CATCH
+        DECLARE @ErrMsg NVARCHAR(4000), @ErrSeverity INT;
+        SELECT @ErrMsg = ERROR_MESSAGE(), @ErrSeverity = ERROR_SEVERITY();
+
+        -- Log the failure into AuditLog itself
+        INSERT INTO AuditLog (
+            flag,
+            event_type,
+            table_name,
+            action_by,
+            action_details,
+            status_
+        )
+        VALUES (
+            'ERR',
+            'AuditLogFailure',
+            'AuditLog',
+            'SYSTEM',
+            CONCAT('Failed to insert audit log: ', @ErrMsg),
+            'FAILED'
+        );
+
+        RAISERROR(@ErrMsg, @ErrSeverity, 1);
+    END CATCH;
+END
+GO
+
+-- ----------------------------------------------------------------------------------------------------------
+USE FootwareApp_Dev;
+GO
+
+-- ================================================
+-- 🔐 AUTO AUDIT TRIGGERS (FIXED & OPTIMIZED)
+-- Description: Tracks DML changes for core tables
+-- Excludes: AuditLog
+-- ================================================
+
+
+-- =====================================================
+-- TRIGGER: Cart
+-- =====================================================
+IF OBJECT_ID('tr_Cart_Audit', 'TR') IS NOT NULL
+    DROP TRIGGER tr_Cart_Audit;
+GO
+
+CREATE TRIGGER tr_Cart_Audit
+ON dbo.Cart
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Action CHAR(3),
+            @cart_id VARCHAR(7);
+
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @Action = 'UPD';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @Action = 'INS';
+    ELSE
+        SET @Action = 'DEL';
+
+    SELECT TOP 1 
+        @cart_id = COALESCE((SELECT TOP 1 cart_id FROM inserted), (SELECT TOP 1 cart_id FROM deleted));
+
+    EXEC dbo.usp_AddLog2Audit
+        @flag = @Action,
+        @event_type = 'Cart Change',
+        @table_name = 'Cart',
+        @record_key = @cart_id,
+        @action_by = 'ServerAdmin',
+        @action_details = 'Cart record changed via DML trigger',
+        @status = 'SUCCESS';
+END
+GO
+
+
+-- =====================================================
+-- TRIGGER: Customer
+-- =====================================================
+IF OBJECT_ID('tr_Customer_Audit', 'TR') IS NOT NULL
+    DROP TRIGGER tr_Customer_Audit;
+GO
+
+CREATE TRIGGER tr_Customer_Audit
+ON dbo.Customer
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Action CHAR(3),
+            @customer_id VARCHAR(7),
+            @details NVARCHAR(MAX);
+
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @Action = 'UPD';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @Action = 'INS';
+    ELSE
+        SET @Action = 'DEL';
+
+    SELECT TOP 1 
+        @customer_id = COALESCE((SELECT TOP 1 customer_id FROM inserted), (SELECT TOP 1 customer_id FROM deleted));
+
+    SET @details =
+        CASE 
+            WHEN @Action = 'INS' THEN 'Customer record inserted.'
+            WHEN @Action = 'UPD' THEN 'Customer record updated.'
+            WHEN @Action = 'DEL' THEN 'Customer record deleted.'
+        END;
+
+    EXEC dbo.usp_AddLog2Audit
+        @flag = @Action,
+        @event_type = 'Customer Change',
+        @table_name = 'Customer',
+        @record_key = @customer_id,
+        @action_by = 'ServerAdmin',
+        @action_details = @details,
+        @status = 'SUCCESS';
+END
+GO
+
+
+-- =====================================================
+-- TRIGGER: Product
+-- =====================================================
+IF OBJECT_ID('tr_Product_Audit', 'TR') IS NOT NULL
+    DROP TRIGGER tr_Product_Audit;
+GO
+
+CREATE TRIGGER tr_Product_Audit
+ON dbo.Product
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Action CHAR(3),
+            @product_id VARCHAR(10),
+            @details NVARCHAR(MAX);
+
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @Action = 'UPD';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @Action = 'INS';
+    ELSE
+        SET @Action = 'DEL';
+
+    SELECT TOP 1 
+        @product_id = COALESCE((SELECT TOP 1 product_id FROM inserted), (SELECT TOP 1 product_id FROM deleted));
+
+    SET @details =
+        CASE 
+            WHEN @Action = 'INS' THEN 'Product added to catalog.'
+            WHEN @Action = 'UPD' THEN 'Product details updated.'
+            WHEN @Action = 'DEL' THEN 'Product removed from catalog.'
+        END;
+
+    EXEC dbo.usp_AddLog2Audit
+        @flag = @Action,
+        @event_type = 'Product Change',
+        @table_name = 'Product',
+        @record_key = @product_id,
+        @action_by = 'ServerAdmin',
+        @action_details = @details,
+        @status = 'SUCCESS';
+END
+GO
+
+
+-- =====================================================
+-- TRIGGER: Cart_item
+-- =====================================================
+IF OBJECT_ID('tr_Cart_item_Audit', 'TR') IS NOT NULL
+    DROP TRIGGER tr_Cart_item_Audit;
+GO
+
+CREATE TRIGGER tr_Cart_item_Audit
+ON dbo.Cart_item
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Action CHAR(3),
+            @cart_id VARCHAR(7),
+            @product_id VARCHAR(10),
+            @details NVARCHAR(MAX),
+            @record_key_ NVARCHAR(100);
+
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @Action = 'UPD';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @Action = 'INS';
+    ELSE
+        SET @Action = 'DEL';
+
+    -- Assign identifiers safely using separate SELECTs
+    SELECT TOP 1 @cart_id = cart_id FROM inserted;
+    IF @cart_id IS NULL SELECT TOP 1 @cart_id = cart_id FROM deleted;
+
+    SELECT TOP 1 @product_id = product_id FROM inserted;
+    IF @product_id IS NULL SELECT TOP 1 @product_id = product_id FROM deleted;
+
+    SET @record_key_ = COALESCE(@cart_id, '') + '-' + COALESCE(@product_id, '');
+
+    SET @details =
+        CASE 
+            WHEN @Action = 'INS' THEN 'Product added to cart.'
+            WHEN @Action = 'UPD' THEN 'Cart item quantity updated.'
+            WHEN @Action = 'DEL' THEN 'Product removed from cart.'
+        END;
+
+    EXEC dbo.usp_AddLog2Audit
+        @flag = @Action,
+        @event_type = 'Cart Item Change',
+        @table_name = 'Cart_item',
+        @record_key = @record_key_,
+        @action_by = 'ServerAdmin',
+        @action_details = @details,
+        @status = 'SUCCESS';
+END
+GO
+
+
+-- =====================================================
+-- TRIGGER: Payment
+-- =====================================================
+IF OBJECT_ID('tr_Payment_Audit', 'TR') IS NOT NULL
+    DROP TRIGGER tr_Payment_Audit;
+GO
+
+CREATE TRIGGER tr_Payment_Audit
+ON dbo.Payment
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Action CHAR(3),
+            @payment_id VARCHAR(10),
+            @details NVARCHAR(MAX);
+
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @Action = 'UPD';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @Action = 'INS';
+    ELSE
+        SET @Action = 'DEL';
+
+    SELECT TOP 1 
+        @payment_id = COALESCE((SELECT TOP 1 payment_id FROM inserted), (SELECT TOP 1 payment_id FROM deleted));
+
+    SET @details =
+        CASE 
+            WHEN @Action = 'INS' THEN 'New payment record created.'
+            WHEN @Action = 'UPD' THEN 'Payment record updated.'
+            WHEN @Action = 'DEL' THEN 'Payment record deleted.'
+        END;
+
+    EXEC dbo.usp_AddLog2Audit
+        @flag = @Action,
+        @event_type = 'Payment Change',
+        @table_name = 'Payment',
+        @record_key = @payment_id,
+        @action_by = 'ServerAdmin',
+        @action_details = @details,
+        @status = 'SUCCESS';
+END
+GO
