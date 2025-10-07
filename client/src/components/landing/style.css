@@ -1,3 +1,9 @@
+/*
+  File name: style
+  File name with extension: style.css
+  Full path: E:\cloud_ShubhamJadhav\client\src\components\landing\style.css
+  Directory: E:\cloud_ShubhamJadhav\client\src\components\landing
+*/
 :root {
 
   /**
@@ -20,7 +26,7 @@
 }
 
 .h1 {
-  color:  hsl(217, 28%, 9%);
+  color: hsl(217, 28%, 9%);
 }
 
 .service-list {
@@ -31,7 +37,9 @@
   padding-inline: 30px;
 }
 
-.service-item { width: 275px; }
+.service-item {
+  width: 275px;
+}
 
 .service-card {
   display: flex;
@@ -74,8 +82,10 @@
 /* Footer */
 
 
-.footer { font-family: var(--ff-roboto); 
-color: hsl(0, 0%, 100%);}
+.footer {
+  font-family: var(--ff-roboto);
+  color: hsl(0, 0%, 100%);
+}
 
 /* .footer-top { background: var(--cultured); } */
 
@@ -85,7 +95,9 @@ color: hsl(0, 0%, 100%);}
   margin-bottom: 50px;
 }
 
-.footer-brand .logo { margin-bottom: 15px; }
+.footer-brand .logo {
+  margin-bottom: 15px;
+}
 
 .social-list {
   display: flex;
@@ -128,16 +140,23 @@ color: hsl(0, 0%, 100%);}
   transition: var(--transition-1);
 }
 
-a.footer-link:is(:hover, :focus) { color: var(--bittersweet); }
+a.footer-link:is(:hover, :focus) {
+  color: var(--bittersweet);
+}
 
-.footer-link-text { flex: 1; }
+.footer-link-text {
+  flex: 1;
+}
 
-.footer-list:not(:last-child) { margin-bottom: 30px; }
+.footer-list:not(:last-child) {
+  margin-bottom: 30px;
+}
 
 .footer-list:first-child ion-icon {
   color: var(--bittersweet);
   font-size: 22px;
 }
+
 .footer-link-box {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
@@ -164,7 +183,8 @@ a.footer-link:is(:hover, :focus) { color: var(--bittersweet); }
   margin-bottom: 20px;
 }
 
-.newsletter-form { position: relative; 
+.newsletter-form {
+  position: relative;
   margin-right: 20px;
 }
 

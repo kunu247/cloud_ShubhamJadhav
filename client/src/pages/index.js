@@ -1,3 +1,8 @@
+// File name: index
+// File name with extension: index.js
+// Full path: E:\cloud_ShubhamJadhav\client\src\pages\index.js
+// Directory: E:\cloud_ShubhamJadhav\client\src\pages
+
 export { default as Cart } from "./Cart";
 export { default as Checkout } from "./Checkout";
 export { default as Error } from "./Error";

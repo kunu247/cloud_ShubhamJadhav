@@ -1,3 +1,8 @@
+// File name: Featured
+// File name with extension: Featured.jsx
+// Full path: E:\cloud_ShubhamJadhav\client\src\components\landing\Featured.jsx
+// Directory: E:\cloud_ShubhamJadhav\client\src\components\landing
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { customFetch, formatPrice } from "../../utils";
