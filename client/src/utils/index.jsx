@@ -4,22 +4,25 @@
 // Directory: E:\cloud_ShubhamJadhav\client\src\utils
 
 import axios from "axios";
-
-// const productionUrl = 'https://strapi-store-server.onrender.com/api';
-const baseURL = import.meta.env.VITE_API_BASE_URL || "/api/v1";
+import { App_Config, getApiUrl } from "../../../shared/globalConfig";
 
 export const customFetch = axios.create({
-  baseURL,
-  headers: { "Content-Type": "application/json" }
+  baseURL: App_Config.API_URL,
+  headers: {
+    "Content-Type": "application/json"
+  }
 });
 
-export const formatPrice = (price) => {
-  const dollarsAmount = new Intl.NumberFormat("en-US", {
+export const getImageUrl = (imgFile) =>
+  imgFile?.startsWith("http")
+    ? imgFile
+    : `${App_Config.UPLOAD_URL}/${imgFile || "placeholder.jpg"}`;
+
+export const formatPrice = (price) =>
+  new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR"
   }).format((price / 100).toFixed(2));
-  return dollarsAmount;
-};
 
 export const generateAmountOptions = (number) => {
   return Array.from({ length: number }, (_, index) => {
@@ -32,3 +35,5 @@ export const generateAmountOptions = (number) => {
     );
   });
 };
+
+export { App_Config as _CONFIG_, getApiUrl as GET_URL };

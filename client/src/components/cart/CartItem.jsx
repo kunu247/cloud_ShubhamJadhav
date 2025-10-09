@@ -3,13 +3,41 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\cart\CartItem.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\cart
 
-import React, { useState } from "react";
+// File: CartItem.jsx
+// Path: E:\cloud_ShubhamJadhav\client\src\components\cart
+
+import React, { useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import { customFetch, formatPrice, generateAmountOptions } from "../../utils";
 import { useGlobalContext } from "../../context";
 import { toast } from "react-toastify";
-// import { formatPrice,generateAmountOptions } from '../utils'
 
-const CartItem = ({ cartItem }) => {
+/**
+ * ✅ Safe wrapper for API operations with centralized error handling
+ */
+const safeExec = async (label, fn, { onError } = {}) => {
+  try {
+    return await fn();
+  } catch (error) {
+    console.groupCollapsed(`❌ [${label}]`);
+    console.error(error);
+    console.groupEnd();
+
+    const msg =
+      error?.response?.data?.msg ||
+      error?.message ||
+      "Unexpected error occurred.";
+    toast.error(`${label}: ${msg}`);
+    if (onError) onError(error);
+    return null;
+  }
+};
+
+/**
+ * 💼 CartItem Component
+ * Renders a single product item in the user's shopping cart.
+ */
+const CartItem = React.memo(({ cartItem }) => {
   const { fetchCart, changeAmount, setChangeAmount } = useGlobalContext();
   const {
     product_id,
@@ -21,82 +49,121 @@ const CartItem = ({ cartItem }) => {
     color,
     cart_id
   } = cartItem;
+
   const [amount, setAmount] = useState(cart_quantity);
-  const removeItemFromTheCart = async (product) => {
-    try {
-      const response = await customFetch.patch(`/cart/delete/${cart_id}`, {
-        product_id: product_id
+
+  /**
+   * 🧹 Remove an item from the cart
+   */
+  const removeItemFromCart = useCallback(async () => {
+    await safeExec("Cart Delete", async () => {
+      await customFetch.patch(`/cart/delete/${cart_id}`, {
+        product_id
       });
-      const data = await response.data;
-      toast.success("Item Removed From Cart");
-      fetchCart();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const updateQuantity = async (amount, product) => {
-    try {
-      const response = await customFetch.patch(`/cart/${cart_id}`, {
-        cart_quantity: amount,
-        product_id: product
+      toast.success(`${product_name} removed from cart`);
+      await fetchCart();
+    });
+  }, [cart_id, product_id, product_name, fetchCart]);
+
+  /**
+   * 🔁 Update item quantity in cart
+   */
+  const updateQuantity = useCallback(
+    async (newAmount) => {
+      await safeExec("Cart Update", async () => {
+        await customFetch.patch(`/cart/${cart_id}`, {
+          cart_quantity: newAmount,
+          product_id
+        });
       });
-      const data = await response.data;
-    } catch (error) {
-      console.log(error);
-    }
+    },
+    [cart_id, product_id]
+  );
+
+  /**
+   * 🧮 Handle dropdown amount change
+   */
+  const handleAmountChange = async (e) => {
+    const newAmount = Number(e.target.value);
+    if (newAmount === amount) return;
+
+    setAmount(newAmount);
+    setChangeAmount(changeAmount + 1);
+    await updateQuantity(newAmount);
+    await fetchCart();
   };
 
-  const handleAmount = (e) => {
-    setChangeAmount(amount + 1);
-    setAmount(e.target.value);
-    updateQuantity(e.target.value, product_id);
-    fetchCart();
-  };
   return (
     <article className="mb-12 flex flex-col gap-y-4 sm:flex-row flex-wrap border-b border-base-300 pb-6 last:border-b-0">
+      {/* 🖼️ Product Image */}
       <img
         src={image}
         alt={product_name}
         className="h-24 w-24 rounded-lg sm:h-32 sm:w-32 object-cover"
+        loading="lazy"
       />
+
+      {/* 📦 Product Info */}
       <div className="sm:ml-16 sm:w-48">
         <h3 className="capitalize font-medium">{product_name}</h3>
         <h4 className="mt-2 capitalize text-sm text-neutral-content">
           {product_company}
         </h4>
         <p className="mt-4 capitalize text-sm flex items-center gap-x-2">
-          color :
+          Color:
           <span
             className="badge badge-sm"
             style={{ backgroundColor: color }}
+            title={color}
           ></span>
         </p>
       </div>
+
+      {/* 🧮 Quantity Control */}
       <div className="sm:ml-12">
         <div className="form-control max-w-xs">
-          <label htmlFor="amount" className="label p-0">
+          <label htmlFor={`amount-${product_id}`} className="label p-0">
             <span className="label-text">Amount</span>
           </label>
           <select
             name="amount"
-            id="amount"
+            id={`amount-${product_id}`}
             className="mt-2 select select-base select-bordered select-xs"
             value={amount}
-            onChange={handleAmount}
+            onChange={handleAmountChange}
           >
-            {generateAmountOptions(5 + 5)}
+            {generateAmountOptions(10)}
           </select>
         </div>
         <button
           className="mt-2 link link-primary link-hover text-sm"
-          onClick={() => removeItemFromTheCart(cartItem.product_id)}
+          onClick={removeItemFromCart}
         >
-          remove
+          Remove
         </button>
       </div>
-      <p className="font-medium sm:ml-auto">{formatPrice(cost)}</p>
+
+      {/* 💰 Price */}
+      <p className="font-medium sm:ml-auto text-primary">{formatPrice(cost)}</p>
     </article>
   );
-};
+});
+
+// Set display name for the component
+CartItem.displayName = "CartItem";
 
 export default CartItem;
+
+/* ✅ PropTypes validation */
+CartItem.propTypes = {
+  cartItem: PropTypes.shape({
+    product_id: PropTypes.string.isRequired,
+    product_name: PropTypes.string.isRequired,
+    cost: PropTypes.number.isRequired,
+    image: PropTypes.string,
+    cart_quantity: PropTypes.number.isRequired,
+    product_company: PropTypes.string,
+    color: PropTypes.string,
+    cart_id: PropTypes.string.isRequired
+  }).isRequired
+};
