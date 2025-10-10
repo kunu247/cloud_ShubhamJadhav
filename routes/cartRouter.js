@@ -11,18 +11,24 @@ const {
   getSingleCart,
   updateCart,
   deleteCartItem
-  /* createCart,
-  getCartById */
 } = require("../controllers/cartController");
 
-// create a cart (returns cart_id)
-// router.post("/", createCart);
+/**
+ * ✅ Cart Routes
+ * Order matters: check for query param first
+ */
 
-// optional: get cart record (metadata)
-// router.get("/:id/meta", getCartById);
+// Handle both /api/v1/cart?id= and /api/v1/cart/:id
+router.get("/", (req, res, next) => {
+  if (req.query.id) {
+    // If ?id= is provided, use the enriched JOIN query
+    return getSingleCart(req, res, next);
+  }
+  // Otherwise, return all carts
+  return getAllCartItems(req, res, next);
+});
 
-// cart item routes
-router.route("/").get(getAllCartItems).post(createCartItem);
+router.post("/", createCartItem);
 router.route("/:id").get(getSingleCart).patch(updateCart);
 router.route("/delete/:id").patch(deleteCartItem);
 

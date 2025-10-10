@@ -12,7 +12,7 @@ import { customFetch } from "../utils";
 
 const Cart = () => {
   const { cart, customer, fetchCart, price } = useGlobalContext();
-  const [type, setType] = useState("");
+  const [type, setType] = useState("default");
 
   /*  Fetch cart on mount
   useEffect(() => {
@@ -26,10 +26,13 @@ const Cart = () => {
     });
   }, []);
 
+  /*
   const handleType = (e) => {
     const val = e.target.value;
     if (val && val !== "default") setType(val);
   };
+  */
+  const handleType = (e) => setType(e.target.value);
 
   const createPayment = async (event) => {
     event.preventDefault();

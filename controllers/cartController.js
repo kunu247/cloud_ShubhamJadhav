@@ -14,10 +14,43 @@ const {
   getCartByIdSql */
 } = require("../model/cartModel");
 
+/**
+ * ✅ Get all cart items (admin/debug)
+ */
 exports.getAllCartItems = asyncHandler(async (req, res) => {
   const items = await getAllCartItemsSql();
-  res.status(200).json({ success: true, count: items.length, data: items });
+  return res.status(200).json({
+    success: true,
+    message: "All cart items retrieved successfully",
+    count: items.length,
+    data: items
+  });
 });
+
+// /**
+//  * ✅ Create a new cart item
+//  */
+// exports.createCartItem = asyncHandler(async (req, res) => {
+//   const { cart_quantity, cart_id, product_id, purchased } = req.body;
+//   if (!cart_id || !product_id || !cart_quantity) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Missing required fields"
+//     });
+//   }
+
+//   const result = await createCartItemsSql(
+//     cart_quantity,
+//     cart_id,
+//     product_id,
+//     purchased
+//   );
+//   return res.status(201).json({
+//     success: true,
+//     message: "Cart item added successfully",
+//     data: result
+//   });
+// });
 
 exports.createCartItem = asyncHandler(async (req, res) => {
   const { cart_quantity, cart_id, product_id, purchased } = req.body;
@@ -33,14 +66,37 @@ exports.createCartItem = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, msg: "Cart item added", data: result });
 });
 
+/**
+ * ✅ Get a single cart (enriched with product details)
+ */
 exports.getSingleCart = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const data = await getSingleCartItemSql(id);
-  if (!data || data.length === 0)
-    return res
-      .status(200)
-      .json({ success: true, msg: "Your cart is empty.", data: [] });
-  // res.status(200).json({ success: true, data });
+  const cartId = req.params.id || req.query.id;
+
+  if (!cartId) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing cart_id parameter"
+    });
+  }
+
+  const data = await getSingleCartItemSql(cartId);
+
+  if (!data || data.length === 0) {
+    return res.status(200).json({
+      success: true,
+      message: "Your cart is empty",
+      count: 0,
+      data: []
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Cart items retrieved successfully",
+    count: data.length,
+    cart_id: cartId,
+    data
+  });
 });
 
 exports.updateCart = asyncHandler(async (req, res) => {

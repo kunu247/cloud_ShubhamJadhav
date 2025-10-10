@@ -27,17 +27,27 @@ Q3jpDB	2025-10-06 12:52:09.690	1
 
 -- Fetching Cart Items with Products
 SELECT
-	p.product_name, p.product_company, c.cart_quantity, p.cost,
-	p.image, p.color, c.product_id, c.cart_id
+	p.product_name,
+    p.product_company,
+    c.cart_quantity,
+    p.cost,
+	p.image,
+    p.color,
+    p.size,
+    c.product_id,
+    c.cart_id
 FROM Product p
 JOIN Cart_item c ON p.product_id = c.product_id
 WHERE c.cart_id = 'Q3jpDB' AND c.purchased = 'NO'
 /*
-product_name	product_company	cart_quantity	cost	image	color	product_id	cart_id
-Air Boots	Puma	2	1619	http://localhost:8065/uploads/footware_assets_21.jfif	Green	2ZMag4	Q3jpDB
-Classic Sandals	Bata	4	2703	http://localhost:8065/uploads/94490874_9971468.jpg	Red	F9A55F	Q3jpDB
+product_name	product_company	cart_quantity	cost	image	color	size	product_id	cart_id
+Classic Sandals	Bata	4	2703	http://localhost:8065/uploads/94490874_9971468.jpg	Red	8	F9A55F	Q3jpDB
 */
-
+    SELECT p.product_name, p.product_company, c.cart_quantity, p.cost, p.image, p.color,
+           c.product_id, c.cart_id
+    FROM Product p
+    JOIN Cart_item c ON p.product_id = c.product_id
+    WHERE c.cart_id = 'Q3jpDB' AND c.purchased = 'NO'
 
 
 

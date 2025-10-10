@@ -6,10 +6,11 @@
 import { useEffect } from "react";
 import { useGlobalContext } from "../../context";
 import { formatPrice } from "../../utils";
+import PropTypes from "prop-types";
 
 const CartTotals = ({ type, handleType }) => {
-  const { customer, cart, fetchCart, price, calculateTotal, changeAmount } =
-    useGlobalContext();
+  const { cart, price, calculateTotal, changeAmount } = useGlobalContext();
+
   useEffect(() => {
     calculateTotal();
   }, [cart, changeAmount]);
@@ -36,6 +37,7 @@ const CartTotals = ({ type, handleType }) => {
           </p>
         </div>
       </div>
+
       <div className="bg-base-200 mt-4 card p-4">
         <label
           htmlFor="paymentType"
@@ -43,22 +45,31 @@ const CartTotals = ({ type, handleType }) => {
         >
           Payment Type
         </label>
+
+        {/* ✅ React-friendly, fully controlled select */}
         <select
           id="paymentType"
-          value={type}
+          name="paymentType"
+          value={type || "default"}
           onChange={handleType}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
-          <option selected value="default">
+          <option value="default" disabled>
             Choose a Payment Type
           </option>
-          <option value="upi">Upi</option>
+          <option value="upi">UPI</option>
           <option value="cash">Cash</option>
           <option value="card">Card</option>
         </select>
       </div>
     </>
   );
+};
+
+/* ✅ Add PropTypes validation */
+CartTotals.propTypes = {
+  type: PropTypes.string.isRequired,
+  handleType: PropTypes.func.isRequired
 };
 
 export default CartTotals;

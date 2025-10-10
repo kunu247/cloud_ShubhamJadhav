@@ -5,10 +5,64 @@
 
 const { sql, poolPromise } = require("../db/connect");
 
+/**
+ * 🧩 Fetch all cart items (for admin/debug)
+ */
 async function getAllCartItemsSql() {
   const pool = await poolPromise;
-  const { recordset } = await pool.request().query("SELECT * FROM Cart_item");
+  const { recordset } = await pool.request().query(`
+    SELECT 
+      c.cart_id AS cart_id,
+      c.product_id AS product_id,
+      c.cart_quantity AS cart_quantity,
+      c.date_added AS date_added,
+      c.purchased AS purchased,
+      c.created_on AS created_on,
+      c.isactive AS isactive,
+      p.product_name AS product_name,
+      p.product_company AS product_company,
+      p.cost AS cost,
+      p.image AS image,
+      p.color AS color,
+      p.size AS size
+    FROM Cart_item c
+    LEFT JOIN Product p ON p.product_id = c.product_id
+  `);
   return recordset;
+}
+
+/**
+ * 🧠 Fetch all products in a single user's cart (joined with product info)
+ */
+async function getSingleCartItemSql(cart_id) {
+  const pool = await poolPromise;
+
+  const query = `
+    SELECT 
+      c.cart_id AS cart_id,
+      c.product_id AS product_id,
+      c.cart_quantity AS cart_quantity,
+      c.date_added AS date_added,
+      c.purchased AS purchased,
+      c.created_on AS created_on,
+      c.isactive AS isactive,
+      p.product_name AS product_name,
+      p.product_company AS product_company,
+      p.cost AS cost,
+      p.image AS image,
+      p.color AS color,
+      p.size AS size
+    FROM Cart_item c
+    INNER JOIN Product p ON p.product_id = c.product_id
+    WHERE c.cart_id = @cart_id AND c.purchased = 'NO'
+  `;
+
+  const { recordset } = await pool
+    .request()
+    .input("cart_id", sql.VarChar(7), cart_id)
+    .query(query);
+
+  return recordset || [];
 }
 
 async function createCartItemsSql(
@@ -32,22 +86,6 @@ async function createCartItemsSql(
     `);
 
   return { cart_quantity, cart_id, product_id, purchased };
-}
-
-async function getSingleCartItemSql(cart_id) {
-  const pool = await poolPromise;
-  const query = `
-    SELECT p.product_name, p.product_company, c.cart_quantity, p.cost, p.image, p.color,
-           c.product_id, c.cart_id
-    FROM Product p
-    JOIN Cart_item c ON p.product_id = c.product_id
-    WHERE c.cart_id = @cart_id AND c.purchased = 'NO'
-  `;
-  const { recordset } = await pool
-    .request()
-    .input("cart_id", sql.VarChar(7), cart_id)
-    .query(query);
-  return recordset;
 }
 
 async function updateCartSql(cart_id, cart_quantity, product_id) {
