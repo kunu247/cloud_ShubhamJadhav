@@ -11,7 +11,8 @@ import { toast } from "react-toastify";
 import { customFetch } from "../utils";
 
 const Cart = () => {
-  const { cart, customer, fetchCart, price } = useGlobalContext();
+  const { cart, customer, fetchCart, clearCart, price, App_Config } =
+    useGlobalContext();
   const [type, setType] = useState("default");
 
   /*  Fetch cart on mount
@@ -41,18 +42,22 @@ const Cart = () => {
       toast.error("Please log in first.");
       return;
     }
-    if (!type) {
-      toast.error("Please select payment type.");
+
+    if (!type || type === "default") {
+      toast.error("Please select a payment type.");
       return;
     }
+
     if (!cart.length) {
-      toast.warn("Your cart is empty.");
+      toast.warn(
+        `User [${App_Config.customer || "Unknown"}], Your cart is empty.`
+      );
       return;
     }
 
     try {
-      const productIds = cart.map((item) => `'${item.product_id}'`).join(",");
-      const response = await customFetch.post(`/payment`, {
+      const productIds = cart.map((item) => item.product_id);
+      const response = await customFetch.post("/payment", {
         payment_type: type,
         customer_id: customer.customer_id,
         cart_id: customer.cart_id,
@@ -62,21 +67,26 @@ const Cart = () => {
 
       const data = response?.data;
       if (data?.success) {
-        toast.success("Order placed successfully!");
-        fetchCart();
+        toast.success("✅ Order placed successfully!");
+        clearCart(); // ✅ instantly clear cart state
+        setTimeout(() => fetchCart(false), 800); // 🔁 refresh after DB update
       } else {
         toast.warn(data?.msg || "Order not created.");
       }
     } catch (error) {
       console.error("Payment Error:", error);
-      toast.error("Payment failed. Try again.");
+      toast.error("Payment failed. Try again.", error);
     }
   };
 
   if (!cart?.length) {
     return (
-      <div className="align-element pt-20">
-        <SectionTitle text="Your cart is empty" />
+      <div className="align-element pt-20 text-center">
+        <SectionTitle text="🎉 Order placed successfully!" />
+        <p className="text-gray-400 mt-4">Your cart is now empty.</p>
+        <Link to="/products" className="btn btn-secondary mt-6">
+          Continue Shopping
+        </Link>
       </div>
     );
   }

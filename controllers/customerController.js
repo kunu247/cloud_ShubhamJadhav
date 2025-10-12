@@ -14,28 +14,30 @@ const {
 } = require("../model/customerModel");
 
 exports.getAllCustomers = asyncHandler(async (req, res) => {
-  const customers = await getCustomer();
-  res
-    .status(200)
-    .json({ success: true, count: customers.length, data: customers });
+  const result = await getCustomer();
+  res.status(result.success ? 200 : 400).json(result);
 });
 
 exports.register = asyncHandler(async (req, res) => {
   const { name, email, password, address, pincode, phone_number, role } =
     req.body;
 
-  if (!name || !email || !password)
-    return res
-      .status(400)
-      .json({ success: false, msg: "Required fields missing" });
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Required fields missing"
+    });
+  }
 
   const exists = await emailAlreadyExists(email);
-  if (exists)
-    return res
-      .status(400)
-      .json({ success: false, msg: "Email already registered" });
+  if (exists) {
+    return res.status(400).json({
+      success: false,
+      message: "Email already registered"
+    });
+  }
 
-  const user = await registerUserFunc({
+  const result = await registerUserFunc({
     name,
     email,
     password,
@@ -45,33 +47,47 @@ exports.register = asyncHandler(async (req, res) => {
     role
   });
 
-  const tokenPayload = { userId: user.customer_id, role: role || "user" };
-  const token = createJWT(tokenPayload);
+  if (result.success) {
+    const tokenPayload = {
+      userId: result.data.customer_id,
+      role: result.data.role || "user"
+    };
+    const token = createJWT(tokenPayload);
 
-  res.status(201).json({
-    success: true,
-    msg: "User registered successfully",
-    token,
-    data: { ...user, name, email, role }
-  });
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      token,
+      data: result.data
+    });
+  } else {
+    res.status(400).json(result);
+  }
 });
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password)
-    return res
-      .status(400)
-      .json({ success: false, msg: "Email and password required" });
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Email and password required"
+    });
+  }
 
-  const user = await loginUserFunc(email);
-  if (!user)
-    return res.status(401).json({ success: false, msg: "Invalid credentials" });
+  const result = await loginUserFunc(email);
+  if (!result.success) {
+    return res.status(401).json(result);
+  }
 
+  const user = result.data;
   const validPwd = await bcrypt.compare(password, user.password);
-  if (!validPwd)
-    return res.status(401).json({ success: false, msg: "Invalid credentials" });
+  if (!validPwd) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid credentials"
+    });
+  }
 
-  // ✅ Include cart_id in JWT payload
   const tokenPayload = {
     userId: user.customer_id,
     cartId: user.cart_id,
@@ -79,46 +95,35 @@ exports.login = asyncHandler(async (req, res) => {
   };
   attachCookiesToResponse(res, tokenPayload);
 
-  // ✅ Send a consistent customer structure
   res.status(200).json({
     success: true,
-    msg: "Login successful",
-    customer: {
-      id: user.customer_id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      cart_id: user.cart_id,
-      address: user.address,
-      phone_number: user.phone_number
-    }
+    message: "Login successful",
+    customer: user.toSafeObject()
   });
 });
 
-exports.getAdminStats = async (req, res) => {
+exports.getAdminStats = asyncHandler(async (req, res) => {
   try {
     const pool = await poolPromise;
-
-    // ✅ Query totals from DB
     const { recordset } = await pool.request().query(`
       SELECT
         (SELECT COUNT(*) FROM Customer WHERE isactive = 1) AS customer,
         (SELECT COUNT(*) FROM Product WHERE isactive = 1) AS product,
         (SELECT COUNT(*) FROM Payment WHERE isactive = 1) AS payment,
-        (SELECT ISNULL(SUM(total), 0) FROM Payment WHERE isactive = 1) AS total
+        (SELECT ISNULL(SUM(total_amount), 0) FROM Payment WHERE isactive = 1) AS total
     `);
 
     res.status(200).json({
       success: true,
-      msg: "Admin summary fetched successfully",
-      data: recordset
+      message: "Admin summary fetched successfully",
+      data: recordset[0]
     });
   } catch (error) {
     console.error("Admin Stats Error:", error);
     res.status(500).json({
       success: false,
-      msg: "Failed to load admin dashboard data",
+      message: "Failed to load admin dashboard data",
       error: error.message
     });
   }
-};
+});

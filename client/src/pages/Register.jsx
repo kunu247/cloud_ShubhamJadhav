@@ -3,16 +3,10 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\pages\Register.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\pages
 
-import React, { useState } from "react";
-import { useGlobalContext } from "../context";
+import { useState } from "react";
+import { useGlobalContext, session } from "../context";
 import { SubmitBtn } from "../components";
-import {
-  Form,
-  Link,
-  redirect,
-  useNavigate,
-  useSearchParams
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // ✅ only keep what’s used
 import { customFetch } from "../utils";
 import { toast } from "react-toastify";
 
@@ -26,36 +20,44 @@ const Register = () => {
     phone_number: "",
     role: "user"
   };
+
   const [registerCustomer, setRegisterCustomer] = useState(defaultValue);
-  const { customer, setCustomer } = useGlobalContext();
+  const { setCustomer } = useGlobalContext(); // ✅ removed unused “customer”
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
-    //const name = e.target.name
-    //const value = e.target.value
     const { name, value } = e.target;
-
-    setRegisterCustomer({
-      ...registerCustomer,
+    setRegisterCustomer((prev) => ({
+      ...prev,
       [name]: value
-    });
+    }));
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (event) => {
     event.preventDefault();
     try {
       const response = await customFetch.post(
         "http://localhost:8065/api/v1/customer/register",
         registerCustomer
       );
-      const data = await response.data;
+      const data = response.data;
+
+      // ✅ Clear previous session
+      session.clear();
+      setCustomer(null);
+
+      // ✅ Save new customer
+      session.set("CUSTOMER", data.customer);
       localStorage.setItem("customer", JSON.stringify(data.customer));
       setCustomer(data.customer);
-      toast.success("Registered  Successfully");
+
+      toast.success("Registered Successfully");
       navigate("/");
     } catch (error) {
-      console.log(error.response);
-      toast.error(error.response.data.msg);
+      console.error("Registration error:", error);
+      const msg =
+        error?.response?.data?.msg || "Registration failed. Please try again.";
+      toast.error(msg);
     }
   };
 
@@ -66,6 +68,7 @@ const Register = () => {
         className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
       >
         <h4 className="text-center text-3xl font-bold">Register</h4>
+
         <input
           type="text"
           name="name"
@@ -74,14 +77,14 @@ const Register = () => {
           onChange={handleInputChange}
         />
         <input
-          type="text"
+          type="email"
           name="email"
           placeholder="Email"
           className="input input-bordered"
           onChange={handleInputChange}
         />
         <input
-          type="text"
+          type="password"
           name="password"
           placeholder="Password"
           className="input input-bordered"
@@ -103,18 +106,19 @@ const Register = () => {
         />
         <textarea
           name="address"
-          id=""
           cols="30"
+          rows="5"
           placeholder="Address"
-          rows="10"
           onChange={handleInputChange}
           className="input input-bordered"
         ></textarea>
+
         <div className="mt-4">
           <SubmitBtn text="Register" />
         </div>
+
         <p className="text-center">
-          Already a member{" "}
+          Already a member?{" "}
           <Link to="/login" className="ml-2 link link-hover link-primary">
             Login
           </Link>

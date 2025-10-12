@@ -63,3 +63,22 @@ SELECT
 
 select * from product
 
+
+
+
+SELECT 
+    c.cart_id AS cart_id,
+    c.product_id AS product_id,
+    c.cart_quantity AS cart_quantity,
+    c.date_added AS date_added,
+    c.purchased AS purchased,
+    c.created_on AS created_on,
+    c.isactive AS isactive,
+    p.product_name AS product_name,
+    p.product_company AS product_company,
+    p.cost AS cost,
+    p.[image] AS "image",
+    p.color AS color,
+    p.size AS size
+FROM Cart_item c
+LEFT JOIN [Product] p ON p.product_id = c.product_id

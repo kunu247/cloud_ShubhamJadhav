@@ -3,8 +3,6 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\pages\Checkout.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\pages
 
-import React from "react";
-
 const AdminPanel = () => {
   return (
     <div className="flex h-screen bg-gray-100">

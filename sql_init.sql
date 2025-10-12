@@ -363,6 +363,7 @@ BEGIN TRY
             payment_type NVARCHAR(20),
             customer_id VARCHAR(7),
             cart_id VARCHAR(7),
+            product_ids NVARCHAR(MAX),
             total_amount INT,
             created_on DATETIME NULL DEFAULT(GETDATE()),
             isactive BIT NULL DEFAULT(1),
@@ -414,6 +415,8 @@ PRINT '✨ SCRIPT EXECUTION COMPLETED ✨';
 PRINT 'FootwareApp_Dev database is now clean and rebuilt.';
 PRINT 'Ready for development use.';
 GO
+
+-- --------------------------------------------------------------------------------------------------------------------
 
 USE FootwareApp_Dev;
 GO
@@ -765,5 +768,123 @@ BEGIN
         @action_by = 'ServerAdmin',
         @action_details = @details,
         @status = 'SUCCESS';
+END
+GO
+
+-- ------------------------------------------------------------------------------
+-- --------------------------------[ Views ] ------------------------------------
+-- ------------------------------------------------------------------------------
+
+-- View for all cart items with product details (admin/debug)
+CREATE OR ALTER VIEW vw_AllCartItems
+AS
+SELECT 
+    c.cart_id AS cart_id,
+    c.product_id AS product_id,
+    c.cart_quantity AS cart_quantity,
+    c.date_added AS date_added,
+    c.purchased AS purchased,
+    c.created_on AS created_on,
+    c.isactive AS isactive,
+    p.product_name AS product_name,
+    p.product_company AS product_company,
+    p.cost AS cost,
+    p.image AS image,
+    p.color AS color,
+    p.size AS size
+FROM Cart_item c
+LEFT JOIN Product p ON p.product_id = c.product_id;
+GO
+
+-- View for single user's cart items with product details
+CREATE OR ALTER VIEW vw_UserCartItems
+AS
+SELECT 
+    c.cart_id AS cart_id,
+    c.product_id AS product_id,
+    c.cart_quantity AS cart_quantity,
+    c.date_added AS date_added,
+    c.purchased AS purchased,
+    c.created_on AS created_on,
+    c.isactive AS isactive,
+    p.product_name AS product_name,
+    p.product_company AS product_company,
+    p.cost AS cost,
+    p.image AS image,
+    p.color AS color,
+    p.size AS size
+FROM Cart_item c
+INNER JOIN Product p ON p.product_id = c.product_id
+WHERE c.purchased = 'NO';
+GO
+
+-- =====================================================
+-- Stored Procedures
+-- =====================================================
+-- Get all cart items (admin/debug)
+CREATE OR ALTER PROCEDURE usp_GetAllCartItems
+AS
+BEGIN
+    SELECT * FROM vw_AllCartItems;
+END
+GO
+
+-- Get single user's cart items
+CREATE OR ALTER PROCEDURE usp_GetUserCartItems
+    @cart_id VARCHAR(7)
+AS
+BEGIN
+    SELECT * 
+    FROM vw_UserCartItems 
+    WHERE cart_id = @cart_id;
+END
+GO
+
+-- Create cart item
+CREATE OR ALTER PROCEDURE usp_CreateCartItem
+    @cart_quantity INT,
+    @cart_id VARCHAR(7),
+    @product_id VARCHAR(10),
+    @purchased VARCHAR(10) = 'NO'
+AS
+BEGIN
+    DECLARE @date_added DATE = CAST(GETDATE() AS DATE);
+    
+    INSERT INTO Cart_item (cart_quantity, date_added, cart_id, product_id, purchased)
+    VALUES (@cart_quantity, @date_added, @cart_id, @product_id, @purchased);
+    
+    SELECT 
+        @cart_quantity AS cart_quantity,
+        @cart_id AS cart_id,
+        @product_id AS product_id,
+        @purchased AS purchased;
+END
+GO
+
+-- Update cart item quantity
+CREATE OR ALTER PROCEDURE usp_UpdateCartItem
+    @cart_id VARCHAR(7),
+    @cart_quantity INT,
+    @product_id VARCHAR(10)
+AS
+BEGIN
+    UPDATE Cart_item 
+    SET cart_quantity = @cart_quantity 
+    WHERE cart_id = @cart_id AND product_id = @product_id;
+    
+    SELECT @@ROWCOUNT AS rowsAffected;
+END
+GO
+
+-- Delete cart item
+CREATE OR ALTER PROCEDURE usp_DeleteCartItem
+    @cart_id VARCHAR(7),
+    @product_id VARCHAR(10)
+AS
+BEGIN
+    DELETE FROM Cart_item 
+    WHERE cart_id = @cart_id AND product_id = @product_id;
+    
+    SELECT @@ROWCOUNT AS rowsAffected;
 END
 GO

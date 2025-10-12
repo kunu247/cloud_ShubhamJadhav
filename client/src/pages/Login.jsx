@@ -9,6 +9,8 @@ import { SubmitBtn } from "../components";
 import { toast } from "react-toastify";
 import { customFetch } from "../utils";
 import { useGlobalContext } from "../context";
+import { App_Config } from "@shared/globalConfig";
+import { session } from "../context";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,9 +39,12 @@ const Login = () => {
         toast.error("Invalid login response. Please try again.");
         return;
       }
+      session.clear(); // ✅ clear previous user session
+      setCustomer(null); // reset state
 
       // ✅ Store and update context
-      localStorage.setItem("customer", JSON.stringify(customer));
+      // localStorage.setItem("customer", JSON.stringify(customer));
+      session.set(App_Config.STORAGE_KEYS.CUSTOMER, data.customer);
       setCustomer(customer);
 
       toast.success("Logged In Successfully");

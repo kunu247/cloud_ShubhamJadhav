@@ -12,31 +12,26 @@ import { LuUsers } from "react-icons/lu";
 import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
 
 const Admin = () => {
-  const { customer } = useGlobalContext();
+  const { customer, refreshSession } = useGlobalContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const custLocal = JSON.parse(localStorage.getItem("customer")) || null;
+    refreshSession(); // 🔁 Ensure context is synced
+  }, []);
 
-      if (!custLocal) {
-        toast.error("Please login to access Admin Panel");
-        navigate("/");
-        return;
-      }
-
-      if (custLocal.role !== "admin") {
-        toast.error("Not authorized to access Admin Panel");
-        navigate("/");
-        return;
-      }
-    } catch (err) {
-      console.error("Admin Auth Error:", err);
-      toast.error("Session error. Please log in again.");
-      localStorage.removeItem("customer");
+  useEffect(() => {
+    if (!customer) {
+      toast.error("Please login to access Admin Panel");
       navigate("/");
+      return;
     }
-  }, [navigate]);
+
+    if (customer.role !== "admin") {
+      toast.error("Not authorized to access Admin Panel");
+      navigate("/");
+      return;
+    }
+  }, [customer, navigate]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">

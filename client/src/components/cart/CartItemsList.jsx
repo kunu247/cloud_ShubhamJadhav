@@ -3,7 +3,7 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\cart\CartItemsList.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\cart
 
-import React from "react";
+import PropTypes from "prop-types";
 import CartItem from "./CartItem";
 import { useGlobalContext } from "../../context";
 
@@ -16,6 +16,10 @@ const CartItemsList = () => {
       })}
     </div>
   );
+};
+
+CartItemsList.propTypes = {
+  cart: PropTypes.array
 };
 
 export default CartItemsList;

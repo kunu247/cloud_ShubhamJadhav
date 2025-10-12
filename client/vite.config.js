@@ -11,31 +11,35 @@ import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import daisyui from "daisyui";
 
-// 🧠 Fix: Define __dirname manually for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 🪄 DaisyUI theme presets (for reference)
 const daisyThemes = [
-  "light", // default bright theme
-  "dark", // system / dark mode
-  "cupcake", // soft light pink
-  "bumblebee", // yellow-orange tone
-  "emerald", // green professional tone
-  "corporate", // corporate gray-blue
-  "synthwave", // retro neon vibe
-  "halloween", // orange-black mix
-  "forest", // green calm theme
-  "luxury", // black-gold premium feel
-  "dracula", // purple cyber theme
-  "business", // modern gray-white
-  "night" // deep dark professional
+  "light",
+  "dark",
+  "cupcake",
+  "bumblebee",
+  "emerald",
+  "corporate",
+  "synthwave",
+  "halloween",
+  "forest",
+  "luxury",
+  "dracula",
+  "business",
+  "night"
 ];
 
-// ⚙️ Vite Configuration
 export default defineConfig({
   plugins: [
-    react() // React Fast Refresh + JSX Support
+    react()
+    /*
+    react({
+      babel: {
+        plugins: [["babel-plugin-react-compiler", {}]]
+      }
+    })
+    */
   ],
   resolve: {
     alias: {
@@ -52,13 +56,11 @@ export default defineConfig({
       plugins: [
         tailwindcss({
           content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
-          theme: {
-            extend: {}
-          },
+          theme: { extend: {} },
           plugins: [daisyui],
           daisyui: {
             themes: daisyThemes,
-            darkTheme: "night", // default dark mode theme
+            darkTheme: "night",
             base: true,
             styled: true,
             utils: true,
@@ -67,24 +69,46 @@ export default defineConfig({
         }),
         autoprefixer()
       ]
-    }
+    },
+    devSourcemap: true
   },
   server: {
-    host: "0.0.0.0", // exposes network IP for mobile testing
+    host: "0.0.0.0",
     port: 5173,
-    open: true,
+    open: false, // Let VS Code handle opening
+    strictPort: true, // Don't try different ports
+    cors: true,
     proxy: {
       "/api/v1": {
         target: "http://localhost:8065",
         changeOrigin: true,
-        secure: false
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api\/v1/, "/api/v1")
       }
+    },
+    hmr: {
+      overlay: true,
+      clientPort: 5173
     }
   },
   build: {
     sourcemap: true,
     outDir: "dist",
     emptyOutDir: true,
-    target: "esnext"
+    target: "esnext",
+    minify: false, // Better for debugging
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
+  define: {
+    "process.env.DEBUG": JSON.stringify(process.env.DEBUG),
+    "process.env.NODE_ENV": JSON.stringify("development")
+  },
+  esbuild: {
+    sourcemap: true,
+    legalComments: "none"
   }
 });

@@ -13,7 +13,6 @@ const cartController = require("../controllers/cartController");
 const customerController = require("../controllers/customerController");
 const paymentController = require("../controllers/paymentController");
 const productController = require("../controllers/productsController");
-const uploadsController = require("../controllers/uploadsController");
 
 // ------------------------------
 // 🛍️ Product Routes
@@ -29,7 +28,7 @@ router
   .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
-router.route("/products/uploads").post(uploadsController.uploadProductImage);
+router.route("/products/uploads").post(productController.uploadProductImage);
 
 // ------------------------------
 // 👤 Customer Routes

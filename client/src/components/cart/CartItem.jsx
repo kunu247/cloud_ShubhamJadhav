@@ -47,6 +47,7 @@ const CartItem = React.memo(({ cartItem }) => {
     cart_quantity,
     product_company,
     color,
+    size,
     cart_id
   } = cartItem;
 
@@ -107,7 +108,8 @@ const CartItem = React.memo(({ cartItem }) => {
       <div className="sm:ml-16 sm:w-48">
         <h3 className="capitalize font-medium">{product_name}</h3>
         <h4 className="mt-2 capitalize text-sm text-neutral-content">
-          {product_company}
+          Brand / Company:{" "}
+          <span style={{ color: "yellow" }}>{product_company}</span>
         </h4>
         <p className="mt-4 capitalize text-sm flex items-center gap-x-2">
           Color:
@@ -116,6 +118,12 @@ const CartItem = React.memo(({ cartItem }) => {
             style={{ backgroundColor: color }}
             title={color}
           ></span>
+        </p>
+        <p className="mt-2 capitalize text-sm flex items-center gap-x-2">
+          {`${product_name}'s`} Size:
+          <span className="text-sm text-slate-100" style={{ color: "yellow" }}>
+            {size}
+          </span>
         </p>
       </div>
 
@@ -152,8 +160,6 @@ const CartItem = React.memo(({ cartItem }) => {
 // Set display name for the component
 CartItem.displayName = "CartItem";
 
-export default CartItem;
-
 /* ✅ PropTypes validation */
 CartItem.propTypes = {
   cartItem: PropTypes.shape({
@@ -162,8 +168,11 @@ CartItem.propTypes = {
     cost: PropTypes.number.isRequired,
     image: PropTypes.string,
     cart_quantity: PropTypes.number.isRequired,
+    size: PropTypes.number.isRequired,
     product_company: PropTypes.string,
     color: PropTypes.string,
     cart_id: PropTypes.string.isRequired
   }).isRequired
 };
+
+export default CartItem;

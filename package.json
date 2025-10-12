@@ -52,7 +52,16 @@
     "logs:live": "node scripts/monitoring/live-logs.js",
     "logs:errors": "node scripts/monitoring/error-logs.js",
     "logs:routes": "node scripts/monitoring/route-logs.js",
-    "status": "node scripts/monitoring/system-status.js"
+    "status": "node scripts/monitoring/system-status.js",
+    "//8": "🔍 Debugging & Development",
+    "debug:setup": "node scripts/debug-setup.js",
+    "debug:health": "node scripts/health-check.js",
+    "debug:node": "node --inspect=0.0.0.0:9229 app.js",
+    "debug:chrome": "chrome --remote-debugging-port=9222 --auto-open-devtools-for-tabs http://localhost:5173",
+    "dev:debug": "concurrently \"npm run debug:node\" \"npm run client\"",
+    "//9": "🔄 Hot Reload & Sync",
+    "dev:hot": "concurrently \"nodemon --inspect app.js\" \"cd client && npm run dev\"",
+    "dev:sync": "npm run debug:setup && npm run dev:full"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

@@ -1,0 +1,510 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/landing/Footer.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=5efafd95"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.__vite_plugin_react_preamble_installed__) {
+    throw new Error("@vitejs/plugin-react can't detect preamble. Something is wrong. See https://github.com/vitejs/vite-plugin-react/pull/11#discussion_r430879201");
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = (type, id) => {
+    RefreshRuntime.register(type, "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx " + id);
+  };
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=5efafd95"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react;
+import {
+  FaFacebook,
+  FaLinkedin,
+  FaPinterest,
+  FaTwitter
+} from "/node_modules/.vite/deps/react-icons_fa6.js?v=5efafd95";
+import { IoChevronForward } from "/node_modules/.vite/deps/react-icons_io5.js?v=5efafd95";
+import { Link } from "/node_modules/.vite/deps/react-router-dom.js?v=5efafd95";
+const Footer = () => {
+  return /* @__PURE__ */ jsxDEV("footer", { className: "", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "footer-top section ", children: /* @__PURE__ */ jsxDEV("div", { className: "container px-24", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "footer-brand flex justify-between pt-14 ", children: [
+        /* @__PURE__ */ jsxDEV("a", { href: "#", className: "logo", children: /* @__PURE__ */ jsxDEV(
+          "img",
+          {
+            src: "images\\footcap.png",
+            width: "400",
+            height: "200",
+            alt: "Footcap logo"
+          },
+          void 0,
+          false,
+          {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 23,
+            columnNumber: 15
+          },
+          this
+        ) }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+          lineNumber: 22,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("ul", { className: "social-list grid place-items-center grid-cols-4", children: [
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "#", className: "social-link", children: /* @__PURE__ */ jsxDEV(FaFacebook, {}, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 34,
+            columnNumber: 19
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 33,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 32,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "#", className: "social-link", children: /* @__PURE__ */ jsxDEV(FaTwitter, {}, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 40,
+            columnNumber: 19
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 39,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 38,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "#", className: "social-link", children: /* @__PURE__ */ jsxDEV(FaPinterest, {}, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 46,
+            columnNumber: 19
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 45,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 44,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "#", className: "social-link", children: /* @__PURE__ */ jsxDEV(FaLinkedin, {}, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 52,
+            columnNumber: 19
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 51,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 50,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+          lineNumber: 31,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+        lineNumber: 21,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "footer-link-box", children: [
+        /* @__PURE__ */ jsxDEV("ul", { className: "footer-list", children: [
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("p", { className: "footer-list-title", children: "Contact Us" }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 61,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 60,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("address", { className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV("ion-icon", { name: "location" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 66,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "E-566 Electronic City , Bengaluru" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 68,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 65,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 64,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "tel:+919876548932", className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV("ion-icon", { name: "call" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 76,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "+919876548932" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 78,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 75,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 74,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "mailto:footcap@help.com", className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV("ion-icon", { name: "mail" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 84,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "footcap@help.com" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 86,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 83,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 82,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+          lineNumber: 59,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("ul", { className: "footer-list", children: [
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("p", { className: "footer-list-title", children: "My Account" }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 93,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 92,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV(Link, { to: "/orders", className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV(IoChevronForward, {}, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 98,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "My Account" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 100,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 97,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 96,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV(Link, { to: "/cart", className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV(IoChevronForward, {}, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 106,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "View Cart" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 108,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 105,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 104,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "#", className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV(IoChevronForward, {}, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 114,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "Wishlist" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 116,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 113,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 112,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: "#", className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV(IoChevronForward, {}, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 122,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "Compare" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 124,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 121,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 120,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV(Link, { to: "/products", className: "footer-link", children: [
+            /* @__PURE__ */ jsxDEV(IoChevronForward, {}, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 130,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { className: "footer-link-text", children: "New Products" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 132,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 129,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 128,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+          lineNumber: 91,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "footer-list", children: [
+          /* @__PURE__ */ jsxDEV("p", { className: "footer-list-title", children: "Opening Time" }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 138,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("table", { className: "footer-table", children: /* @__PURE__ */ jsxDEV("tbody", { children: [
+            /* @__PURE__ */ jsxDEV("tr", { className: "table-row", children: [
+              /* @__PURE__ */ jsxDEV("th", { className: "table-head", scope: "row", children: "Mon - Tue:" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 143,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { className: "table-data", children: "8AM - 10PM" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 147,
+                columnNumber: 21
+              }, this)
+            ] }, void 0, true, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 142,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("tr", { className: "table-row", children: [
+              /* @__PURE__ */ jsxDEV("th", { className: "table-head", scope: "row", children: "Wed:" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 151,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { className: "table-data", children: "8AM - 7PM" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 155,
+                columnNumber: 21
+              }, this)
+            ] }, void 0, true, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 150,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("tr", { className: "table-row", children: [
+              /* @__PURE__ */ jsxDEV("th", { className: "table-head", scope: "row", children: "Fri:" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 159,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { className: "table-data", children: "7AM - 12PM" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 163,
+                columnNumber: 21
+              }, this)
+            ] }, void 0, true, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 158,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("tr", { className: "table-row", children: [
+              /* @__PURE__ */ jsxDEV("th", { className: "table-head", scope: "row", children: "Sat:" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 167,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { className: "table-data", children: "9AM - 8PM" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 171,
+                columnNumber: 21
+              }, this)
+            ] }, void 0, true, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 166,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("tr", { className: "table-row", children: [
+              /* @__PURE__ */ jsxDEV("th", { className: "table-head", scope: "row", children: "Sun:" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 175,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { className: "table-data", children: "Closed" }, void 0, false, {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 179,
+                columnNumber: 21
+              }, this)
+            ] }, void 0, true, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 174,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 141,
+            columnNumber: 17
+          }, this) }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 140,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+          lineNumber: 137,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "footer-list", children: [
+          /* @__PURE__ */ jsxDEV("p", { className: "footer-list-title", children: "Newsletter" }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 186,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "newsletter-text", children: "Authoritatively morph 24/7 potentialities with error-free partnerships." }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 188,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("form", { action: "", className: "newsletter-form", children: [
+            /* @__PURE__ */ jsxDEV(
+              "input",
+              {
+                type: "email",
+                name: "email",
+                required: true,
+                placeholder: "Email Address",
+                className: "newsletter-input"
+              },
+              void 0,
+              false,
+              {
+                fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+                lineNumber: 194,
+                columnNumber: 17
+              },
+              this
+            ),
+            /* @__PURE__ */ jsxDEV("button", { type: "submit", className: " btn-primary1", children: "Subscribe" }, void 0, false, {
+              fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+              lineNumber: 202,
+              columnNumber: 17
+            }, this)
+          ] }, void 0, true, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+            lineNumber: 193,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+          lineNumber: 185,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+        lineNumber: 58,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+      lineNumber: 20,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+      lineNumber: 19,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "footer-bottom", children: /* @__PURE__ */ jsxDEV("div", { className: "container", children: /* @__PURE__ */ jsxDEV("p", { className: "copyright", children: [
+      "© 2024",
+      " ",
+      /* @__PURE__ */ jsxDEV("a", { href: "#", className: "copyright-link", children: "Shrey & Kishor" }, void 0, false, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+        lineNumber: 215,
+        columnNumber: 13
+      }, this),
+      ". All Rights Reserved"
+    ] }, void 0, true, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+      lineNumber: 213,
+      columnNumber: 11
+    }, this) }, void 0, false, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+      lineNumber: 212,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+      lineNumber: 211,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx",
+    lineNumber: 18,
+    columnNumber: 5
+  }, this);
+};
+_c = Footer;
+export default Footer;
+var _c;
+$RefreshReg$(_c, "Footer");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("E:/cloud_ShubhamJadhav/client/src/components/landing/Footer.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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SUFFQSx1QkFBQyxTQUFJLFdBQVUsaUJBQ2IsaUNBQUMsU0FBSSxXQUFVLGFBQ2IsaUNBQUMsT0FBRSxXQUFVLGFBQVc7QUFBQTtBQUFBLE1BQ1Y7QUFBQSxNQUNaLHVCQUFDLE9BQUUsTUFBSyxLQUFJLFdBQVUsa0JBQWdCLDhCQUF0QztBQUFBO0FBQUE7QUFBQTtBQUFBLGFBRUE7QUFBQSxNQUFHO0FBQUEsU0FKTDtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBTUEsS0FQRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBUUEsS0FURjtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBVUE7QUFBQSxPQTNNRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBNE1BO0FBRUo7QUFBRUMsS0FoTklEO0FBa05OLGVBQWVBO0FBQU8sSUFBQUM7QUFBQUMsYUFBQUQsSUFBQSIsIm5hbWVzIjpbIlJlYWN0IiwiRmFGYWNlYm9vayIsIkZhTGlua2VkaW4iLCJGYVBpbnRlcmVzdCIsIkZhVHdpdHRlciIsIklvQ2hldnJvbkZvcndhcmQiLCJMaW5rIiwiRm9vdGVyIiwiX2MiLCIkUmVmcmVzaFJlZyQiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiRm9vdGVyLmpzeCJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBGaWxlIG5hbWU6IEZvb3RlclxuLy8gRmlsZSBuYW1lIHdpdGggZXh0ZW5zaW9uOiBGb290ZXIuanN4XG4vLyBGdWxsIHBhdGg6IEU6XFxjbG91ZF9TaHViaGFtSmFkaGF2XFxjbGllbnRcXHNyY1xcY29tcG9uZW50c1xcbGFuZGluZ1xcRm9vdGVyLmpzeFxuLy8gRGlyZWN0b3J5OiBFOlxcY2xvdWRfU2h1YmhhbUphZGhhdlxcY2xpZW50XFxzcmNcXGNvbXBvbmVudHNcXGxhbmRpbmdcblxuaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHtcbiAgRmFGYWNlYm9vayxcbiAgRmFMaW5rZWRpbixcbiAgRmFQaW50ZXJlc3QsXG4gIEZhVHdpdHRlclxufSBmcm9tIFwicmVhY3QtaWNvbnMvZmE2XCI7XG5pbXBvcnQgeyBJb0NoZXZyb25Gb3J3YXJkIH0gZnJvbSBcInJlYWN0LWljb25zL2lvNVwiO1xuaW1wb3J0IHsgTGluayB9IGZyb20gXCJyZWFjdC1yb3V0ZXItZG9tXCI7XG5cbmNvbnN0IEZvb3RlciA9ICgpID0+IHtcbiAgcmV0dXJuIChcbiAgICA8Zm9vdGVyIGNsYXNzTmFtZT1cIlwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJmb290ZXItdG9wIHNlY3Rpb24gXCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29udGFpbmVyIHB4LTI0XCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmb290ZXItYnJhbmQgZmxleCBqdXN0aWZ5LWJldHdlZW4gcHQtMTQgXCI+XG4gICAgICAgICAgICA8YSBocmVmPVwiI1wiIGNsYXNzTmFtZT1cImxvZ29cIj5cbiAgICAgICAgICAgICAgPGltZ1xuICAgICAgICAgICAgICAgIHNyYz1cImltYWdlc1xcZm9vdGNhcC5wbmdcIlxuICAgICAgICAgICAgICAgIHdpZHRoPVwiNDAwXCJcbiAgICAgICAgICAgICAgICBoZWlnaHQ9XCIyMDBcIlxuICAgICAgICAgICAgICAgIGFsdD1cIkZvb3RjYXAgbG9nb1wiXG4gICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICA8L2E+XG5cbiAgICAgICAgICAgIDx1bCBjbGFzc05hbWU9XCJzb2NpYWwtbGlzdCBncmlkIHBsYWNlLWl0ZW1zLWNlbnRlciBncmlkLWNvbHMtNFwiPlxuICAgICAgICAgICAgICA8bGk+XG4gICAgICAgICAgICAgICAgPGEgaHJlZj1cIiNcIiBjbGFzc05hbWU9XCJzb2NpYWwtbGlua1wiPlxuICAgICAgICAgICAgICAgICAgPEZhRmFjZWJvb2sgLz5cbiAgICAgICAgICAgICAgICA8L2E+XG4gICAgICAgICAgICAgIDwvbGk+XG5cbiAgICAgICAgICAgICAgPGxpPlxuICAgICAgICAgICAgICAgIDxhIGhyZWY9XCIjXCIgY2xhc3NOYW1lPVwic29jaWFsLWxpbmtcIj5cbiAgICAgICAgICAgICAgICAgIDxGYVR3aXR0ZXIgLz5cbiAgICAgICAgICAgICAgICA8L2E+XG4gICAgICAgICAgICAgIDwvbGk+XG5cbiAgICAgICAgICAgICAgPGxpPlxuICAgICAgICAgICAgICAgIDxhIGhyZWY9XCIjXCIgY2xhc3NOYW1lPVwic29jaWFsLWxpbmtcIj5cbiAgICAgICAgICAgICAgICAgIDxGYVBpbnRlcmVzdCAvPlxuICAgICAgICAgICAgICAgIDwvYT5cbiAgICAgICAgICAgICAgPC9saT5cblxuICAgICAgICAgICAgICA8bGk+XG4gICAgICAgICAgICAgICAgPGEgaHJlZj1cIiNcIiBjbGFzc05hbWU9XCJzb2NpYWwtbGlua1wiPlxuICAgICAgICAgICAgICAgICAgPEZhTGlua2VkaW4gLz5cbiAgICAgICAgICAgICAgICA8L2E+XG4gICAgICAgICAgICAgIDwvbGk+XG4gICAgICAgICAgICA8L3VsPlxuICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmb290ZXItbGluay1ib3hcIj5cbiAgICAgICAgICAgIDx1bCBjbGFzc05hbWU9XCJmb290ZXItbGlzdFwiPlxuICAgICAgICAgICAgICA8bGk+XG4gICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwiZm9vdGVyLWxpc3QtdGl0bGVcIj5Db250YWN0IFVzPC9wPlxuICAgICAgICAgICAgICA8L2xpPlxuXG4gICAgICAgICAgICAgIDxsaT5cbiAgICAgICAgICAgICAgICA8YWRkcmVzcyBjbGFzc05hbWU9XCJmb290ZXItbGlua1wiPlxuICAgICAgICAgICAgICAgICAgPGlvbi1pY29uIG5hbWU9XCJsb2NhdGlvblwiPjwvaW9uLWljb24+XG5cbiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImZvb3Rlci1saW5rLXRleHRcIj5cbiAgICAgICAgICAgICAgICAgICAgRS01NjYgRWxlY3Ryb25pYyBDaXR5ICwgQmVuZ2FsdXJ1XG4gICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgPC9hZGRyZXNzPlxuICAgICAgICAgICAgICA8L2xpPlxuXG4gICAgICAgICAgICAgIDxsaT5cbiAgICAgICAgICAgICAgICA8YSBocmVmPVwidGVsOis5MTk4NzY1NDg5MzJcIiBjbGFzc05hbWU9XCJmb290ZXItbGlua1wiPlxuICAgICAgICAgICAgICAgICAgPGlvbi1pY29uIG5hbWU9XCJjYWxsXCI+PC9pb24taWNvbj5cblxuICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmstdGV4dFwiPis5MTk4NzY1NDg5MzI8L3NwYW4+XG4gICAgICAgICAgICAgICAgPC9hPlxuICAgICAgICAgICAgICA8L2xpPlxuXG4gICAgICAgICAgICAgIDxsaT5cbiAgICAgICAgICAgICAgICA8YSBocmVmPVwibWFpbHRvOmZvb3RjYXBAaGVscC5jb21cIiBjbGFzc05hbWU9XCJmb290ZXItbGlua1wiPlxuICAgICAgICAgICAgICAgICAgPGlvbi1pY29uIG5hbWU9XCJtYWlsXCI+PC9pb24taWNvbj5cblxuICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmstdGV4dFwiPmZvb3RjYXBAaGVscC5jb208L3NwYW4+XG4gICAgICAgICAgICAgICAgPC9hPlxuICAgICAgICAgICAgICA8L2xpPlxuICAgICAgICAgICAgPC91bD5cblxuICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT1cImZvb3Rlci1saXN0XCI+XG4gICAgICAgICAgICAgIDxsaT5cbiAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJmb290ZXItbGlzdC10aXRsZVwiPk15IEFjY291bnQ8L3A+XG4gICAgICAgICAgICAgIDwvbGk+XG5cbiAgICAgICAgICAgICAgPGxpPlxuICAgICAgICAgICAgICAgIDxMaW5rIHRvPVwiL29yZGVyc1wiIGNsYXNzTmFtZT1cImZvb3Rlci1saW5rXCI+XG4gICAgICAgICAgICAgICAgICA8SW9DaGV2cm9uRm9yd2FyZCAvPlxuXG4gICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJmb290ZXItbGluay10ZXh0XCI+TXkgQWNjb3VudDwvc3Bhbj5cbiAgICAgICAgICAgICAgICA8L0xpbms+XG4gICAgICAgICAgICAgIDwvbGk+XG5cbiAgICAgICAgICAgICAgPGxpPlxuICAgICAgICAgICAgICAgIDxMaW5rIHRvPVwiL2NhcnRcIiBjbGFzc05hbWU9XCJmb290ZXItbGlua1wiPlxuICAgICAgICAgICAgICAgICAgPElvQ2hldnJvbkZvcndhcmQgLz5cblxuICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmstdGV4dFwiPlZpZXcgQ2FydDwvc3Bhbj5cbiAgICAgICAgICAgICAgICA8L0xpbms+XG4gICAgICAgICAgICAgIDwvbGk+XG5cbiAgICAgICAgICAgICAgPGxpPlxuICAgICAgICAgICAgICAgIDxhIGhyZWY9XCIjXCIgY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtcIj5cbiAgICAgICAgICAgICAgICAgIDxJb0NoZXZyb25Gb3J3YXJkIC8+XG5cbiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImZvb3Rlci1saW5rLXRleHRcIj5XaXNobGlzdDwvc3Bhbj5cbiAgICAgICAgICAgICAgICA8L2E+XG4gICAgICAgICAgICAgIDwvbGk+XG5cbiAgICAgICAgICAgICAgPGxpPlxuICAgICAgICAgICAgICAgIDxhIGhyZWY9XCIjXCIgY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtcIj5cbiAgICAgICAgICAgICAgICAgIDxJb0NoZXZyb25Gb3J3YXJkIC8+XG5cbiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImZvb3Rlci1saW5rLXRleHRcIj5Db21wYXJlPC9zcGFuPlxuICAgICAgICAgICAgICAgIDwvYT5cbiAgICAgICAgICAgICAgPC9saT5cblxuICAgICAgICAgICAgICA8bGk+XG4gICAgICAgICAgICAgICAgPExpbmsgdG89XCIvcHJvZHVjdHNcIiBjbGFzc05hbWU9XCJmb290ZXItbGlua1wiPlxuICAgICAgICAgICAgICAgICAgPElvQ2hldnJvbkZvcndhcmQgLz5cblxuICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmstdGV4dFwiPk5ldyBQcm9kdWN0czwvc3Bhbj5cbiAgICAgICAgICAgICAgICA8L0xpbms+XG4gICAgICAgICAgICAgIDwvbGk+XG4gICAgICAgICAgICA8L3VsPlxuXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZvb3Rlci1saXN0XCI+XG4gICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cImZvb3Rlci1saXN0LXRpdGxlXCI+T3BlbmluZyBUaW1lPC9wPlxuXG4gICAgICAgICAgICAgIDx0YWJsZSBjbGFzc05hbWU9XCJmb290ZXItdGFibGVcIj5cbiAgICAgICAgICAgICAgICA8dGJvZHk+XG4gICAgICAgICAgICAgICAgICA8dHIgY2xhc3NOYW1lPVwidGFibGUtcm93XCI+XG4gICAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9XCJ0YWJsZS1oZWFkXCIgc2NvcGU9XCJyb3dcIj5cbiAgICAgICAgICAgICAgICAgICAgICBNb24gLSBUdWU6XG4gICAgICAgICAgICAgICAgICAgIDwvdGg+XG5cbiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInRhYmxlLWRhdGFcIj44QU0gLSAxMFBNPC90ZD5cbiAgICAgICAgICAgICAgICAgIDwvdHI+XG5cbiAgICAgICAgICAgICAgICAgIDx0ciBjbGFzc05hbWU9XCJ0YWJsZS1yb3dcIj5cbiAgICAgICAgICAgICAgICAgICAgPHRoIGNsYXNzTmFtZT1cInRhYmxlLWhlYWRcIiBzY29wZT1cInJvd1wiPlxuICAgICAgICAgICAgICAgICAgICAgIFdlZDpcbiAgICAgICAgICAgICAgICAgICAgPC90aD5cblxuICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3NOYW1lPVwidGFibGUtZGF0YVwiPjhBTSAtIDdQTTwvdGQ+XG4gICAgICAgICAgICAgICAgICA8L3RyPlxuXG4gICAgICAgICAgICAgICAgICA8dHIgY2xhc3NOYW1lPVwidGFibGUtcm93XCI+XG4gICAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9XCJ0YWJsZS1oZWFkXCIgc2NvcGU9XCJyb3dcIj5cbiAgICAgICAgICAgICAgICAgICAgICBGcmk6XG4gICAgICAgICAgICAgICAgICAgIDwvdGg+XG5cbiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInRhYmxlLWRhdGFcIj43QU0gLSAxMlBNPC90ZD5cbiAgICAgICAgICAgICAgICAgIDwvdHI+XG5cbiAgICAgICAgICAgICAgICAgIDx0ciBjbGFzc05hbWU9XCJ0YWJsZS1yb3dcIj5cbiAgICAgICAgICAgICAgICAgICAgPHRoIGNsYXNzTmFtZT1cInRhYmxlLWhlYWRcIiBzY29wZT1cInJvd1wiPlxuICAgICAgICAgICAgICAgICAgICAgIFNhdDpcbiAgICAgICAgICAgICAgICAgICAgPC90aD5cblxuICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3NOYW1lPVwidGFibGUtZGF0YVwiPjlBTSAtIDhQTTwvdGQ+XG4gICAgICAgICAgICAgICAgICA8L3RyPlxuXG4gICAgICAgICAgICAgICAgICA8dHIgY2xhc3NOYW1lPVwidGFibGUtcm93XCI+XG4gICAgICAgICAgICAgICAgICAgIDx0aCBjbGFzc05hbWU9XCJ0YWJsZS1oZWFkXCIgc2NvcGU9XCJyb3dcIj5cbiAgICAgICAgICAgICAgICAgICAgICBTdW46XG4gICAgICAgICAgICAgICAgICAgIDwvdGg+XG5cbiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInRhYmxlLWRhdGFcIj5DbG9zZWQ8L3RkPlxuICAgICAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICAgICA8L3Rib2R5PlxuICAgICAgICAgICAgICA8L3RhYmxlPlxuICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZm9vdGVyLWxpc3RcIj5cbiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwiZm9vdGVyLWxpc3QtdGl0bGVcIj5OZXdzbGV0dGVyPC9wPlxuXG4gICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cIm5ld3NsZXR0ZXItdGV4dFwiPlxuICAgICAgICAgICAgICAgIEF1dGhvcml0YXRpdmVseSBtb3JwaCAyNC83IHBvdGVudGlhbGl0aWVzIHdpdGggZXJyb3ItZnJlZVxuICAgICAgICAgICAgICAgIHBhcnRuZXJzaGlwcy5cbiAgICAgICAgICAgICAgPC9wPlxuXG4gICAgICAgICAgICAgIDxmb3JtIGFjdGlvbj1cIlwiIGNsYXNzTmFtZT1cIm5ld3NsZXR0ZXItZm9ybVwiPlxuICAgICAgICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgICAgICAgdHlwZT1cImVtYWlsXCJcbiAgICAgICAgICAgICAgICAgIG5hbWU9XCJlbWFpbFwiXG4gICAgICAgICAgICAgICAgICByZXF1aXJlZFxuICAgICAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCJFbWFpbCBBZGRyZXNzXCJcbiAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cIm5ld3NsZXR0ZXItaW5wdXRcIlxuICAgICAgICAgICAgICAgIC8+XG5cbiAgICAgICAgICAgICAgICA8YnV0dG9uIHR5cGU9XCJzdWJtaXRcIiBjbGFzc05hbWU9XCIgYnRuLXByaW1hcnkxXCI+XG4gICAgICAgICAgICAgICAgICBTdWJzY3JpYmVcbiAgICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgICAgPC9mb3JtPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZm9vdGVyLWJvdHRvbVwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbnRhaW5lclwiPlxuICAgICAgICAgIDxwIGNsYXNzTmFtZT1cImNvcHlyaWdodFwiPlxuICAgICAgICAgICAgJmNvcHk7IDIwMjR7XCIgXCJ9XG4gICAgICAgICAgICA8YSBocmVmPVwiI1wiIGNsYXNzTmFtZT1cImNvcHlyaWdodC1saW5rXCI+XG4gICAgICAgICAgICAgIFNocmV5ICYgS2lzaG9yXG4gICAgICAgICAgICA8L2E+XG4gICAgICAgICAgICAuIEFsbCBSaWdodHMgUmVzZXJ2ZWRcbiAgICAgICAgICA8L3A+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgPC9mb290ZXI+XG4gICk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBGb290ZXI7XG4iXSwiZmlsZSI6IkU6L2Nsb3VkX1NodWJoYW1KYWRoYXYvY2xpZW50L3NyYy9jb21wb25lbnRzL2xhbmRpbmcvRm9vdGVyLmpzeCJ9

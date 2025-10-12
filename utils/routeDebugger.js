@@ -1,4 +1,7 @@
-// File: E:\cloud_ShubhamJadhav\utils\routeDebugger.js
+// File name: routeDebugger
+// File name with extension: routeDebugger.js
+// Full path: E:\cloud_ShubhamJadhav\utils\routeDebugger.js
+// Directory: E:\cloud_ShubhamJadhav\utils
 
 /**
  * 🧭 Advanced Route Debugger Utility

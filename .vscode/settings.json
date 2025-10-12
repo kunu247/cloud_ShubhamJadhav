@@ -3,9 +3,33 @@
     "git.ignoreLimitWarning": true,
     "files.exclude": {
         "node_modules": true,
-        "dist": true
+        "dist": true,
+        ".chrome-debug": true,
+        ".chrome-debug-profile": true,
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/Thumbs.db": true
     },
     "debug.allowBreakpointsEverywhere": true,
     "editor.formatOnSave": true,
-    "terminal.integrated.defaultProfile.windows": "Windows PowerShell"
+    "terminal.integrated.defaultProfile.windows": "Windows PowerShell",
+    "debug.javascript.autoAttachFilter": "onlyWithFlag",
+    "debug.internalConsoleOptions": "openOnSessionStart",
+    "debug.onTaskErrors": "showErrors",
+    "debug.openDebug": "openOnSessionStart",
+    "debug.openExplorerOnEnd": true,
+    "debug.saveBeforeStart": "allEditorsInActiveGroup",
+    "debug.showInStatusBar": "always",
+    "javascript.suggest.autoImports": true,
+    "typescript.suggest.autoImports": true,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "emmet.triggerExpansionOnTab": true,
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "css.validate": true,
+    "less.validate": true,
+    "scss.validate": true
 }

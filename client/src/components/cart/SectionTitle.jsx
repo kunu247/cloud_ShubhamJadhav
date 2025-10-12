@@ -3,7 +3,7 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\cart\SectionTitle.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\cart
 
-import React from "react";
+import PropTypes from "prop-types";
 
 const SectionTitle = ({ text }) => {
   return (
@@ -11,6 +11,10 @@ const SectionTitle = ({ text }) => {
       <h2 className="text-3xl font-medium tracking-wider capitalize">{text}</h2>
     </div>
   );
+};
+
+SectionTitle.propTypes = {
+  text: PropTypes.string.isRequired
 };
 
 export default SectionTitle;

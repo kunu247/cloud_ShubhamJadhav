@@ -1,0 +1,251 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/landing/Service.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=5efafd95"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.__vite_plugin_react_preamble_installed__) {
+    throw new Error("@vitejs/plugin-react can't detect preamble. Something is wrong. See https://github.com/vitejs/vite-plugin-react/pull/11#discussion_r430879201");
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = (type, id) => {
+    RefreshRuntime.register(type, "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx " + id);
+  };
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=5efafd95"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react;
+import { formatPrice } from "/src/utils/index.jsx";
+const Service = () => {
+  return /* @__PURE__ */ jsxDEV("section", { className: "section service py-12", children: /* @__PURE__ */ jsxDEV("div", { className: "container", children: /* @__PURE__ */ jsxDEV("ul", { className: "service-list ", children: [
+    /* @__PURE__ */ jsxDEV("li", { className: "service-item", children: /* @__PURE__ */ jsxDEV("div", { className: "service-card", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "card-icon", children: /* @__PURE__ */ jsxDEV(
+        "img",
+        {
+          src: "images/service-1.png",
+          width: "53",
+          height: "28",
+          loading: "lazy",
+          alt: "Service icon"
+        },
+        void 0,
+        false,
+        {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 17,
+          columnNumber: 17
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 16,
+        columnNumber: 15
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("h3", { className: "h4 card-title uppercase", children: "Free Shiping" }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 27,
+          columnNumber: 17
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "card-text", children: [
+          "All orders over ",
+          /* @__PURE__ */ jsxDEV("span", { children: "₹150" }, void 0, false, {
+            fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+            lineNumber: 30,
+            columnNumber: 35
+          }, this)
+        ] }, void 0, true, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 29,
+          columnNumber: 17
+        }, this)
+      ] }, void 0, true, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 26,
+        columnNumber: 15
+      }, this)
+    ] }, void 0, true, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 15,
+      columnNumber: 13
+    }, this) }, void 0, false, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 14,
+      columnNumber: 11
+    }, this),
+    /* @__PURE__ */ jsxDEV("li", { className: "service-item", children: /* @__PURE__ */ jsxDEV("div", { className: "service-card", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "card-icon", children: /* @__PURE__ */ jsxDEV(
+        "img",
+        {
+          src: "images/service-2.png",
+          width: "53",
+          height: "28",
+          loading: "lazy",
+          alt: "Service icon"
+        },
+        void 0,
+        false,
+        {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 39,
+          columnNumber: 17
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 38,
+        columnNumber: 15
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("h3", { className: "h4 card-title uppercase", children: "Quick Payment" }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 49,
+          columnNumber: 17
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "card-text", children: "100% secure payment" }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 51,
+          columnNumber: 17
+        }, this)
+      ] }, void 0, true, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 48,
+        columnNumber: 15
+      }, this)
+    ] }, void 0, true, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 37,
+      columnNumber: 13
+    }, this) }, void 0, false, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 36,
+      columnNumber: 11
+    }, this),
+    /* @__PURE__ */ jsxDEV("li", { className: "service-item", children: /* @__PURE__ */ jsxDEV("div", { className: "service-card", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "card-icon", children: /* @__PURE__ */ jsxDEV(
+        "img",
+        {
+          src: "images/service-3.png",
+          width: "53",
+          height: "28",
+          loading: "lazy",
+          alt: "Service icon"
+        },
+        void 0,
+        false,
+        {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 59,
+          columnNumber: 17
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 58,
+        columnNumber: 15
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("h3", { className: "h4 card-title uppercase", children: "Free Returns" }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 69,
+          columnNumber: 17
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "card-text", children: "Money back in 30 days" }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 71,
+          columnNumber: 17
+        }, this)
+      ] }, void 0, true, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 68,
+        columnNumber: 15
+      }, this)
+    ] }, void 0, true, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 57,
+      columnNumber: 13
+    }, this) }, void 0, false, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 56,
+      columnNumber: 11
+    }, this),
+    /* @__PURE__ */ jsxDEV("li", { className: "service-item", children: /* @__PURE__ */ jsxDEV("div", { className: "service-card", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "card-icon", children: /* @__PURE__ */ jsxDEV(
+        "img",
+        {
+          src: "images/service-4.png",
+          width: "53",
+          height: "28",
+          loading: "lazy",
+          alt: "Service icon"
+        },
+        void 0,
+        false,
+        {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 79,
+          columnNumber: 17
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 78,
+        columnNumber: 15
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("h3", { className: "h4 card-title uppercase", children: "24/7 Support" }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 89,
+          columnNumber: 17
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "card-text", children: "Get Quick Support" }, void 0, false, {
+          fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+          lineNumber: 91,
+          columnNumber: 17
+        }, this)
+      ] }, void 0, true, {
+        fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+        lineNumber: 88,
+        columnNumber: 15
+      }, this)
+    ] }, void 0, true, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 77,
+      columnNumber: 13
+    }, this) }, void 0, false, {
+      fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+      lineNumber: 76,
+      columnNumber: 11
+    }, this)
+  ] }, void 0, true, {
+    fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+    lineNumber: 13,
+    columnNumber: 9
+  }, this) }, void 0, false, {
+    fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+    lineNumber: 12,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx",
+    lineNumber: 11,
+    columnNumber: 5
+  }, this);
+};
+_c = Service;
+export default Service;
+var _c;
+$RefreshReg$(_c, "Service");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("E:/cloud_ShubhamJadhav/client/src/components/landing/Service.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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QSxXQWdCQSxLQWpCRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBa0JBO0FBQUEsSUFFQSx1QkFBQyxRQUFHLFdBQVUsZ0JBQ1osaUNBQUMsU0FBSSxXQUFVLGdCQUNiO0FBQUEsNkJBQUMsU0FBSSxXQUFVLGFBQ2I7QUFBQSxRQUFDO0FBQUE7QUFBQSxVQUNDLEtBQUk7QUFBQSxVQUNKLE9BQU07QUFBQSxVQUNOLFFBQU87QUFBQSxVQUNQLFNBQVE7QUFBQSxVQUNSLEtBQUk7QUFBQTtBQUFBLFFBTE47QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLE1BS29CLEtBTnRCO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFRQTtBQUFBLE1BRUEsdUJBQUMsU0FDQztBQUFBLCtCQUFDLFFBQUcsV0FBVSwyQkFBMEIsNEJBQXhDO0FBQUE7QUFBQTtBQUFBO0FBQUEsZUFBb0Q7QUFBQSxRQUVwRCx1QkFBQyxPQUFFLFdBQVUsYUFBWSxpQ0FBekI7QUFBQTtBQUFBO0FBQUE7QUFBQSxlQUEwQztBQUFBLFdBSDVDO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFJQTtBQUFBLFNBZkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxXQWdCQSxLQWpCRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBa0JBO0FBQUEsT0FqRkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQWtGQSxLQW5GRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBb0ZBLEtBckZGO0FBQUE7QUFBQTtBQUFBO0FBQUEsU0FzRkE7QUFFSjtBQUFFQyxLQTFGSUQ7QUE0Rk4sZUFBZUE7QUFBUSxJQUFBQztBQUFBQyxhQUFBRCxJQUFBIiwibmFtZXMiOlsiUmVhY3QiLCJmb3JtYXRQcmljZSIsIlNlcnZpY2UiLCJfYyIsIiRSZWZyZXNoUmVnJCJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJTZXJ2aWNlLmpzeCJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBGaWxlIG5hbWU6IFNlcnZpY2Vcbi8vIEZpbGUgbmFtZSB3aXRoIGV4dGVuc2lvbjogU2VydmljZS5qc3hcbi8vIEZ1bGwgcGF0aDogRTpcXGNsb3VkX1NodWJoYW1KYWRoYXZcXGNsaWVudFxcc3JjXFxjb21wb25lbnRzXFxsYW5kaW5nXFxTZXJ2aWNlLmpzeFxuLy8gRGlyZWN0b3J5OiBFOlxcY2xvdWRfU2h1YmhhbUphZGhhdlxcY2xpZW50XFxzcmNcXGNvbXBvbmVudHNcXGxhbmRpbmdcblxuaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHsgZm9ybWF0UHJpY2UgfSBmcm9tIFwiLi4vLi4vdXRpbHNcIjtcblxuY29uc3QgU2VydmljZSA9ICgpID0+IHtcbiAgcmV0dXJuIChcbiAgICA8c2VjdGlvbiBjbGFzc05hbWU9XCJzZWN0aW9uIHNlcnZpY2UgcHktMTJcIj5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29udGFpbmVyXCI+XG4gICAgICAgIDx1bCBjbGFzc05hbWU9XCJzZXJ2aWNlLWxpc3QgXCI+XG4gICAgICAgICAgPGxpIGNsYXNzTmFtZT1cInNlcnZpY2UtaXRlbVwiPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzZXJ2aWNlLWNhcmRcIj5cbiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjYXJkLWljb25cIj5cbiAgICAgICAgICAgICAgICA8aW1nXG4gICAgICAgICAgICAgICAgICBzcmM9XCJpbWFnZXMvc2VydmljZS0xLnBuZ1wiXG4gICAgICAgICAgICAgICAgICB3aWR0aD1cIjUzXCJcbiAgICAgICAgICAgICAgICAgIGhlaWdodD1cIjI4XCJcbiAgICAgICAgICAgICAgICAgIGxvYWRpbmc9XCJsYXp5XCJcbiAgICAgICAgICAgICAgICAgIGFsdD1cIlNlcnZpY2UgaWNvblwiXG4gICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgICAgICA8aDMgY2xhc3NOYW1lPVwiaDQgY2FyZC10aXRsZSB1cHBlcmNhc2VcIj5GcmVlIFNoaXBpbmc8L2gzPlxuXG4gICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwiY2FyZC10ZXh0XCI+XG4gICAgICAgICAgICAgICAgICBBbGwgb3JkZXJzIG92ZXIgPHNwYW4+JiM4Mzc3OzE1MDwvc3Bhbj5cbiAgICAgICAgICAgICAgICA8L3A+XG4gICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9saT5cblxuICAgICAgICAgIDxsaSBjbGFzc05hbWU9XCJzZXJ2aWNlLWl0ZW1cIj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic2VydmljZS1jYXJkXCI+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY2FyZC1pY29uXCI+XG4gICAgICAgICAgICAgICAgPGltZ1xuICAgICAgICAgICAgICAgICAgc3JjPVwiaW1hZ2VzL3NlcnZpY2UtMi5wbmdcIlxuICAgICAgICAgICAgICAgICAgd2lkdGg9XCI1M1wiXG4gICAgICAgICAgICAgICAgICBoZWlnaHQ9XCIyOFwiXG4gICAgICAgICAgICAgICAgICBsb2FkaW5nPVwibGF6eVwiXG4gICAgICAgICAgICAgICAgICBhbHQ9XCJTZXJ2aWNlIGljb25cIlxuICAgICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICAgICAgPGgzIGNsYXNzTmFtZT1cImg0IGNhcmQtdGl0bGUgdXBwZXJjYXNlXCI+UXVpY2sgUGF5bWVudDwvaDM+XG5cbiAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJjYXJkLXRleHRcIj4xMDAlIHNlY3VyZSBwYXltZW50PC9wPlxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvbGk+XG5cbiAgICAgICAgICA8bGkgY2xhc3NOYW1lPVwic2VydmljZS1pdGVtXCI+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNlcnZpY2UtY2FyZFwiPlxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNhcmQtaWNvblwiPlxuICAgICAgICAgICAgICAgIDxpbWdcbiAgICAgICAgICAgICAgICAgIHNyYz1cImltYWdlcy9zZXJ2aWNlLTMucG5nXCJcbiAgICAgICAgICAgICAgICAgIHdpZHRoPVwiNTNcIlxuICAgICAgICAgICAgICAgICAgaGVpZ2h0PVwiMjhcIlxuICAgICAgICAgICAgICAgICAgbG9hZGluZz1cImxhenlcIlxuICAgICAgICAgICAgICAgICAgYWx0PVwiU2VydmljZSBpY29uXCJcbiAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICA8L2Rpdj5cblxuICAgICAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgICAgIDxoMyBjbGFzc05hbWU9XCJoNCBjYXJkLXRpdGxlIHVwcGVyY2FzZVwiPkZyZWUgUmV0dXJuczwvaDM+XG5cbiAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJjYXJkLXRleHRcIj5Nb25leSBiYWNrIGluIDMwIGRheXM8L3A+XG4gICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9saT5cblxuICAgICAgICAgIDxsaSBjbGFzc05hbWU9XCJzZXJ2aWNlLWl0ZW1cIj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic2VydmljZS1jYXJkXCI+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY2FyZC1pY29uXCI+XG4gICAgICAgICAgICAgICAgPGltZ1xuICAgICAgICAgICAgICAgICAgc3JjPVwiaW1hZ2VzL3NlcnZpY2UtNC5wbmdcIlxuICAgICAgICAgICAgICAgICAgd2lkdGg9XCI1M1wiXG4gICAgICAgICAgICAgICAgICBoZWlnaHQ9XCIyOFwiXG4gICAgICAgICAgICAgICAgICBsb2FkaW5nPVwibGF6eVwiXG4gICAgICAgICAgICAgICAgICBhbHQ9XCJTZXJ2aWNlIGljb25cIlxuICAgICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICAgICAgPGgzIGNsYXNzTmFtZT1cImg0IGNhcmQtdGl0bGUgdXBwZXJjYXNlXCI+MjQvNyBTdXBwb3J0PC9oMz5cblxuICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cImNhcmQtdGV4dFwiPkdldCBRdWljayBTdXBwb3J0PC9wPlxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvbGk+XG4gICAgICAgIDwvdWw+XG4gICAgICA8L2Rpdj5cbiAgICA8L3NlY3Rpb24+XG4gICk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBTZXJ2aWNlO1xuIl0sImZpbGUiOiJFOi9jbG91ZF9TaHViaGFtSmFkaGF2L2NsaWVudC9zcmMvY29tcG9uZW50cy9sYW5kaW5nL1NlcnZpY2UuanN4In0=

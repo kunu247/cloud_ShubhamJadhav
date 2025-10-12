@@ -10,9 +10,9 @@ const {
   getAllProducts,
   getSingleProduct,
   deleteProduct,
-  updateProduct
+  updateProduct,
+  uploadProductImage
 } = require("../controllers/productsController");
-const { uploadProductImage } = require("../controllers/uploadsController");
 
 router.route("/").get(getAllProducts).post(createProduct);
 router

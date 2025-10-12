@@ -13,7 +13,8 @@ const CartTotals = ({ type, handleType }) => {
 
   useEffect(() => {
     calculateTotal();
-  }, [cart, changeAmount]);
+    // ✅ Fix missing dependency warning
+  }, [cart, changeAmount, calculateTotal]);
 
   return (
     <>

@@ -10,52 +10,21 @@ const {
   getSingleCartItemSql,
   updateCartSql,
   deleteCartItemSql
-  /* createCartSql,
-  getCartByIdSql */
 } = require("../model/cartModel");
 
-/**
- * ✅ Get all cart items (admin/debug)
- */
 exports.getAllCartItems = asyncHandler(async (req, res) => {
-  const items = await getAllCartItemsSql();
-  return res.status(200).json({
-    success: true,
-    message: "All cart items retrieved successfully",
-    count: items.length,
-    data: items
-  });
+  const result = await getAllCartItemsSql();
+  res.status(result.success ? 200 : 400).json(result);
 });
-
-// /**
-//  * ✅ Create a new cart item
-//  */
-// exports.createCartItem = asyncHandler(async (req, res) => {
-//   const { cart_quantity, cart_id, product_id, purchased } = req.body;
-//   if (!cart_id || !product_id || !cart_quantity) {
-//     return res.status(400).json({
-//       success: false,
-//       message: "Missing required fields"
-//     });
-//   }
-
-//   const result = await createCartItemsSql(
-//     cart_quantity,
-//     cart_id,
-//     product_id,
-//     purchased
-//   );
-//   return res.status(201).json({
-//     success: true,
-//     message: "Cart item added successfully",
-//     data: result
-//   });
-// });
 
 exports.createCartItem = asyncHandler(async (req, res) => {
   const { cart_quantity, cart_id, product_id, purchased } = req.body;
-  if (!cart_id || !product_id || !cart_quantity)
-    return res.status(400).json({ success: false, msg: "Missing fields" });
+  if (!cart_id || !product_id || !cart_quantity) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required fields"
+    });
+  }
 
   const result = await createCartItemsSql(
     cart_quantity,
@@ -63,12 +32,9 @@ exports.createCartItem = asyncHandler(async (req, res) => {
     product_id,
     purchased
   );
-  res.status(201).json({ success: true, msg: "Cart item added", data: result });
+  res.status(result.success ? 201 : 400).json(result);
 });
 
-/**
- * ✅ Get a single cart (enriched with product details)
- */
 exports.getSingleCart = asyncHandler(async (req, res) => {
   const cartId = req.params.id || req.query.id;
 
@@ -79,9 +45,9 @@ exports.getSingleCart = asyncHandler(async (req, res) => {
     });
   }
 
-  const data = await getSingleCartItemSql(cartId);
+  const result = await getSingleCartItemSql(cartId);
 
-  if (!data || data.length === 0) {
+  if (result.success && result.data.length === 0) {
     return res.status(200).json({
       success: true,
       message: "Your cart is empty",
@@ -90,47 +56,21 @@ exports.getSingleCart = asyncHandler(async (req, res) => {
     });
   }
 
-  return res.status(200).json({
-    success: true,
-    message: "Cart items retrieved successfully",
-    count: data.length,
-    cart_id: cartId,
-    data
-  });
+  res.status(result.success ? 200 : 400).json(result);
 });
 
 exports.updateCart = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { cart_quantity, product_id } = req.body;
-  const affected = await updateCartSql(id, cart_quantity, product_id);
-  if (affected[0] === 0)
-    return res.status(404).json({ success: false, msg: "Cart item not found" });
-  res.status(200).json({ success: true, msg: "Cart updated" });
+
+  const result = await updateCartSql(id, cart_quantity, product_id);
+  res.status(result.success ? 200 : 404).json(result);
 });
 
 exports.deleteCartItem = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { product_id } = req.body;
-  const deleted = await deleteCartItemSql(id, product_id);
-  if (deleted[0] === 0)
-    return res.status(404).json({ success: false, msg: "Cart item not found" });
-  res.status(200).json({ success: true, msg: "Cart item deleted" });
-});
 
-/*
-exports.createCart = asyncHandler(async (req, res) => {
-  // optional: allow client to suggest a cart_id (not recommended for public API)
-  const suggested = req.body && req.body.cart_id ? req.body.cart_id : undefined;
-  const cart_id = await createCartSql(suggested);
-  res.status(201).json({ success: true, cart_id, msg: "Cart created" });
+  const result = await deleteCartItemSql(id, product_id);
+  res.status(result.success ? 200 : 404).json(result);
 });
-
-exports.getCartById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const cart = await getCartByIdSql(id);
-  if (!cart || cart.length === 0) {
-    return res.status(404).json({ success: false, msg: "Cart not found" });
-  }
-  res.status(200).json({ success: true, data: cart[0] });
-});
-*/

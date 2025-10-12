@@ -2,12 +2,39 @@
     "version": "0.2.0",
     "compounds": [
         {
-            "name": "🧩 FullStack Debug (Node + React)",
+            "name": "🧩 FullStack Debug (Node + React + Chrome)",
             "configurations": [
                 "Debug Node API",
-                "Debug React Client"
+                "Debug React Client",
+                "Attach Chrome DevTools"
             ],
-            "preLaunchTask": "npm: dev:full"
+            "preLaunchTask": "npm: dev:full",
+            "stopAll": true,
+            "presentation": {
+                "group": "development",
+                "order": 1
+            }
+        },
+        {
+            "name": "🚀 Debug React Only",
+            "configurations": [
+                "Debug React Client",
+                "Attach Chrome DevTools"
+            ],
+            "presentation": {
+                "group": "development",
+                "order": 2
+            }
+        },
+        {
+            "name": "🔧 Debug Node Only",
+            "configurations": [
+                "Debug Node API"
+            ],
+            "presentation": {
+                "group": "development",
+                "order": 3
+            }
         }
     ],
     "configurations": [
@@ -16,7 +43,8 @@
             "request": "launch",
             "name": "Debug Node API",
             "skipFiles": [
-                "<node_internals>/**"
+                "<node_internals>/**",
+                "**/node_modules/**"
             ],
             "program": "${workspaceFolder}/app.js",
             "cwd": "${workspaceFolder}",
@@ -25,11 +53,32 @@
             "env": {
                 "NODE_ENV": "development",
                 "DEBUG_MODE": "true",
+                "DEBUG": "app*,api*,db*,route*",
                 "PORT": "8065"
             },
             "console": "integratedTerminal",
             "restart": true,
-            "autoAttachChildProcesses": true
+            "autoAttachChildProcesses": true,
+            "outputCapture": "std",
+            "showAsyncStacks": true,
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Node Process",
+            "port": 9229,
+            "restart": true,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "chrome",
@@ -37,10 +86,59 @@
             "name": "Debug React Client",
             "url": "http://localhost:5173",
             "webRoot": "${workspaceFolder}/client/src",
+            "sourceMapPathOverrides": {
+                "webpack:///src/*": "${webRoot}/*",
+                "webpack:///./src/*": "${webRoot}/*"
+            },
             "sourceMaps": true,
+            "trace": true,
             "runtimeArgs": [
-                "--remote-debugging-port=9222"
-            ]
+                "--remote-debugging-port=9222",
+                "--auto-open-devtools-for-tabs",
+                "--enable-logging",
+                "--v=1"
+            ],
+            "userDataDir": "${workspaceFolder}/.chrome-debug-profile",
+            "env": {
+                "NODE_ENV": "development",
+                "DEBUG": "vite*,react*"
+            }
+        },
+        {
+            "type": "chrome",
+            "request": "attach",
+            "name": "Attach Chrome DevTools",
+            "port": 9222,
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}/client/src",
+            "sourceMapPathOverrides": {
+                "webpack:///./src/*": "${webRoot}/*",
+                "webpack:///src/*": "${webRoot}/*"
+            },
+            "sourceMaps": true,
+            "trace": true
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Vite Server",
+            "program": "${workspaceFolder}/client/node_modules/vite/bin/vite.js",
+            "cwd": "${workspaceFolder}/client",
+            "args": [
+                "--config",
+                "vite.config.js",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "5173",
+                "--mode",
+                "development"
+            ],
+            "env": {
+                "NODE_ENV": "development",
+                "VITE_DEBUG": "true"
+            },
+            "console": "integratedTerminal"
         }
     ]
 }

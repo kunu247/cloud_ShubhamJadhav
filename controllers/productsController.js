@@ -23,50 +23,82 @@ exports.getAllProducts = asyncHandler(async (req, res) => {
   if (gender) filters.push(`gender = '${gender}'`);
   if (cost) filters.push(`cost <= ${cost}`);
 
-  const filterString = filters.length ? "WHERE " + filters.join(" AND ") : "";
-  const products = await getAllProductsSql(filterString);
-
-  res
-    .status(200)
-    .json({ success: true, count: products.length, data: products });
+  const filterString = filters.length ? "AND " + filters.join(" AND ") : "";
+  const result = await getAllProductsSql(filterString);
+  res.status(result.success ? 200 : 400).json(result);
 });
 
 exports.createProduct = asyncHandler(async (req, res) => {
-  const data = await createProductSql(req.body);
-  res.status(201).json({ success: true, msg: "Product created", data });
+  const result = await createProductSql(req.body);
+  res.status(result.success ? 201 : 400).json(result);
 });
 
 exports.getSingleProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const product = await getSingleProductsSql(id);
-  if (product.length === 0)
-    return res.status(404).json({ success: false, msg: "Product not found" });
-  res.status(200).json({ success: true, data: product });
+  const result = await getSingleProductsSql(id);
+  res.status(result.success ? 200 : 404).json(result);
 });
 
 exports.updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const productExists = await getSingleProductsSql(id);
-  if (productExists.length === 0)
-    return res.status(404).json({ success: false, msg: "Product not found" });
+  if (!productExists.success) {
+    return res.status(404).json(productExists);
+  }
 
   const updates = Object.entries(req.body)
     .map(([k, v]) => `${k}='${v}'`)
     .join(", ");
 
-  await updateProductSql(id, updates);
-  const updated = await getSingleProductsSql(id);
-  res
-    .status(200)
-    .json({ success: true, msg: "Product updated", data: updated });
+  const result = await updateProductSql(id, updates);
+  res.status(result.success ? 200 : 400).json(result);
 });
 
 exports.deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const existing = await getSingleProductsSql(id);
-  if (existing.length === 0)
-    return res.status(404).json({ success: false, msg: "Product not found" });
+  if (!existing.success) {
+    return res.status(404).json(existing);
+  }
 
-  await deleteProductSql(id);
-  res.status(200).json({ success: true, msg: "Product deleted" });
+  const result = await deleteProductSql(id);
+  res.status(result.success ? 200 : 400).json(result);
+});
+
+exports.uploadProductImage = asyncHandler(async (req, res) => {
+  if (!req.files || !req.files.image) {
+    return res.status(400).json({
+      success: false,
+      message: "Please upload an image"
+    });
+  }
+
+  const productImage = req.files.image;
+
+  if (!productImage.mimetype.startsWith("image")) {
+    return res.status(400).json({
+      success: false,
+      message: "File must be an image"
+    });
+  }
+
+  if (productImage.size > 1024 * 1024) {
+    return res.status(400).json({
+      success: false,
+      message: "Image must be under 1MB"
+    });
+  }
+
+  const imagePath = path.join(
+    __dirname,
+    "../public/uploads/",
+    productImage.name
+  );
+  await productImage.mv(imagePath);
+
+  res.status(201).json({
+    success: true,
+    message: "Image uploaded",
+    image: `${process.env.BASE_URL}/uploads/${productImage.name}`
+  });
 });
