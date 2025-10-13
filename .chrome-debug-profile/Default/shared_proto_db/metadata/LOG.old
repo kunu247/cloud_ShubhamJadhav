@@ -1,2 +1,3 @@
-2025/10/12-16:02:43.673 41e8 Creating DB E:\cloud_ShubhamJadhav\.chrome-debug-profile\Default\shared_proto_db\metadata since it was missing.
-2025/10/12-16:02:45.008 41e8 Reusing MANIFEST E:\cloud_ShubhamJadhav\.chrome-debug-profile\Default\shared_proto_db\metadata/MANIFEST-000001
+2025/10/13-00:02:42.197 21bc Reusing MANIFEST E:\cloud_ShubhamJadhav\.chrome-debug-profile\Default\shared_proto_db\metadata/MANIFEST-000001
+2025/10/13-00:02:42.199 21bc Recovering log #3
+2025/10/13-00:02:42.199 21bc Reusing old log E:\cloud_ShubhamJadhav\.chrome-debug-profile\Default\shared_proto_db\metadata/000003.log 

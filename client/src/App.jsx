@@ -47,6 +47,8 @@ const createRoute = (path, element, options = {}) => ({
 function App() {
   const { APP_NAME } = useGlobalContext();
 
+  console.table(APP_NAME);
+
   // 🗺️ Define all routes cleanly
   const router = createBrowserRouter([
     createRoute("/", <HomeLayout />, {
@@ -76,9 +78,15 @@ function App() {
   ]);
 
   // 🧭 Global constants (example usage)
-  console.log(`Welcome to ${APP_NAME}!`);
-  console.info(`🚀 ${App_Config.APP_NAME} (${App_Config.VERSION}) initialized`);
-  console.info(`🌐 API Base: ${App_Config.API_URL}`);
+  console.log(`Welcome to ${App_Config?.APP_NAME || "FootwareApp"}!`);
+  console.log(
+    `🚀 ${App_Config?.APP_NAME || "FootwareApp"} (v${
+      App_Config?.VERSION || "2.0.0"
+    }) initialized`
+  );
+  console.log(
+    `🌐 API Base: ${App_Config?.API_URL || "http://localhost:3000/api"}`
+  );
 
   return (
     <>
