@@ -5,11 +5,11 @@
 
 import { useLoaderData } from "react-router-dom";
 import { motion } from "framer-motion";
-import { formatPrice } from "../../utils";
+import { formatPrice } from "../utils";
 import { ShoppingCart, ArrowLeftCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useGlobalContext } from "../../context";
+import { useGlobalContext } from "../context";
 
 export const loader = async ({ params }) => {
   const res = await fetch(`/api/v1/products/${params.id}`);
