@@ -3,42 +3,14 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\cart\CartItem.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\cart
 
-// File: CartItem.jsx
-// Path: E:\cloud_ShubhamJadhav\client\src\components\cart
-
-import React, { useState, useCallback } from "react";
+// CartItem.jsx
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { customFetch, formatPrice, generateAmountOptions } from "../../utils";
+import { formatPrice, generateAmountOptions } from "../../utils";
 import { useGlobalContext } from "../../context";
-import { toast } from "react-toastify";
 
-/**
- * ✅ Safe wrapper for API operations with centralized error handling
- */
-const safeExec = async (label, fn, { onError } = {}) => {
-  try {
-    return await fn();
-  } catch (error) {
-    console.groupCollapsed(`❌ [${label}]`);
-    console.error(error);
-    console.groupEnd();
-
-    const msg =
-      error?.response?.data?.msg ||
-      error?.message ||
-      "Unexpected error occurred.";
-    toast.error(`${label}: ${msg}`);
-    if (onError) onError(error);
-    return null;
-  }
-};
-
-/**
- * 💼 CartItem Component
- * Renders a single product item in the user's shopping cart.
- */
 const CartItem = React.memo(({ cartItem }) => {
-  const { fetchCart, changeAmount, setChangeAmount } = useGlobalContext();
+  const { updateCartItem, removeFromCart } = useGlobalContext();
   const {
     product_id,
     product_name,
@@ -47,96 +19,96 @@ const CartItem = React.memo(({ cartItem }) => {
     cart_quantity,
     product_company,
     color,
-    size,
-    cart_id
+    size
   } = cartItem;
 
   const [amount, setAmount] = useState(cart_quantity);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   /**
-   * 🧹 Remove an item from the cart
-   */
-  const removeItemFromCart = useCallback(async () => {
-    await safeExec("Cart Delete", async () => {
-      await customFetch.patch(`/cart/delete/${cart_id}`, {
-        product_id
-      });
-      toast.success(`${product_name} removed from cart`);
-      await fetchCart();
-    });
-  }, [cart_id, product_id, product_name, fetchCart]);
-
-  /**
-   * 🔁 Update item quantity in cart
-   */
-  const updateQuantity = useCallback(
-    async (newAmount) => {
-      await safeExec("Cart Update", async () => {
-        await customFetch.patch(`/cart/${cart_id}`, {
-          cart_quantity: newAmount,
-          product_id
-        });
-      });
-    },
-    [cart_id, product_id]
-  );
-
-  /**
-   * 🧮 Handle dropdown amount change
+   * 🔁 Update item quantity
    */
   const handleAmountChange = async (e) => {
     const newAmount = Number(e.target.value);
     if (newAmount === amount) return;
 
     setAmount(newAmount);
-    setChangeAmount(changeAmount + 1);
-    await updateQuantity(newAmount);
-    await fetchCart();
+    setIsUpdating(true);
+
+    // Simulate API delay for better UX
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    updateCartItem(product_id, newAmount);
+
+    setIsUpdating(false);
+  };
+
+  /**
+   * 🗑️ Remove item from cart
+   */
+  const handleRemove = () => {
+    removeFromCart(product_id);
   };
 
   return (
-    <article className="mb-12 flex flex-col gap-y-4 sm:flex-row flex-wrap border-b border-base-300 pb-6 last:border-b-0">
+    <article
+      className={`mb-6 flex flex-col gap-4 sm:flex-row flex-wrap border-b border-base-300 pb-6 last:border-b-0 transition-all duration-300 ${
+        isUpdating ? "opacity-60" : "opacity-100"
+      }`}
+    >
       {/* 🖼️ Product Image */}
-      <img
-        src={image}
-        alt={product_name}
-        className="h-24 w-24 rounded-lg sm:h-32 sm:w-32 object-cover"
-        loading="lazy"
-      />
+      <div className="flex-shrink-0">
+        <img
+          src={image || "/placeholder-image.jpg"}
+          alt={product_name}
+          className="h-24 w-24 rounded-lg sm:h-32 sm:w-32 object-cover shadow-md hover:shadow-lg transition-shadow"
+          loading="lazy"
+          onError={(e) => {
+            e.target.src =
+              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='12' fill='%239ca3af'%3ENo Image%3C/text%3E%3C/svg%3E";
+          }}
+        />
+      </div>
 
       {/* 📦 Product Info */}
-      <div className="sm:ml-16 sm:w-48">
-        <h3 className="capitalize font-medium">{product_name}</h3>
-        <h4 className="mt-2 capitalize text-sm text-neutral-content">
-          Brand / Company:{" "}
-          <span style={{ color: "yellow" }}>{product_company}</span>
-        </h4>
-        <p className="mt-4 capitalize text-sm flex items-center gap-x-2">
-          Color:
-          <span
-            className="badge badge-sm"
-            style={{ backgroundColor: color }}
-            title={color}
-          ></span>
-        </p>
-        <p className="mt-2 capitalize text-sm flex items-center gap-x-2">
-          {`${product_name}'s`} Size:
-          <span className="text-sm text-slate-100" style={{ color: "yellow" }}>
-            {size}
-          </span>
-        </p>
+      <div className="sm:ml-6 sm:flex-1 min-w-0">
+        <h3 className="capitalize font-medium text-lg text-gray-900 truncate">
+          {product_name}
+        </h3>
+        <div className="mt-2 space-y-1">
+          <p className="capitalize text-sm text-gray-600">
+            Brand:{" "}
+            <span className="font-medium text-yellow-600">
+              {product_company}
+            </span>
+          </p>
+          <p className="capitalize text-sm text-gray-600 flex items-center gap-x-2">
+            Color:
+            <span
+              className="inline-block w-4 h-4 rounded-full border border-gray-300"
+              style={{ backgroundColor: color }}
+              title={color}
+            ></span>
+            <span className="text-gray-500">{color}</span>
+          </p>
+          <p className="capitalize text-sm text-gray-600">
+            Size: <span className="font-medium text-gray-900">{size}</span>
+          </p>
+        </div>
       </div>
 
       {/* 🧮 Quantity Control */}
-      <div className="sm:ml-12">
-        <div className="form-control max-w-xs">
-          <label htmlFor={`amount-${product_id}`} className="label p-0">
-            <span className="label-text">Amount</span>
+      <div className="sm:ml-6 flex flex-col items-start">
+        <div className="form-control">
+          <label htmlFor={`amount-${product_id}`} className="label py-1">
+            <span className="label-text font-medium">Quantity</span>
           </label>
           <select
             name="amount"
             id={`amount-${product_id}`}
-            className="mt-2 select select-base select-bordered select-xs"
+            disabled={isUpdating}
+            className={`select select-bordered select-sm min-w-20 ${
+              isUpdating ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
             value={amount}
             onChange={handleAmountChange}
           >
@@ -144,23 +116,29 @@ const CartItem = React.memo(({ cartItem }) => {
           </select>
         </div>
         <button
-          className="mt-2 link link-primary link-hover text-sm"
-          onClick={removeItemFromCart}
+          className={`mt-3 text-red-600 hover:text-red-800 text-sm font-medium transition-colors ${
+            isUpdating ? "cursor-not-allowed opacity-50" : ""
+          }`}
+          onClick={handleRemove}
+          disabled={isUpdating}
         >
-          Remove
+          {isUpdating ? "Updating..." : "Remove"}
         </button>
       </div>
 
       {/* 💰 Price */}
-      <p className="font-medium sm:ml-auto text-primary">{formatPrice(cost)}</p>
+      <div className="sm:ml-auto text-right">
+        <p className="text-lg font-bold text-primary">
+          {formatPrice(cost * amount)}
+        </p>
+        <p className="text-sm text-gray-500 mt-1">{formatPrice(cost)} each</p>
+      </div>
     </article>
   );
 });
 
-// Set display name for the component
 CartItem.displayName = "CartItem";
 
-/* ✅ PropTypes validation */
 CartItem.propTypes = {
   cartItem: PropTypes.shape({
     product_id: PropTypes.string.isRequired,
@@ -168,10 +146,9 @@ CartItem.propTypes = {
     cost: PropTypes.number.isRequired,
     image: PropTypes.string,
     cart_quantity: PropTypes.number.isRequired,
-    size: PropTypes.number.isRequired,
+    size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     product_company: PropTypes.string,
-    color: PropTypes.string,
-    cart_id: PropTypes.string.isRequired
+    color: PropTypes.string
   }).isRequired
 };
 

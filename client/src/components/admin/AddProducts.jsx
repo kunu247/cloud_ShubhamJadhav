@@ -3,103 +3,139 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\admin\AddProducts.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\admin
 
-import React, { useState } from "react";
-import { customFetch } from "../../utils";
-import SubmitBtn from "../form/SubmitBtn";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const AddProducts = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
   const defaultValue = {
+    id: null,
     product_name: "",
     product_company: "",
     color: "",
-    size: null,
+    size: "",
     gender: "",
-    cost: null,
-    quantity: null,
+    cost: "",
+    quantity: "",
     image: ""
   };
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [newProduct, setNewProduct] = useState(defaultValue);
+  const [products, setProducts] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
-  const addImage = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append("image", selectedImage);
+  // Load products from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem("products");
     try {
-      const resp = await customFetch.post(`/products/uploads`, formData, {
-        headers: {
-          "content-type": "multipart/form-data"
-        }
-      });
-      const data = await resp.data;
-      setNewProduct({
-        ...newProduct,
-        image: data.image.src
-      });
-      setImageSrc(data.image.src);
-      toast.success("Image Uploaded Successfully");
-    } catch (error) {
-      console.log(error);
-      toast.warn(error.response.data.image.msg);
+      const parsed = stored ? JSON.parse(stored) : [];
+      setProducts(Array.isArray(parsed) ? parsed : []);
+    } catch {
+      setProducts([]);
     }
+  }, []);
+
+  const saveToStorage = (updatedList) => {
+    localStorage.setItem("products", JSON.stringify(updatedList));
+    setProducts(updatedList);
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "gender" && value === "default") {
-      return toast.error("Please Select Gender");
-    }
-    if (name === "size" && value === "default") {
-      return toast.error("Please Select Size");
-    }
-    setNewProduct({
-      ...newProduct,
-      [name]: value
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const convertToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (err) => reject(err);
     });
+
+  const addImage = async () => {
+    if (!selectedImage) return toast.error("Select an image first");
+    try {
+      const base64 = await convertToBase64(selectedImage);
+      setNewProduct((prev) => ({ ...prev, image: base64 }));
+      setImageSrc(base64);
+      toast.success("Image added successfully");
+    } catch (err) {
+      console.error(err);
+      toast.error("Image processing failed");
+    }
   };
 
-  const postProduct = async () => {
-    try {
-      const response = await customFetch.post("/products", newProduct);
-      const data = await response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const submitProduct = () => {
-    event.preventDefault();
+  const submitProduct = (e) => {
+    e.preventDefault();
     const values = Object.values(newProduct);
-    if (values[7] === "") {
-      return toast.error("Image Not Uploaded");
+    if (values.some((v) => v === "" || v === null)) {
+      return toast.error("All input fields must be filled");
     }
-    for (let index = 0; index < values.length; index++) {
-      const element = values[index];
-      if (element === "" || element === null) {
-        index = values.length;
-        return toast.error("All Input Fields Not Filled");
-      }
+
+    if (!imageSrc) return toast.error("Upload image first");
+
+    let updatedList = [];
+    if (editMode) {
+      updatedList = products.map((p) =>
+        p.id === newProduct.id ? newProduct : p
+      );
+      toast.success("Product updated successfully");
+    } else {
+      const id = Date.now();
+      updatedList = [...products, { ...newProduct, id }];
+      toast.success("Product added successfully");
     }
-    postProduct();
-    toast.success("Product Successfully Added");
-    navigate("/admin/product");
+
+    saveToStorage(updatedList);
+    setNewProduct(defaultValue);
+    setImageSrc(null);
+    setSelectedImage(null);
+    setEditMode(false);
   };
+
+  const handleEdit = (product) => {
+    setNewProduct(product);
+    setImageSrc(product.image);
+    setEditMode(true);
+    toast.info("Editing product");
+  };
+
+  const handleDelete = (id) => {
+    const updated = products.filter((p) => p.id !== id);
+    saveToStorage(updated);
+    toast.warn("Product deleted");
+  };
+
+  const handleReset = () => {
+    setNewProduct(defaultValue);
+    setEditMode(false);
+    setImageSrc(null);
+    setSelectedImage(null);
+  };
+
   return (
-    <div className="flex w-full pt-4 justify-around">
-      <section className="h-screen grid place-items-center">
+    <div className="flex flex-col lg:flex-row w-full pt-4 justify-around gap-6">
+      {/* FORM SECTION */}
+      <section className="grid place-items-center">
         <form
           className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
           onSubmit={submitProduct}
         >
-          <h4 className="text-center text-3xl font-bold">Product Details</h4>
+          <h4 className="text-center text-3xl font-bold">
+            {editMode ? "Edit Product" : "Add Product"}
+          </h4>
+
           <input
             type="text"
             name="product_name"
             placeholder="Product Name"
             className="input input-bordered"
+            value={newProduct.product_name}
             onChange={handleInputChange}
           />
           <input
@@ -107,6 +143,7 @@ const AddProducts = () => {
             name="product_company"
             placeholder="Company Name"
             className="input input-bordered"
+            value={newProduct.product_company}
             onChange={handleInputChange}
           />
           <input
@@ -114,6 +151,7 @@ const AddProducts = () => {
             name="color"
             placeholder="Color"
             className="input input-bordered"
+            value={newProduct.color}
             onChange={handleInputChange}
           />
           <input
@@ -121,6 +159,7 @@ const AddProducts = () => {
             name="quantity"
             placeholder="Quantity"
             className="input input-bordered"
+            value={newProduct.quantity}
             onChange={handleInputChange}
           />
           <input
@@ -128,16 +167,17 @@ const AddProducts = () => {
             name="cost"
             placeholder="Price"
             className="input input-bordered"
+            value={newProduct.cost}
             onChange={handleInputChange}
           />
           <select
             id="Gender"
-            placeholder="Gender"
             name="gender"
             onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value={newProduct.gender}
+            className="select select-bordered"
           >
-            <option value="default">Gender</option>
+            <option value="">Gender</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
           </select>
@@ -145,33 +185,40 @@ const AddProducts = () => {
             id="Size"
             name="size"
             onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value={newProduct.size}
+            className="select select-bordered"
           >
-            <option value="default">Size In UK Standard</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
+            <option value="">Size in UK Standard</option>
+            {[5, 6, 7, 8, 9, 10, 11].map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
           </select>
-          <div className="mt-4">
-            {/* <SubmitBtn text='Add Product'  disabled={selectedImage===null?true:false}/> */}
-            <button
-              text="Add Product"
-              className="btn btn-primary btn-block"
-              disabled={imageSrc === null ? true : false}
-            >
-              {imageSrc ? "Add product" : "Upload Image First"}
-            </button>
-          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-3"
+            disabled={!imageSrc}
+          >
+            {editMode ? "Update Product" : "Add Product"}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleReset}
+            className="btn btn-outline btn-sm mt-1"
+          >
+            Reset
+          </button>
         </form>
       </section>
-      <div className="w-[30rem] bg-base-100  p-8 card">
-        <div className="flex justify-center flex-col w-full">
+
+      {/* IMAGE SECTION */}
+      <div className="w-[30rem] bg-base-100 p-8 card">
+        <div className="flex flex-col justify-center w-full">
           <label
-            className="block font-bold mx-auto  text-3xl  mb-5 text-gray-900 dark:text-white"
+            className="block font-bold mx-auto text-3xl mb-5 text-gray-900"
             htmlFor="myImage"
           >
             Upload Image
@@ -179,42 +226,96 @@ const AddProducts = () => {
           <input
             type="file"
             name="myImage"
-            className="block w-9/10 text-xl mb-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            //  onChange={addImage}
+            accept="image/*"
+            className="block w-9/10 text-xl mb-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
             onChange={(e) => setSelectedImage(e.target.files[0])}
           />
-          <p
-            className="mt-1 text-lg mb-5  text-gray-500 dark:text-gray-300"
-            id="file_input_help"
-          >
-            SVG, PNG, JPG or GIF (MAX. 1MB).
+          <p className="mt-1 text-lg mb-5 text-gray-500">
+            PNG, JPG, or GIF (MAX. 1MB)
           </p>
           <button
+            type="button"
             className="btn btn-secondary mx-auto mb-4 btn-sm w-56"
-            onClick={() => setSelectedImage(null)}
+            onClick={() => {
+              setSelectedImage(null);
+              setImageSrc(null);
+            }}
           >
             Remove Image
           </button>
         </div>
-        <div>
-          {selectedImage && (
-            <div>
-              <img
-                alt="not found"
-                width={"450px"}
-                src={URL.createObjectURL(selectedImage)}
-              />
-            </div>
-          )}
-          <div className="flex">
-            <button
-              className="btn mt-5 btn-primary btn-block"
-              onClick={addImage}
-            >
-              Upload Image
-            </button>
+
+        {selectedImage && (
+          <div className="mt-2">
+            <img
+              alt="preview"
+              width="450"
+              src={URL.createObjectURL(selectedImage)}
+            />
           </div>
+        )}
+
+        {imageSrc && (
+          <div className="mt-2">
+            <img alt="uploaded" width="450" src={imageSrc} />
+          </div>
+        )}
+
+        <div className="flex">
+          <button
+            type="button"
+            className="btn mt-5 btn-primary btn-block"
+            onClick={addImage}
+          >
+            Upload Image
+          </button>
         </div>
+      </div>
+
+      {/* PRODUCT LIST */}
+      <div className="w-full lg:w-[40rem] mt-10 lg:mt-0">
+        <h3 className="text-2xl font-semibold mb-3">Stored Products</h3>
+        {products.length === 0 ? (
+          <p className="text-gray-500">No products found</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Company</th>
+                  <th>Cost</th>
+                  <th>Qty</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((p) => (
+                  <tr key={p.id}>
+                    <td>{p.product_name}</td>
+                    <td>{p.product_company}</td>
+                    <td>{p.cost}</td>
+                    <td>{p.quantity}</td>
+                    <td className="flex gap-2">
+                      <button
+                        className="btn btn-xs btn-warning"
+                        onClick={() => handleEdit(p)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-xs btn-error"
+                        onClick={() => handleDelete(p.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

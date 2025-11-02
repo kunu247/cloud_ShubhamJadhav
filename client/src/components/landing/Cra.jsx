@@ -3,7 +3,6 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\landing\Cra.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\landing
 
-import React from "react";
 import { Link } from "react-router-dom";
 import cta1 from "./cta-1.jpg";
 import cta2 from "./cta-2.jpg";

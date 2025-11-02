@@ -7,11 +7,17 @@ import { NavLink } from "react-router-dom";
 import { useGlobalContext } from "../../context";
 // import { useDispatch, useSelector } from 'react-redux'
 
-const links = [
+/* const links = [
   { id: 1, url: "/", text: "home" },
   { id: 3, url: "products", text: "products" },
   { id: 4, url: "cart", text: "cart" },
   { id: 6, url: "orders", text: "orders" },
+  { id: 5, url: "admin", text: "admin panel" }
+]; */
+const links = [
+  { id: 1, url: "/", text: "home" },
+  { id: 3, url: "products", text: "products" },
+  { id: 4, url: "cart", text: "cart" },
   { id: 5, url: "admin", text: "admin panel" }
 ];
 

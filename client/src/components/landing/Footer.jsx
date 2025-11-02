@@ -3,7 +3,6 @@
 // Full path: E:\cloud_ShubhamJadhav\client\src\components\landing\Footer.jsx
 // Directory: E:\cloud_ShubhamJadhav\client\src\components\landing
 
-import React from "react";
 import {
   FaFacebook,
   FaLinkedin,
@@ -66,7 +65,7 @@ const Footer = () => {
                   <ion-icon name="location"></ion-icon>
 
                   <span className="footer-link-text">
-                    E-566 Electronic City , Bengaluru
+                    E-566 Electronic City , Diva
                   </span>
                 </address>
               </li>
@@ -213,7 +212,7 @@ const Footer = () => {
           <p className="copyright">
             &copy; 2024{" "}
             <a href="#" className="copyright-link">
-              Shrey & Kishor
+              Shubham Jadhav & Kunal Mendarkar
             </a>
             . All Rights Reserved
           </p>
